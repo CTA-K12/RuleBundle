@@ -1,4 +1,1 @@
-RuleBundle
-==========
-
-A symfony bundle to build rule engines for business applications
+This bundle will serve as a place to store the parts of the rule bunlde that I feel are ready to move on to the next phase.  Currently the draft of the bunlde I'm working on is part of my Experimental Symfony project in my personal repository (Currently under the title of ExpRuleBundle).
