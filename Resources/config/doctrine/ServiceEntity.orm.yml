@@ -1,0 +1,22 @@
+Mesd\RuleBundle\Entity\ServiceEntity:
+    type: entity
+    table: mesd_rule.service
+    repositoryClass: Mesd\RuleBundle\Repository\ServiceRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: text
+            nullable: false
+    oneToMany:
+        attributes:
+            targetEntity: AttributeEntity
+            mappedBy: service
+        actions:
+            targetEntity: ActionEntity
+            mappedBy: service

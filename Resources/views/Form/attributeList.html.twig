@@ -1,0 +1,19 @@
+<select id="attributeSelector__name__" class="attributeSelector form-control" data-owner="__name__">
+    {% for context, contextAttributes in attributes['contexts'] %}
+        <option value="" selected></option>
+        <optgroup label="{{ context }}">
+            {% for attribute in contextAttributes %}
+                <option value="{{ [context, '|', attribute.name]|join('') }}" data-attrname="{{ attribute.name }}" data-contextname="{{context}}">
+                    {{ context }} - {{ attribute.name }}{% if null != attribute.description %}: {{ attribute.description }}{% endif %}
+                </option>
+            {% endfor %}
+        </optgroup>
+    {% endfor %}
+    <optgroup label="Globals">
+        {% for attribute in attributes['services'] %}
+            <option value="{{ attribute.name }}" data-attrname="{{ attribute.name }}">
+                {{ attribute.name }}{% if null != attribute.description %}: {{ attribute.description }}{% endif %}
+            </option>
+        {% endfor %}
+    </optgroup>
+</select>

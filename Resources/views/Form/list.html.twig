@@ -1,0 +1,14 @@
+{% extends 'MesdRuleBundle:Form:layout.html.twig' %}
+
+{% block pageHeader %}
+    <h1>Rulesets</h1>
+{% endblock pageHeader %}
+
+{% block listContents %}
+    {% for ruleset in rulesets %}
+        <li class="list-group-item"><a href="{{ url('MesdRuleBundle_Form_displayForm', { 'encodedRulesetName': ruleset|url_encode }) }}">{{ ruleset }}</a></li>
+    {% endfor %}
+{% endblock listContents %}
+
+{% block ruleForm %}
+{% endblock ruleForm %}

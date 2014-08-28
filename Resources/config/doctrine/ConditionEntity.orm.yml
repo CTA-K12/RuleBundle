@@ -1,0 +1,28 @@
+Mesd\RuleBundle\Entity\ConditionEntity:
+    type: entity
+    table: mesd_rule.condition
+    repositoryClass: Mesd\RuleBundle\Repository\ConditionRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        operator_value:
+            column: operator_value
+            type: text
+            nullable: false
+        raw_input_value:
+            column: raw_input_value
+            type: text
+            nullable: false
+    manyToOne:
+        attribute:
+            targetEntity: AttributeEntity
+            joinColumn:
+                name: attribute_id
+        collection:
+            targetEntity: ConditionCollectionEntity
+            joinColumn:
+                name: collection_id

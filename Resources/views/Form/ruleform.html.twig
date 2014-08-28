@@ -1,0 +1,180 @@
+{% extends 'MesdRuleBundle:Form:layout.html.twig' %}
+
+{% block pageHeader %}
+    <h1>{{ rulesetName }}<small> Rule Controls</small></h1>
+{% endblock pageHeader %}
+
+{% block list %}
+{% endblock list %}
+
+{% block createRuleButton %}
+    <button id="ruleFormNewRule" class="btn btn-default disabled"><span class="glyphicon glyphicon-asterisk"></span> New Rule</button>
+{% endblock createRuleButton %}
+
+{% block saveButton %}
+    <button id="ruleFormSave" class="btn btn-primary disabled"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+{% endblock saveButton %}
+
+{% block ruleBlockPrototype %}
+    <div id="rule__name__" class="well">
+        <form id="rule__name__Form">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="rule__name__NameInput">Rule Name: </label>
+                    <input id="rule__name__NameInput" type="text" class="form-control ruleNameInput" placeholder="Name" data-name="__name__">
+                </div>
+                <div class="col-md-6">
+                    <div id="error-rule-__name__"></div>
+                </div>
+            </div>
+            <h4>Conditions: </h4>
+            <div id="rule__name__Conditions" class="panel panel-info">
+                <ul class="list-group">
+                    <li class="list-group-item">__rootCollection__</li>
+                </ul>
+            </div>
+            <h4>If Rule evaluates to true: </h4>
+            <div id="rule__name__ThenActionsBlock" class="panel panel-info">
+                <div id="rule__name__ThenActions"></div>
+                <button class="btn btn-default addThenAction" data-rule="__name__"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+            <h4>If Rule evaluates to false: </h4>
+            <div id="rule__name__ElseActionsBlock" class="panel panel-info">
+                <div id="rule__name__ElseActions"></div>
+                <button class="btn btn-default addElseAction" data-rule="__name__"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+            <h4>If Rule evaluates to true goto the following rules:</h4>
+            <div id="rule__name__ThenRulesBlock" class="panel panel-info">
+                <div id="rule__name__ThenRules"></div>
+                <button class="btn btn-default addThenRule" data-rule="__name__"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+            <h4>If Rule evaluates to false goto the following rules:</h4>
+            <div id="rule__name__ElseRulesBlock" class="panel panel-info">
+                <div id="rule__name__ElseRules"></div>
+                <button class="btn btn-default addElseRule" data-rule="__name__"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-10">
+                <button id="rule__name__Delete" class="ruleDelete btn btn-danger" data-owner="rule__name__" data-index="__name__"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+            </div>
+        </div>
+    </div>
+{% endblock ruleBlockPrototype %}
+
+{% block conditionCollectionBlockPrototype %}
+    <div id="conditionCollection__name__" data-rule="__rule__" data-parent="__parent__" data-index="__index__">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <div class="input-group" style="width: 35%;">
+                    <div class="input-group-addon">If</div> 
+                    <select id="chain__name__" class="form-control chainTypeSelector" data-rule="__rule__" data-index="__index__">
+                        <option value="any">ANY</option>
+                        <option value="all">ALL</option>
+                    </select>
+                    <div class="input-group-addon">of the following are true:</div>
+                </div>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div id="collection__name__Conditions">
+
+            </div>
+            <div class="row">
+                <div class="btn-toolbar">
+                    <button class="btn btn-default addCondition" data-rule="__rule__" data-index="__index__" data-name="__name__"><span class="glyphicon glyphicon-plus"></span></button>
+                    <button class="btn btn-default addCollection" data-rule="__rule__" data-index="__index__" data-name="__name__"><span class="glyphicon glyphicon-th"></span></button>
+                    __removeButton__
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock conditionCollectionBlockPrototype %}
+
+{% block conditionCollectionRemoveButtonPrototype %}
+    <button class="btn btn-default removeCollection" data-rule="__rule__" data-index="__index__" data-name="__name__"><span class="glyphicon glyphicon-remove"></span></button>
+{% endblock conditionCollectionRemoveButtonPrototype %}
+
+{% block conditionBlockPrototype %}
+    <div id="condition__name__" class="panel" data-rule="__rule__" data-owner="__owner__" data-index="__index__" data-name="__name__">
+        <div class="panel-body">
+            <div class="row">
+                <div id="condition__name__Attribute" class="col-md-3">
+                    __attribute__
+                </div>
+                <div id="condition__name__Input" class="col-md-8">
+                </div>
+                <div id="condition__name__Remove" class="col-md-1">
+                    <button class="btn btn-default removeCondition" data-owner="__name__" data-rule="__rule__" data-index="__index__"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock conditionBlockPrototype %}
+
+{% block actionBlockPrototype %}
+    <div id="action__name__" class="panel" data-rule="__rule__" data-index="__index__" data-name="__name__" data-type="__type__">
+        <div class="panel-body">
+            <div class="row">
+                <div id="action__name__Action" class="col-md-3">
+                    __action__
+                </div>
+                <div id="action__name__Input" class="col-md-3">
+                </div>
+                <div id="action__name__Remove" class="col-md-1">
+                    <button class="btn btn-default removeAction" data-owner="__name__" data-index="__index__" data-rule="__rule__"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock actionBlockPrototype %}
+
+{% block followupRulePrototype %}
+    <div id="followupRule__rule__-__index__" class="panel" data-type="__type__" data-index="__index__" data-rule="__rule__">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    __ruleSelector__
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-default removeFollowupRule" data-index="__index__" data-rule="__rule__"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block ruleSelectorPrototype %}
+    <select id="followupSelector__rule__-__index__" class="form-control followupSelector" data-rule="__rule__" data-index="__index__">
+        __options__
+    </select>
+{% endblock ruleSelectorPrototype %}
+
+
+{% block attributeListPrototype %}
+    {{ render(controller('MesdRuleBundle:Form:renderAttributeList', { 'encodedRulesetName': rulesetName|url_encode })) }}
+{% endblock attributeListPrototype %}
+
+
+{% block actionListPrototype %}
+    {{ render(controller('MesdRuleBundle:Form:renderActionList', { 'encodedRulesetName': rulesetName|url_encode })) }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        //Set vars from the twig
+        var ROUTE_MESD_RULE_BUNDLE_FORM_RENDER_COMPARATOR_AND_INPUT = "{{ url('MesdRuleBundle_Form_renderComparatorAndInput', { 'encodedAttributeName': '__encodedAttributeName__', 'encodedContextName': '__encodedContextName__' }) }}";
+        var ROUTE_MESD_RULE_BUNDLE_FORM_RENDER_ACTION_INPUT = "{{ url('MesdRuleBundle_Form_renderActionInput', { 'encodedActionName': '__encodedActionName__', 'encodedContextName': '__encodedContextName__' }) }}";
+        var VAR_MESD_RULE_BUNDLE_RULESET_NAME = '{{ rulesetName }}';
+        var ROUTE_MESD_RULE_BUNDLE_FORM_SAVE_FORM = "{{ url('MesdRuleBundle_Form_saveForm') }}";
+        var ROUTE_MESD_RULE_BUNDLE_FORM_LOAD_FORM = "{{ url('MesdRuleBundle_Form_loadForm') }}";
+    </script>
+
+    {% javascripts '@MesdRuleBundle/Resources/public/js/*' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}

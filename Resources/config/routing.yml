@@ -1,0 +1,33 @@
+MesdRuleBundle_Form_listRulesets:
+    pattern: /form/list
+    defaults: { _controller: 'MesdRuleBundle:Form:listRulesets' }
+
+MesdRuleBundle_Form_displayForm:
+    pattern: /form/display/{encodedRulesetName}
+    defaults: { _controller: 'MesdRuleBundle:Form:displayForm' }
+    requirements:
+        encodedRulesetName: \S+
+
+MesdRuleBundle_Form_renderAttribteList:
+    pattern: /form/attributelist/{encodedRulesetName}
+    defaults: { _controller: 'MesdRuleBundle:Form:renderAttributeList' }
+    requirements:
+        encodedRulesetName: \S+
+
+MesdRuleBundle_Form_renderComparatorAndInput:
+    pattern: /form/comparatorinput/{encodedAttributeName}/{encodedContextName}
+    defaults: { _controller: 'MesdRuleBundle:Form:renderComparatorAndInput', encodedContextName: null }
+
+MesdRuleBundle_Form_renderActionInput:
+    pattern: /form/actioninput/{encodedActionName}/{encodedContextName}
+    defaults: { _controller: 'MesdRuleBundle:Form:renderActionInput', encodedContextName: null }
+
+MesdRuleBundle_Form_saveForm:
+    pattern: /form/save
+    defaults: { _controller: 'MesdRuleBundle:Form:saveForm' }
+    methods: [POST]
+
+MesdRuleBundle_Form_loadForm:
+    pattern: /form/load
+    defaults: { _controller: 'MesdRuleBundle:Form:loadForm' }
+    methods: [POST]

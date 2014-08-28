@@ -1,0 +1,28 @@
+Mesd\RuleBundle\Entity\ActionCallEntity:
+    type: entity
+    table: mesd_rule.action_call
+    repositoryClass: Mesd\RuleBundle\Repository\ActionCallRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        raw_input_value:
+            column: raw_input_value
+            type: text
+            nullable: false
+    manyToOne:
+        action:
+            targetEntity: ActionEntity
+            joinColumn:
+                name: action_id
+        thenRule:
+            targetEntity: RuleEntity
+            joinColumn:
+                name: then_rule_id
+        elseRule:
+            targetEntity: RuleEntity
+            joinColumn:
+                name: else_rule_id

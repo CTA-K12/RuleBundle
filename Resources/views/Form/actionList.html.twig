@@ -1,0 +1,19 @@
+<select id="actionSelector__name__" class="actionSelector form-control" data-owner="__name__">
+    {% for context, contextActions in actions['contexts'] %}
+        <option value="" selected></option>
+        <optgroup label="{{ context }}">
+            {% for action in contextActions %}
+                <option value="{{ [context, '|', action.name]|join('') }}" data-actionname="{{ action.name }}" data-contextname="{{context}}">
+                    {{ context }} - {{ action.name }}{% if null != action.description %}: {{ action.description }}{% endif %}
+                </option>
+            {% endfor %}
+        </optgroup>
+    {% endfor %}
+    <optgroup label="Globals">
+        {% for action in actions['services'] %}
+            <option value="{{ action.name }}" data-actionname="{{ action.name }}">
+                {{ action.name }}{% if null != action.description %}: {{ action.description }}{% endif %}
+            </option>
+        {% endfor %}
+    </optgroup>
+</select>

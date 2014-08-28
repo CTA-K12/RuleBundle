@@ -1,0 +1,12 @@
+parameters:
+    mesd_rule.definition_manager_loader_factory.class: Mesd\RuleBundle\Services\DefinitionManagerLoaderFactory
+    mesd_rule.rules.class: Mesd\RuleBundle\Services\RulesService
+
+services:
+    mesd_rule.definition_manager_loader_factory:
+        class: %mesd_rule.definition_manager_loader_factory.class%
+        arguments: [ @service_container ]
+
+    mesd_rule.rules:
+        class: %mesd_rule.rules.class%
+        arguments: [ @mesd_rule.definition_manager_loader_factory ]

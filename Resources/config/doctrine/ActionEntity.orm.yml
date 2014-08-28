@@ -1,0 +1,33 @@
+Mesd\RuleBundle\Entity\ActionEntity:
+    type: entity
+    table: mesd_rule.action
+    repositoryClass: Mesd\RuleBundle\Repository\ActionRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+            length: 255
+            nullable: false
+        class:
+            column: class
+            type: text
+            nullable: false
+    manyToOne:
+        context:
+            targetEntity: ContextEntity
+            joinColumn:
+                name: context_id
+        service:
+            targetEntity: ServiceEntity
+            joinColumn:
+                name: service_id
+        input:
+            targetEntity: InputEntity
+            joinColumn:
+                name: input_id

@@ -1,0 +1,31 @@
+Mesd\RuleBundle\Entity\RulesetEntity:
+    type: entity
+    table: mesd_rule.ruleset
+    repositoryClass: Mesd\RuleBundle\Repository\RulesetRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+            length: 255
+            nullable: false
+    manyToMany:
+        context:
+            targetEntity: ContextEntity
+            joinTable:
+                name: mesd_rule.ruleset__context
+                joinColumns:
+                    ruleset_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    context_id:
+                        referencedColumnName: id
+    oneToMany:
+        rules:
+            targetEntity: RuleEntity
+            mappedBy: ruleset

@@ -1,0 +1,7 @@
+{% block actionInput %}
+    <div class="actionInput row">
+        <div class="col-md-12">
+            {{ form_widget(form.input, { 'attr': { 'class': 'form-control actionInputField', 'data-owner': '__name__' } }) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+Mesd\RuleBundle\Entity\RuleEntity:
+    type: entity
+    table: mesd_rule.rule
+    repositoryClass: Mesd\RuleBundle\Repository\RuleRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+            length: 255
+            nullable: false
+    oneToMany:
+        conditionCollection:
+            targetEntity: ConditionCollectionEntity
+            mappedBy: rule
+        thenActions:
+            targetEntity: ActionCallEntity
+            mappedBy: thenRule
+        elseActions:
+            targetEntity: ActionCallEntity
+            mappedBy: elseRule
+    manyToOne:
+        ruleset:
+            targetEntity: RulesetEntity
+            joinColumn:
+                name: ruleset_id
+    manyToMany:
+        thenRules:
+            targetEntity: RuleEntity
+            joinTable:
+                name: mesd_rule.rule__then_rule
+                joinColumns:
+                    rule_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    action_id:
+                        referencedColumnName: id
+        elseRules:
+            targetEntity: RuleEntity
+            joinTable:
+                name: mesd_rule.rule__else_rule
+                joinColumns:
+                    rule_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    action_id:
+                        referencedColumnName: id

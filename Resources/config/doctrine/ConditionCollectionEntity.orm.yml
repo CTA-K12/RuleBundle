@@ -1,0 +1,32 @@
+Mesd\RuleBundle\Entity\ConditionCollectionEntity:
+    type: entity
+    table: mesd_rule.condition_collection
+    repositoryClass: Mesd\RuleBundle\Repository\ConditionCollectionRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        chain_type:
+            column: chain_type
+            type: text
+            length: 255
+            nullable: false
+    oneToMany:
+        subCollections:
+            targetEntity: ConditionCollectionEntity
+            mappedBy: parent
+        conditions:
+            targetEntity: ConditionEntity
+            mappedBy: collection
+    manyToOne:
+        rule:
+            targetEntity: RuleEntity
+            joinColumn:
+                name: rule_id
+        parent:
+            targetEntity: ConditionCollectionEntity
+            joinColumn:
+                name: parent_id

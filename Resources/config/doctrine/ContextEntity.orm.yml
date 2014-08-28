@@ -1,0 +1,32 @@
+Mesd\RuleBundle\Entity\ContextEntity:
+    type: entity
+    table: mesd_rule.context
+    repositoryClass: Mesd\RuleBundle\Repository\ContextRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+            length: 255
+            nullable: false
+        type:
+            column: classification_type
+            type: string
+            length: 255
+            nullable: false
+        classification:
+            column: classification_name
+            type: text
+            nullable: false
+    oneToMany:
+        attributes:
+            targetEntity: AttributeEntity
+            mappedBy: context
+        actions:
+            targetEntity: ActionEntity
+            mappedBy: context

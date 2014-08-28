@@ -1,0 +1,24 @@
+Mesd\RuleBundle\Entity\InputEntity:
+    type: entity
+    table: mesd_rule.input
+    repositoryClass: Mesd\RuleBundle\Repository\InputRepository
+    fields:
+        id:
+            column: id
+            type: bigint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+            length: 255
+            nullable: false
+        class:
+            column: class
+            type: text
+            nullable: false
+        params:
+            column: params
+            type: text
+            nullable: true

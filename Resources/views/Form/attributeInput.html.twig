@@ -1,0 +1,10 @@
+{% block attributeInput %}
+    <div class="attributeInput row" >
+        <div class="col-md-6">
+            {{ form_widget(form.comparator, { 'attr': {'class': 'form-control comparatorField', 'data-owner': '__name__' } }) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_widget(form.input, { 'attr': {'class': 'form-control attributeInputField', 'data-owner': '__name__' } }) }}
+        </div>
+    </div>
+{% endblock %}
