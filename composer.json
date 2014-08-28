@@ -1,0 +1,25 @@
+{
+    "name": "mesd/rule-bundle",
+    "description": "MESD Bundle for running rulesets",
+    "keywords": ["mesd", "rule", "bundle"],
+    "homepage": "http://github.com/MESD/RuleBundle",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Tyler Hand",
+            "email": "thand@mesd.k12.or.us"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "symfony/framework-bundle": "~2.3"
+    },
+    "autoload": {
+        "psr-0": { "Mesd\\RuleBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "Mesd/RuleBundle"
+}
