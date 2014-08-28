@@ -147,40 +147,42 @@ class RulesetBuilder implements RulesetBuilderInterface
      */
     public function build() {
         //Go through each of the mapping entries and connect the nodes
-        foreach($this->ruleMapping as $mapEntry) {
-            //Connect the thens
-            foreach($mapEntry['then'] as $thenName) {
-                //Check that the name exists
-                if (array_key_exists($thenName, $this->ruleMapping)) {
-                    //Add the then node to the parent node
-                    $mapEntry['node']->addThenRule($this->ruleMapping[$thenName]['node']);
+        if (0 < count($this->ruleMapping)) {
+            foreach($this->ruleMapping as $mapEntry) {
+                //Connect the thens
+                foreach($mapEntry['then'] as $thenName) {
+                    //Check that the name exists
+                    if (array_key_exists($thenName, $this->ruleMapping)) {
+                        //Add the then node to the parent node
+                        $mapEntry['node']->addThenRule($this->ruleMapping[$thenName]['node']);
 
-                    //mark the then node as no longer being a root
-                    $mapEntry[$thenName]['root'] = false;
-                } else {
-                    throw new \Exception(self::ERROR_RULE_NOT_FOUND);
+                        //mark the then node as no longer being a root
+                        $mapEntry[$thenName]['root'] = false;
+                    } else {
+                        throw new \Exception(self::ERROR_RULE_NOT_FOUND);
+                    }
+                }
+
+                //Connect the elses
+                foreach($mapEntry['else'] as $elseName) {
+                    //Check that the name exists
+                    if (array_key_exists($elseName, $this->ruleMapping)) {
+                        //Add the then node to the parent node
+                        $mapEntry['node']->addElseRule($this->ruleMapping[$elseName]['node']);
+
+                        //mark the then node as no longer being a root
+                        $mapEntry[$elseName]['root'] = false;
+                    } else {
+                        throw new \Exception(self::ERROR_RULE_NOT_FOUND);
+                    }
                 }
             }
 
-            //Connect the elses
-            foreach($mapEntry['else'] as $elseName) {
-                //Check that the name exists
-                if (array_key_exists($elseName, $this->ruleMapping)) {
-                    //Add the then node to the parent node
-                    $mapEntry['node']->addElseRule($this->ruleMapping[$elseName]['node']);
-
-                    //mark the then node as no longer being a root
-                    $mapEntry[$elseName]['root'] = false;
-                } else {
-                    throw new \Exception(self::ERROR_RULE_NOT_FOUND);
+            //Second pass: get the nodes that are roots and add them to the ruleset
+            foreach($this->ruleMapping as $mapEntry) {
+                if ($mapEntry['root']) {
+                    $this->ruleset->addRootRuleNode($mapEntry['node']);
                 }
-            }
-        }
-
-        //Second pass: get the nodes that are roots and add them to the ruleset
-        foreach($this->ruleMapping as $mapEntry) {
-            if ($mapEntry['root']) {
-                $this->ruleset->addRootRuleNode($mapEntry['node']);
             }
         }
 

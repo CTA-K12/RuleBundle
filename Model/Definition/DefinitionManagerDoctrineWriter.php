@@ -187,7 +187,7 @@ class DefinitionManagerDoctrineWriter
                     $this->definitions['inputs'][$name]->setClass($input['class']);
                     $messages[] = 'Update input class of ' . $name;
                 }
-                if ($this->definitions['inputs'][$name]->getParmas() !== serialize($input['params'])) {
+                if ($this->definitions['inputs'][$name]->getParams() !== serialize($input['params'])) {
                     $this->definitions['inputs'][$name]->setParams(serialize($input['params']));
                     $messages[] = 'Update input params of ' . $name;
                 }

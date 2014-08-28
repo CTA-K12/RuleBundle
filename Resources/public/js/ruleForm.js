@@ -18,12 +18,17 @@ $(document).ready(function() {
         ruleset = data;
 
         //Set the ruleNames array
+        var size = 0;
         for (var r in ruleset.rules) {
             ruleNames[r] = ruleset.rules[r].name;
+            size++;
         }
 
         //Build the form
-        buildForm();
+        if (0 < size) {
+            buildForm();
+        }
+        displayRuleBlocks();
     });
 
     //Save button
@@ -497,17 +502,19 @@ function buildForm() {
             //Set the input
             $('#followupSelector' + rule + '-' + followup).val(ruleset.rules[rule].followupRules[followup].name);
         }
-
-        //Display the rule blocks
-        $('#ruleBlocks').removeClass('hidden');
-
-        //Hide the loading
-        $('#loading').addClass('hidden');
-
-        //enable the buttons
-        $('#ruleFormNewRule').removeClass('disabled');
-        $('#ruleFormSave').removeClass('disabled');
     }
+}
+
+function displayRuleBlocks() {
+    //Display the rule blocks
+    $('#ruleBlocks').removeClass('hidden');
+
+    //Hide the loading
+    $('#loading').addClass('hidden');
+
+    //enable the buttons
+    $('#ruleFormNewRule').removeClass('disabled');
+    $('#ruleFormSave').removeClass('disabled');
 }
 
 
