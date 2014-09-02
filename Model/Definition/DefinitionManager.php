@@ -153,6 +153,10 @@ class DefinitionManager implements DefinitionManagerInterface
     public function registerContext($name, $classificationName, $classificationType) {
         //Insert into the map
         $this->contexts[$name] = array('cName' => $classificationName, 'cType' => $classificationType);
+
+        //Init the context actions and attributes array
+        $this->contextAttributes[$name] = array();
+        $this->contextActions[$name] = array();
     }
 
 
