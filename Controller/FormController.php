@@ -86,6 +86,17 @@ class FormController extends ContainerAware
             $attributes['services'][] = $attr;
         }
 
+        //sort the arrays
+        ksort($attributes['contexts']);
+        usort($attributes['services'], function($a, $b) {
+            return strcasecmp($a->getName(), $b->getName());
+        });
+        foreach($attributes['contexts'] as $context => $attrs) {
+            usort($attributes['contexts'][$context], function($a, $b) {
+                return strcasecmp($a->getName(), $b->getName());
+            });
+        }
+
         //render and return the twig
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeList.html.twig', array(
             'attributes' => $attributes

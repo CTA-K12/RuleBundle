@@ -9,11 +9,13 @@
             {% endfor %}
         </optgroup>
     {% endfor %}
-    <optgroup label="Globals">
-        {% for attribute in attributes['services'] %}
-            <option value="{{ attribute.name }}" data-attrname="{{ attribute.name }}">
-                {{ attribute.name }}{% if null != attribute.description %}: {{ attribute.description }}{% endif %}
-            </option>
-        {% endfor %}
-    </optgroup>
+    {% if attributes['services']|length > 0 %}
+        <optgroup label="Globals">
+            {% for attribute in attributes['services'] %}
+                <option value="{{ attribute.name }}" data-attrname="{{ attribute.name }}">
+                    {{ attribute.name }}{% if null != attribute.description %}: {{ attribute.description }}{% endif %}
+                </option>
+            {% endfor %}
+        </optgroup>
+    {% endif %}
 </select>
