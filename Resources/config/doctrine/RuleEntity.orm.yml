@@ -33,7 +33,7 @@ Mesd\RuleBundle\Entity\RuleEntity:
         thenRules:
             targetEntity: RuleEntity
             joinTable:
-                name: mesd_rule.rule__then_rule
+                name: mesd_rule_rule__then_rule
                 joinColumns:
                     rule_id:
                         referencedColumnName: id
@@ -43,7 +43,7 @@ Mesd\RuleBundle\Entity\RuleEntity:
         elseRules:
             targetEntity: RuleEntity
             joinTable:
-                name: mesd_rule.rule__else_rule
+                name: mesd_rule_rule__else_rule
                 joinColumns:
                     rule_id:
                         referencedColumnName: id

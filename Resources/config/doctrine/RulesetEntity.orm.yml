@@ -18,7 +18,7 @@ Mesd\RuleBundle\Entity\RulesetEntity:
         context:
             targetEntity: ContextEntity
             joinTable:
-                name: mesd_rule.ruleset__context
+                name: mesd_rule_ruleset__context
                 joinColumns:
                     ruleset_id:
                         referencedColumnName: id
