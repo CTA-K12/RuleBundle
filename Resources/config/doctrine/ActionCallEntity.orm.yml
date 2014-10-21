@@ -1,6 +1,6 @@
 Mesd\RuleBundle\Entity\ActionCallEntity:
     type: entity
-    table: mesd_rule.action_call
+    table: mesd_rule_action_call
     repositoryClass: Mesd\RuleBundle\Repository\ActionCallRepository
     fields:
         id:

@@ -1,6 +1,6 @@
 Mesd\RuleBundle\Entity\ConditionCollectionEntity:
     type: entity
-    table: mesd_rule.condition_collection
+    table: mesd_rule_condition_collection
     repositoryClass: Mesd\RuleBundle\Repository\ConditionCollectionRepository
     fields:
         id:

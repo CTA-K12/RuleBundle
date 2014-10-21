@@ -1,6 +1,6 @@
 Mesd\RuleBundle\Entity\InputEntity:
     type: entity
-    table: mesd_rule.input
+    table: mesd_rule_input
     repositoryClass: Mesd\RuleBundle\Repository\InputRepository
     fields:
         id:

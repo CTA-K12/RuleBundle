@@ -1,6 +1,6 @@
 Mesd\RuleBundle\Entity\ServiceEntity:
     type: entity
-    table: mesd_rule.service
+    table: mesd_rule_service
     repositoryClass: Mesd\RuleBundle\Repository\ServiceRepository
     fields:
         id:
