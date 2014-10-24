@@ -282,6 +282,8 @@ $(document).ready(function() {
             $('#' + divName).html($('#' + divName).html().replace(/__name__/g, name));
             //Trigger the event to handle the operator value from the comparator
             $('#' + divName).find('.comparatorField').trigger('change');
+            //Trigger the event to handle the input value change
+            $('#' + divName).find('.attributeInputField').trigger('change');
         });
     });
 
@@ -316,11 +318,13 @@ $(document).ready(function() {
         //Send the ajax request and load into the div with divName
         $('#' + divName).load(url, null, function() {
             $('#' + divName).html($('#' + divName).html().replace(/__name__/g, name));
+            //Trigger the action input
+            $('#' + divName).find('.actionInputField').trigger('change');
         });
     });
 
     //Update the actions on input change
-    $('#ruleBlocks').on('keyup', '.actionInputField', function(e) {
+    $('#ruleBlocks').on('keyup change', '.actionInputField', function(e) {
         var pieces = $(this).data('owner').split('-');
         ruleset.rules[pieces[0]].actions[pieces[1]].inputValue = $(this).val();
     });
