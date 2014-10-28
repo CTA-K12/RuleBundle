@@ -202,7 +202,11 @@ class StorageManager
                 $ruleBuilder = $builder->startRule($ruleData['name']);
 
                 //Go through the rule data and rebuild the array with the
-                $conditionArray = $this->modifyInputConditionArray($ruleData['collections'], $ruleData['conditions']);
+                if (isset($ruleData['conditions'])) {
+                    $conditionArray = $this->modifyInputConditionArray($ruleData['collections'], $ruleData['conditions']);
+                } else {
+                    $conditionArray = array();
+                }
 
                 //Handle each root collection
                 foreach($conditionArray as $index => $collectionData) {
