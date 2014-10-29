@@ -346,6 +346,9 @@ class StorageManager
             $ruleEntity->addConditionCollection($newConditionCollection);
             $newConditionCollection->setRule($ruleEntity);
             $this->em->persist($newConditionCollection);
+
+            //Add to the entity list
+            $this->ruleEntityList[$node->getName()] = array('entity' => $ruleEntity, 'used' => true);
         }
 
         if ($update) {
