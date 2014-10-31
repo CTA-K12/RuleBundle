@@ -901,9 +901,15 @@ class StorageManager
 
         //Handle followup rules
         foreach($ruleNode->getThenRules() as $thenRule) {
+            if (!$this->ruleInArray($rulesetData, $thenRule->getName())) {
+                $rulesetData = $this->transformRuleNodeToArray($thenRule, $rulesetData);
+            }
             $ruleData = $this->transformFollowupRuleToArray($thenRule, $ruleData, 'then');
         }
         foreach($ruleNode->getElseRules() as $elseRule) {
+            if (!$this->ruleInArray($rulesetData, $elseRule->getName())) {
+                $rulesetData = $this->transformRuleNodeToArray($elseRule, $rulesetData);
+            }
             $ruleData = $this->transformFollowupRuleToArray($elseRule, $ruleData, 'else');
         }
 
@@ -1064,5 +1070,30 @@ class StorageManager
 
         //return the modified ruledata array
         return $ruleData;
+    }
+
+
+    /**
+     * Whether a rule is already in the array of output
+     *
+     * @param  array   $rulesetData The ruleset data array
+     * @param  string  $ruleName    The name of the rule
+     *
+     * @return boolean              Whether it is in the array or not
+     */
+    private function ruleInArray($rulesetData, $ruleName)
+    {
+        $return = false;
+        if (isset($rulesetData['rules'])) {
+            foreach($rulesetData['rules'] as $ruleData) {
+                if (isset($ruleData['name'])) {
+                    if ($ruleData['name'] == $ruleName) {
+                        $return = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return $return;
     }
 }

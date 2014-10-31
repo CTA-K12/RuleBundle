@@ -157,7 +157,7 @@ class RulesetBuilder implements RulesetBuilderInterface
                         $mapEntry['node']->addThenRule($this->ruleMapping[$thenName]['node']);
 
                         //mark the then node as no longer being a root
-                        $mapEntry[$thenName]['root'] = false;
+                        $this->ruleMapping[$thenName]['root'] = false;
                     } else {
                         throw new \Exception(self::ERROR_RULE_NOT_FOUND);
                     }
@@ -171,7 +171,7 @@ class RulesetBuilder implements RulesetBuilderInterface
                         $mapEntry['node']->addElseRule($this->ruleMapping[$elseName]['node']);
 
                         //mark the then node as no longer being a root
-                        $mapEntry[$elseName]['root'] = false;
+                        $this->ruleMapping[$elseName]['root'] = false;
                     } else {
                         throw new \Exception(self::ERROR_RULE_NOT_FOUND);
                     }

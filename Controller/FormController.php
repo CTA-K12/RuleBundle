@@ -236,6 +236,9 @@ class FormController extends ContainerAware
      */
     public function saveFormAction(Request $request)
     {
+        //temporarily turn off the time limit
+        set_time_limit(0);
+
         //Create the return array
         $return = array('success' => true);
 
@@ -271,6 +274,9 @@ class FormController extends ContainerAware
         //Save to the database
         $this->container->get('mesd_rule.rules')->getStorageManager()->save($ruleset);
 
+        //Revert the time limit
+        set_time_limit(30);
+
         //Return the response
         return new JsonResponse($return);
     }
@@ -285,6 +291,9 @@ class FormController extends ContainerAware
      */
     public function loadFormAction(Request $request)
     {
+        //temporarily turn off the time limit
+        //set_time_limit(0);
+
         //Get the data from the request
         $rulesetName = $request->request->get('ruleset_name');
 
@@ -293,6 +302,9 @@ class FormController extends ContainerAware
 
         //Convert to array
         $rulesetArray = $this->container->get('mesd_rule.rules')->getStorageManager()->transformToArray($ruleset);
+
+        //Revert the time limit
+        set_time_limit(30);
 
         //Return the ruleset array as a json response
         $response = new Response(json_encode($rulesetArray, JSON_FORCE_OBJECT));

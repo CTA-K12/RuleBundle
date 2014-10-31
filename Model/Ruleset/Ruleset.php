@@ -274,10 +274,12 @@ class Ruleset implements RulesetInterface
             //Call recursively foreach child
             $return = false;
             foreach($node->getThenRules() as $then) {
-                $return = $return || $this->visitNode($then, $visited);
+                $eval = $this->visitNode($then, $visited);
+                $return = $return || $eval;
             }
             foreach($node->getElseRules() as $else) {
-                $return = $return || $this->visitNode($else, $visited);
+                $eval = $this->visitNode($else, $visited);
+                $return = $return || $eval;
             }
 
             return $return;
