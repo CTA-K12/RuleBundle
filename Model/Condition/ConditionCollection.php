@@ -77,7 +77,7 @@ class ConditionCollection implements ConditionInterface
             } else {
                 $return = $return || $eval;
             }
-
+            
             //If the ALL is required and return is now false, stop, or if ANY is required and return is true, stop
             if (($this->isAll() && !$return) || ($this->isAny() && $return)) {
                 break;

@@ -60,7 +60,21 @@ class RuleNode implements RuleNodeInterface
      */
     public function evaluate() {
         //evaluate the underlying rule
-        return $this->rule->evaluate();
+        $eval = $this->rule->evaluate();
+
+        //if the rule evaled to true, goto the followup true rules
+        if (0 < count($this->thenRules) && $eval) {
+            foreach($this->thenRules as $rule) {
+                $rule->evaluate();
+            }
+        } elseif (0 < count($this->elseRules) && !$eval) {
+            foreach($this->elseRules as $rule) {
+                $rule->evaluate();
+            }
+        }
+
+        //return the eval
+        return $eval;
     }
 
 
