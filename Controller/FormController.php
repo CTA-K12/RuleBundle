@@ -292,7 +292,7 @@ class FormController extends ContainerAware
     public function loadFormAction(Request $request)
     {
         //temporarily turn off the time limit
-        //set_time_limit(0);
+        set_time_limit(0);
 
         //Get the data from the request
         $rulesetName = $request->request->get('ruleset_name');
