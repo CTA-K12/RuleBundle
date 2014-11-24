@@ -309,6 +309,7 @@ class FormController extends ContainerAware
         //Return the ruleset array as a json response
         $response = new Response(json_encode($rulesetArray, JSON_FORCE_OBJECT));
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Content-Length', strlen($response->getContent()));
         return $response;
     }
 }
