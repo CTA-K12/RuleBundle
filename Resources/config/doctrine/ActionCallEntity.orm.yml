@@ -20,9 +20,11 @@ Mesd\RuleBundle\Entity\ActionCallEntity:
                 name: action_id
         thenRule:
             targetEntity: RuleEntity
+            inversedBy: thenActions
             joinColumn:
                 name: then_rule_id
         elseRule:
             targetEntity: RuleEntity
+            inversedBy: elseActions
             joinColumn:
                 name: else_rule_id

@@ -24,9 +24,11 @@ Mesd\RuleBundle\Entity\ConditionCollectionEntity:
     manyToOne:
         rule:
             targetEntity: RuleEntity
+            inversedBy: conditionCollection
             joinColumn:
                 name: rule_id
         parent:
             targetEntity: ConditionCollectionEntity
+            inversedBy: subCollections
             joinColumn:
                 name: parent_id

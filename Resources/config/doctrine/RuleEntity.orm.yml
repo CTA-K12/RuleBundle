@@ -27,6 +27,7 @@ Mesd\RuleBundle\Entity\RuleEntity:
     manyToOne:
         ruleset:
             targetEntity: RulesetEntity
+            inversedBy: rules
             joinColumn:
                 name: ruleset_id
     manyToMany:

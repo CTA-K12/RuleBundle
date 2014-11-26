@@ -24,5 +24,6 @@ Mesd\RuleBundle\Entity\ConditionEntity:
                 name: attribute_id
         collection:
             targetEntity: ConditionCollectionEntity
+            inversedBy: conditions
             joinColumn:
                 name: collection_id

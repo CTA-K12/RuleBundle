@@ -21,10 +21,12 @@ Mesd\RuleBundle\Entity\ActionEntity:
     manyToOne:
         context:
             targetEntity: ContextEntity
+            inversedBy: actions
             joinColumn:
                 name: context_id
         service:
             targetEntity: ServiceEntity
+            inversedBy: actions
             joinColumn:
                 name: service_id
         input:
