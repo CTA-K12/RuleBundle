@@ -1,0 +1,97 @@
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" media="all" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.3/normalize.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/css/base/jquery.ui.all.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css">
+{% endblock stylesheets %}
+
+{% block body %}
+<div class="container">
+    <div class="page-header">
+        {% block pageHeader %}
+        {% endblock pageHeader %}
+    </div>
+
+    {% block list %}
+        <ul class="list-group">
+            {% block listContents %}
+            {% endblock listContents %}
+        </ul>
+    {% endblock list %}
+
+    {% block ruleForm %}
+        {% block toolbar %}
+            <div class="row">
+                {% block ruleFormButtons %}
+                    <div class="col-md-4">
+                        <div class="btn-toolbar">
+                            {% block createRuleButton %}
+                            {% endblock createRuleButton %}
+                            {% block saveButton %}
+                            {% endblock saveButton %}
+                        </div>
+                    </div>
+                {% endblock ruleFormButtons %}
+                {% block messages %}
+                    <div id="ruleMessages" class="col-md-8"></div>
+                {% endblock messages %}
+            </div>
+            <div id="errors-global">
+            </div>
+            <br>
+            {% endblock toolbar %}
+
+            <div id="ruleBlocks" class="hidden">
+            </div>
+
+            <div id="loading">
+                <h3>Loading...</h3>
+            </div>
+
+            <div id="ruleFormPrototypes" class="hidden">
+                <div id="ruleBlockPrototype">
+                    {% block ruleBlockPrototype %}
+                    {% endblock ruleBlockPrototype %}
+                </div>
+                <div id="conditionCollectionPrototype">
+                    {% block conditionCollectionBlockPrototype %}
+                    {% endblock conditionCollectionBlockPrototype %}
+                </div>
+                <div id="conditionCollectionRemoveButtonPrototype">
+                    {% block conditionCollectionRemoveButtonPrototype %}
+                    {% endblock conditionCollectionRemoveButtonPrototype %}
+                </div>
+                <div id="conditionPrototype">
+                    {% block conditionBlockPrototype %}
+                    {% endblock conditionBlockPrototype %}
+                </div>
+                <div id="actionPrototype">
+                    {% block actionBlockPrototype %}
+                    {% endblock actionBlockPrototype %}
+                </div>
+                <div id="attributeListPrototype">
+                    {% block attributeListPrototype %}
+                    {% endblock attributeListPrototype %}
+                </div>
+                <div id="actionListPrototype">
+                    {% block actionListPrototype %}
+                    {% endblock actionListPrototype %}
+                </div>
+                <div id="followupRulePrototype">
+                    {% block followupRulePrototype %}
+                    {% endblock followupRulePrototype %}
+                </div>
+                <div id="ruleSelectorPrototype">
+                    {% block ruleSelectorPrototype %}
+                    {% endblock ruleSelectorPrototype %}
+                </div>
+            </div>
+        {% endblock ruleForm %}
+
+        {% block javascripts %}
+            <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.0/modernizr.min.js"></script>
+            <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+            <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        {% endblock javascripts %}
+    </div>
+{% endblock body %}

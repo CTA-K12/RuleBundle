@@ -1,9 +1,10 @@
-{% extends 'MesdRuleBundle:Form:layout.html.twig' %}
+{% extends 'MesdRuleBundle:Form:formlayout.html.twig' %}
 
 {% block pageHeader %}
     <h1>{{ rulesetName }}<small> Rule Controls</small></h1>
 {% endblock pageHeader %}
-
+{% block stylesheets %}
+{% endblock stylesheets %}
 {% block list %}
 {% endblock list %}
 
@@ -122,7 +123,7 @@
                 <div id="action__name__Input" class="col-md-3">
                 </div>
                 <div id="action__name__Remove" class="col-md-1">
-                    <button class="btn btn-default removeAction" data-owner="__name__" data-index="__index__" data-rule="__rule__">{% include 'MesdRuleBundle:Form:removeIcon.html.twig' %}</button>
+                    <button class="btn btn-default removeAction" data-owner="__name__" data-index="__index__" data-rule="__rule__">{% include 'MesdRuleBundle:Form:subtractIcon.html.twig' %}</button>
                 </div>
             </div>
         </div>
@@ -137,7 +138,7 @@
                     __ruleSelector__
                 </div>
                 <div class="col-md-1">
-                    <button class="btn btn-default removeFollowupRule" data-index="__index__" data-rule="__rule__">{% include 'MesdRuleBundle:Form:removeIcon.html.twig' %}</button>
+                    <button class="btn btn-default removeFollowupRule" data-index="__index__" data-rule="__rule__">{% include 'MesdRuleBundle:Form:subtractIcon.html.twig' %}</button>
                 </div>
             </div>
         </div>

@@ -259,14 +259,14 @@ class FormController extends ContainerAware
         //Check that there are root rules and no cycles
         if (!$ruleset->checkThatRootRulesExist()) {
             $return['success'] = false;
-            $return['errors']['global'] = 
+            $return['errors']['global'] =
                 'There are no rules that serve as start rules, either there are no rules or all rules are a followup to another';
             return new JsonResponse($return);
         }
 
         if ($ruleset->checkIfCyclesExist()) {
             $return['success'] = false;
-            $return['errors']['global'] = 
+            $return['errors']['global'] =
                 'Cycles exist within the rule structure';
             return new JsonResponse($return);
         }
