@@ -17,7 +17,8 @@ class RulesetBuilder implements RulesetBuilderInterface
     ///////////////
 
     //Errors
-    const ERROR_RULE_NOT_FOUND = 'The requested rule is not registered with this builder';
+    const ERROR_THEN_RULE_NOT_FOUND = 'The requested THEN rule is not registered with this builder';
+    const ERROR_ELSE_RULE_NOT_FOUND = 'The requested ELSE rule is not registered with this builder';
 
     ///////////////
     // VARIABLES //
@@ -107,7 +108,7 @@ class RulesetBuilder implements RulesetBuilderInterface
     {
         //Check that the parent rule exists
         if (!array_key_exists($parentName, $this->ruleMapping)) {
-            throw new \Exception(self::ERROR_RULE_NOT_FOUND . " : " . $thenName);
+            throw new \Exception(self::ERROR_THEN_RULE_NOT_FOUND . " : " . $thenName);
         }
 
         //Add the mapping
@@ -128,7 +129,7 @@ class RulesetBuilder implements RulesetBuilderInterface
     {
         //Check that the parent rule exists
         if (!array_key_exists($parentName, $this->ruleMapping)) {
-            throw new \Exception(self::ERROR_RULE_NOT_FOUND . " : " . $thenName);
+            throw new \Exception(self::ERROR_ELSE_RULE_NOT_FOUND . " : " . $elseName);
         }
 
         //Add the mapping
@@ -157,7 +158,7 @@ class RulesetBuilder implements RulesetBuilderInterface
                         //mark the then node as no longer being a root
                         $this->ruleMapping[$thenName]['root'] = false;
                     } else {
-                        throw new \Exception(self::ERROR_RULE_NOT_FOUND . " : " . $thenName);
+                        throw new \Exception(self::ERROR_THEN_RULE_NOT_FOUND . " : " . $thenName);
                     }
                 }
 
@@ -171,7 +172,7 @@ class RulesetBuilder implements RulesetBuilderInterface
                         //mark the then node as no longer being a root
                         $this->ruleMapping[$elseName]['root'] = false;
                     } else {
-                        throw new \Exception(self::ERROR_RULE_NOT_FOUND . " : " . $elseName);
+                        throw new \Exception(self::ERROR_ELSE_RULE_NOT_FOUND . " : " . $elseName);
                     }
                 }
             }
