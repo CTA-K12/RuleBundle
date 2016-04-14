@@ -62,7 +62,7 @@ class DateInput implements InputInterface
     public function setRawInput($rawInput)
     {
         //Convert from Y/m/d to datetime
-        $this->value    = new \DateTime($rawInput, new DateTimeZone('America/Los_Angeles'));
+        $this->value    = new \DateTime($rawInput);
         $this->rawInput = $rawInput;
     }
 

@@ -227,28 +227,18 @@ class FormController extends ContainerAware
     {
         //temporarily turn off the time limit
         set_time_limit(0);
-
-        $data = '<meta http-equiv="refresh" content="5">';
+        ob_start();
+        var_dump(new \DateTime());
+        var_dump($_REQUEST);
+        $data = ob_get_clean();
         $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "w");
         fwrite($dump, $data);
         fclose($dump);
-
-        $start = microtime(true);
-        $data  = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
-        $dump  = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
-        fwrite($dump, $data);
-        fclose($dump);
-
         //Create the return array
         $return = array('success' => true);
 
         //Get the data from the request
         $rulesetData = $request->request->get('ruleset');
-
-        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
-        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
-        fwrite($dump, $data);
-        fclose($dump);
 
         //Validate it
         $errors = $this->container->get('mesd_rule.rules')->getStorageManager()->validateArray($rulesetData);
@@ -258,10 +248,6 @@ class FormController extends ContainerAware
             return new JsonResponse($return);
         }
 
-        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
-        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
-        fwrite($dump, $data);
-        fclose($dump);
         //Convert to a ruleset object
         $ruleset = $this->container->get('mesd_rule.rules')->getStorageManager()->buildFromArray($rulesetData);
 
@@ -273,11 +259,6 @@ class FormController extends ContainerAware
             return new JsonResponse($return);
         }
 
-        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
-        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
-        fwrite($dump, $data);
-        fclose($dump);
-
         if ($ruleset->checkIfCyclesExist()) {
             $return['success']          = false;
             $return['errors']['global'] =
@@ -285,18 +266,8 @@ class FormController extends ContainerAware
             return new JsonResponse($return);
         }
 
-        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
-        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
-        fwrite($dump, $data);
-        fclose($dump);
-
         //Save to the database
         $this->container->get('mesd_rule.rules')->getStorageManager()->save($ruleset);
-
-        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
-        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
-        fwrite($dump, $data);
-        fclose($dump);
 
         //Revert the time limit
         set_time_limit(30);
