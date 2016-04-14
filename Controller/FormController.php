@@ -2,20 +2,17 @@
 
 namespace Mesd\RuleBundle\Controller;
 
+use Mesd\RuleBundle\Model\Form\Helper\ComparatorFormHelper;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
-use Mesd\RuleBundle\Model\Form\Helper\ComparatorFormHelper;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormController extends ContainerAware
 {
     ////////////////////////
     // RENDERED RESPONSES //
     ////////////////////////
-
 
     /**
      * List the links to the ruleset forms
@@ -29,10 +26,9 @@ class FormController extends ContainerAware
 
         //Render
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:list.html.twig', array(
-            'rulesets' => $rulesets
+            'rulesets' => $rulesets,
         )));
     }
-
 
     /**
      * Displays the form
@@ -48,15 +44,13 @@ class FormController extends ContainerAware
 
         //Render the form page
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:ruleform.html.twig', array(
-            'rulesetName' => $rulesetName
+            'rulesetName' => $rulesetName,
         )));
     }
-
 
     ///////////////
     // PARTIALS  //
     ///////////////
-
 
     /**
      * Render the attribute list prototype
@@ -75,34 +69,33 @@ class FormController extends ContainerAware
 
         //Load all of the possible attributes
         $rsDef = $this->container->get('mesd_rule.rules')->getRulesetDefinition($rulesetName);
-        foreach($rsDef->getContextCollection()->getContexts() as $context) {
+        foreach ($rsDef->getContextCollection()->getContexts() as $context) {
             $attributes['contexts'][$context->getName()] = array();
-            foreach($this->container->get('mesd_rule.rules')->getDefinitionManager()
+            foreach ($this->container->get('mesd_rule.rules')->getDefinitionManager()
                 ->getAllContextAttributes($context->getName()) as $attr) {
                 $attributes['contexts'][$context->getName()][] = $attr;
             }
         }
-        foreach($this->container->get('mesd_rule.rules')->getDefinitionManager()->getAllServiceAttributes() as $attr) {
+        foreach ($this->container->get('mesd_rule.rules')->getDefinitionManager()->getAllServiceAttributes() as $attr) {
             $attributes['services'][] = $attr;
         }
 
         //sort the arrays
         ksort($attributes['contexts']);
-        usort($attributes['services'], function($a, $b) {
+        usort($attributes['services'], function ($a, $b) {
             return strcasecmp($a->getName(), $b->getName());
         });
-        foreach($attributes['contexts'] as $context => $attrs) {
-            usort($attributes['contexts'][$context], function($a, $b) {
+        foreach ($attributes['contexts'] as $context => $attrs) {
+            usort($attributes['contexts'][$context], function ($a, $b) {
                 return strcasecmp($a->getName(), $b->getName());
             });
         }
 
         //render and return the twig
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeList.html.twig', array(
-            'attributes' => $attributes
+            'attributes' => $attributes,
         )));
     }
-
 
     /**
      * Render the action list prototype
@@ -121,23 +114,22 @@ class FormController extends ContainerAware
 
         //Load all of the possible actions
         $rsDef = $this->container->get('mesd_rule.rules')->getRulesetDefinition($rulesetName);
-        foreach($rsDef->getContextCollection()->getContexts() as $context) {
+        foreach ($rsDef->getContextCollection()->getContexts() as $context) {
             $actions['contexts'][$context->getName()] = array();
-            foreach($this->container->get('mesd_rule.rules')->getDefinitionManager()
+            foreach ($this->container->get('mesd_rule.rules')->getDefinitionManager()
                 ->getAllContextActions($context->getName()) as $action) {
                 $actions['contexts'][$context->getName()][] = $action;
             }
         }
-        foreach($this->container->get('mesd_rule.rules')->getDefinitionManager()->getAllServiceActions() as $action) {
+        foreach ($this->container->get('mesd_rule.rules')->getDefinitionManager()->getAllServiceActions() as $action) {
             $actions['services'][] = $action;
         }
 
         //render and return the twig
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:actionList.html.twig', array(
-            'actions' => $actions
+            'actions' => $actions,
         )));
     }
-
 
     /**
      * Render the comparator form and the input form
@@ -176,10 +168,9 @@ class FormController extends ContainerAware
 
         //Render and return the partial twig
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeInput.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         )));
     }
-
 
     /**
      * Render the input for a given action
@@ -217,15 +208,13 @@ class FormController extends ContainerAware
 
         //Render and return the partial twig
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:actionInput.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         )));
     }
-
 
     ////////////////////
     // JSON RESPONSES //
     ////////////////////
-
 
     /**
      * Saves the json ruleset
@@ -239,40 +228,75 @@ class FormController extends ContainerAware
         //temporarily turn off the time limit
         set_time_limit(0);
 
+        $data = '<meta http-equiv="refresh" content="5">';
+        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "w");
+        fwrite($dump, $data);
+        fclose($dump);
+
+        $start = microtime(true);
+        $data  = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
+        $dump  = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
+        fwrite($dump, $data);
+        fclose($dump);
+
         //Create the return array
         $return = array('success' => true);
 
         //Get the data from the request
         $rulesetData = $request->request->get('ruleset');
 
+        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
+        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
+        fwrite($dump, $data);
+        fclose($dump);
+
         //Validate it
         $errors = $this->container->get('mesd_rule.rules')->getStorageManager()->validateArray($rulesetData);
         if (0 < count($errors)) {
             $return['success'] = false;
-            $return['errors'] = $errors;
+            $return['errors']  = $errors;
             return new JsonResponse($return);
         }
 
+        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
+        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
+        fwrite($dump, $data);
+        fclose($dump);
         //Convert to a ruleset object
         $ruleset = $this->container->get('mesd_rule.rules')->getStorageManager()->buildFromArray($rulesetData);
 
         //Check that there are root rules and no cycles
         if (!$ruleset->checkThatRootRulesExist()) {
-            $return['success'] = false;
+            $return['success']          = false;
             $return['errors']['global'] =
                 'There are no rules that serve as start rules, either there are no rules or all rules are a followup to another';
             return new JsonResponse($return);
         }
 
+        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
+        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
+        fwrite($dump, $data);
+        fclose($dump);
+
         if ($ruleset->checkIfCyclesExist()) {
-            $return['success'] = false;
+            $return['success']          = false;
             $return['errors']['global'] =
                 'Cycles exist within the rule structure';
             return new JsonResponse($return);
         }
 
+        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
+        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
+        fwrite($dump, $data);
+        fclose($dump);
+
         //Save to the database
         $this->container->get('mesd_rule.rules')->getStorageManager()->save($ruleset);
+
+        $data = "Line " . __LINE__ . " => " . sprintf('%f', (microtime(true) - $start)) . "<br/>";
+        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "a");
+        fwrite($dump, $data);
+        fclose($dump);
 
         //Revert the time limit
         set_time_limit(30);
@@ -280,7 +304,6 @@ class FormController extends ContainerAware
         //Return the response
         return new JsonResponse($return);
     }
-
 
     /**
      * Loads the json ruleset

@@ -4,8 +4,6 @@ namespace Mesd\RuleBundle\Model\Input\Standard;
 
 use Mesd\RuleBundle\Model\Input\InputInterface;
 
-use Symfony\Component\Form\FormBuilderInterface;
-
 class DateInput implements InputInterface
 {
     ///////////////
@@ -34,26 +32,25 @@ class DateInput implements InputInterface
     // BASE METHODS //
     //////////////////
 
-
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         //Nothing here for now
     }
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
     /////////////////////////
-
 
     /**
      * Get the value that the input represents
      *
      * @return int The input value
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
@@ -62,19 +59,20 @@ class DateInput implements InputInterface
      *
      * @param mixed $rawInput The raw input (e.g. An entity id or string from form input)
      */
-    public function setRawInput($rawInput) {
+    public function setRawInput($rawInput)
+    {
         //Convert from Y/m/d to datetime
-        $this->value = new \DateTime($rawInput,, new DateTimeZone('America/Los_Angeles'));
+        $this->value    = new \DateTime($rawInput, new DateTimeZone('America/Los_Angeles'));
         $this->rawInput = $rawInput;
     }
-
 
     /**
      * Get the raw input value
      *
      * @return mixed The raw input value
      */
-    public function getRawInput() {
+    public function getRawInput()
+    {
         return $this->rawInput;
     }
 
@@ -83,7 +81,8 @@ class DateInput implements InputInterface
      *
      * @return string Form type
      */
-    public function getFormType() {
+    public function getFormType()
+    {
         return 'datetime';
     }
 
@@ -92,27 +91,28 @@ class DateInput implements InputInterface
      *
      * @return array The form options
      */
-    public function getFormOptions() {
+    public function getFormOptions()
+    {
         return array('widget' => 'single_text', 'format' => 'yyyy-MM-dd');
     }
-
 
     /**
      * Gets the name assigned to the input
      *
      * @return string The name of the input
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
-
 
     /**
      * Assigns a name to the input
      *
      * @param string $name The name to assign to the input
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 }
