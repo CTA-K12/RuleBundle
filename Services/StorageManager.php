@@ -2,29 +2,24 @@
 
 namespace Mesd\RuleBundle\Services;
 
-use Mesd\RuleBundle\Services\RulesService;
 use Doctrine\ORM\EntityManager;
-
-use Mesd\RuleBundle\Model\Ruleset\RulesetInterface;
-use Mesd\RuleBundle\Model\Ruleset\Ruleset;
-use Mesd\RuleBundle\Model\Builder\RulesetBuilder;
-use Mesd\RuleBundle\Model\Builder\RuleBuilderInterface;
-use Mesd\RuleBundle\Model\Builder\ConditionCollectionBuilderInterface;
-use Mesd\RuleBundle\Model\Builder\ConditionCollectionContainableInterface;
-use Mesd\RuleBundle\Model\Attribute\AbstractContextAttribute;
-use Mesd\RuleBundle\Model\Action\AbstractContextAction;
-use Mesd\RuleBundle\Model\Action\AbstractServiceAction;
-use Mesd\RuleBundle\Model\Action\ActionInterface;
-use Mesd\RuleBundle\Model\Rule\RuleNodeInterface;
-use Mesd\RuleBundle\Model\Condition\ConditionInterface;
-use Mesd\RuleBundle\Model\Condition\ConditionCollection;
-use Mesd\RuleBundle\Model\Condition\StandardCondition;
-
-use Mesd\RuleBundle\Entity\RulesetEntity;
-use Mesd\RuleBundle\Entity\RuleEntity;
+use Mesd\RuleBundle\Entity\ActionCallEntity;
 use Mesd\RuleBundle\Entity\ConditionCollectionEntity;
 use Mesd\RuleBundle\Entity\ConditionEntity;
-use Mesd\RuleBundle\Entity\ActionCallEntity;
+use Mesd\RuleBundle\Entity\RuleEntity;
+use Mesd\RuleBundle\Entity\RulesetEntity;
+use Mesd\RuleBundle\Model\Action\AbstractContextAction;
+use Mesd\RuleBundle\Model\Action\ActionInterface;
+use Mesd\RuleBundle\Model\Attribute\AbstractContextAttribute;
+use Mesd\RuleBundle\Model\Builder\ConditionCollectionBuilderInterface;
+use Mesd\RuleBundle\Model\Builder\ConditionCollectionContainableInterface;
+use Mesd\RuleBundle\Model\Builder\RuleBuilderInterface;
+use Mesd\RuleBundle\Model\Condition\ConditionCollection;
+use Mesd\RuleBundle\Model\Condition\ConditionInterface;
+use Mesd\RuleBundle\Model\Condition\StandardCondition;
+use Mesd\RuleBundle\Model\Rule\RuleNodeInterface;
+use Mesd\RuleBundle\Model\Ruleset\Ruleset;
+use Mesd\RuleBundle\Model\Ruleset\RulesetInterface;
 
 class StorageManager
 {
@@ -33,29 +28,32 @@ class StorageManager
     ///////////////
 
     //Errors
-    const ERROR_RULESET_NOT_FOUND = 'The requested ruleset was not found';
+    const ERROR_RULESET_NOT_FOUND  = 'The requested ruleset was not found';
     const ERROR_RULESET_NOT_IN_DEF = 'The requested ruleset is not in the saved definitions';
-    const ERROR_MISSING_ATTRIBUTE = 'The attribute $name was not in the saved definitions';
-    const ERROR_MISSING_ACTION = 'The action $name was not in the saved defintions';
+    const ERROR_MISSING_ATTRIBUTE  = 'The attribute $name was not in the saved definitions';
+    const ERROR_MISSING_ACTION     = 'The action $name was not in the saved defintions';
 
     ///////////////
     // VARIABLES //
     ///////////////
 
     /**
-     * The rules service
+     * The rules service.
+     *
      * @var RulesService
      */
     private $rulesService;
 
     /**
-     * The entity manager
+     * The entity manager.
+     *
      * @var EntityManager
      */
     private $em;
 
     /**
-     * A list of rule entities that the ruleset being written has
+     * A list of rule entities that the ruleset being written has.
+     *
      * @var array
      */
     private $ruleEntityList;
@@ -66,7 +64,7 @@ class StorageManager
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param RulesService  $rulesService The rules service managing the rules
      * @param EntityManager $em           The entity manager in charge of the rules database items
@@ -75,9 +73,8 @@ class StorageManager
     {
         //Save the references
         $this->rulesService = $rulesService;
-        $this->em = $em;
+        $this->em           = $em;
     }
-
 
     /////////////
     // METHODS //
@@ -85,11 +82,11 @@ class StorageManager
 
 
     /**
-     * Load the ruleset from the database
+     * Load the ruleset from the database.
      *
-     * @param  string           $rulesetName The name of the ruleset to load
+     * @param string $rulesetName The name of the ruleset to load
      *
-     * @return RulesetInterface              The loaded ruleset object
+     * @return RulesetInterface The loaded ruleset object
      */
     public function load($rulesetName)
     {
@@ -103,21 +100,21 @@ class StorageManager
         $builder = $this->rulesService->getRulesetBuilder($rulesetName);
 
         //put info into builder
-        foreach($rulesetEntity->getRules() as $ruleEntity) {
+        foreach ($rulesetEntity->getRules() as $ruleEntity) {
             $ruleBuilder = $builder->startRule($ruleEntity->getName());
             if ($ruleEntity->getConditionCollection()) {
                 $ruleBuilder = $this->buildConditions($ruleBuilder, $ruleEntity->getConditionCollection());
             }
-            foreach($ruleEntity->getThenActions() as $actionCallEntity) {
+            foreach ($ruleEntity->getThenActions() as $actionCallEntity) {
                 $ruleBuilder = $this->buildAction($ruleBuilder, $actionCallEntity, true);
             }
-            foreach($ruleEntity->getElseActions() as $actionCallEntity) {
+            foreach ($ruleEntity->getElseActions() as $actionCallEntity) {
                 $ruleBuilder = $this->buildAction($ruleBuilder, $actionCallEntity, false);
             }
-            foreach($ruleEntity->getThenRules() as $thenRule) {
+            foreach ($ruleEntity->getThenRules() as $thenRule) {
                 $ruleBuilder->addThenRule($thenRule->getName());
             }
-            foreach($ruleEntity->getElseRules() as $elseRule) {
+            foreach ($ruleEntity->getElseRules() as $elseRule) {
                 $ruleBuilder->addElseRule($elseRule->getName());
             }
 
@@ -128,13 +125,12 @@ class StorageManager
         return $builder->build();
     }
 
-
     /**
-     * Save the given ruleset to the database
+     * Save the given ruleset to the database.
      *
-     * @param  Ruleset $ruleset The ruleset object to write to the database
+     * @param Ruleset $ruleset The ruleset object to write to the database
      *
-     * @return boolean          Whether the write was successful or not
+     * @return boolean Whether the write was successful or not
      */
     public function save(Ruleset $ruleset)
     {
@@ -154,22 +150,21 @@ class StorageManager
         return true;
     }
 
-
     /**
-     * Validates an array of ruleset data to ensure that it follows standards
+     * Validates an array of ruleset data to ensure that it follows standards.
      *
-     * @param  array  $rulesetData The array data to check
+     * @param array $rulesetData The array data to check
      *
-     * @return array               An array of errors if any exist
+     * @return array An array of errors if any exist
      */
     public function validateArray(array $rulesetData)
     {
-        $errors = array();
+        $errors = [];
 
         //Check that rule names are unique
         if (array_key_exists('rules', $rulesetData)) {
-            $ruleNames = array();
-            foreach($rulesetData['rules'] as $index => $ruleData) {
+            $ruleNames = [];
+            foreach ($rulesetData['rules'] as $index => $ruleData) {
                 //Check that the name does not exist in the rule name array
                 if (in_array($ruleData['name'], $ruleNames)) {
                     $errors['rule-' . $index] = 'Rule name already in use';
@@ -183,13 +178,12 @@ class StorageManager
         return $errors;
     }
 
-
     /**
-     * Builds a ruleset from array data
+     * Builds a ruleset from array data.
      *
-     * @param  array            $rulesetData The array of ruleset data
+     * @param array $rulesetData The array of ruleset data
      *
-     * @return RulesetInterface              The ruleset object built from the data array
+     * @return RulesetInterface The ruleset object built from the data array
      */
     public function buildFromArray(array $rulesetData)
     {
@@ -198,31 +192,31 @@ class StorageManager
 
         //Start with the rules
         if (array_key_exists('rules', $rulesetData)) {
-            foreach($rulesetData['rules'] as $ruleData) {
+            foreach ($rulesetData['rules'] as $ruleData) {
                 $ruleBuilder = $builder->startRule($ruleData['name']);
 
                 //Go through the rule data and rebuild the array with the
                 if (isset($ruleData['conditions'])) {
                     $conditionArray = $this->modifyInputConditionArray($ruleData['collections'], $ruleData['conditions']);
                 } else {
-                    $conditionArray = array();
+                    $conditionArray = [];
                 }
 
                 //Handle each root collection
-                foreach($conditionArray as $index => $collectionData) {
+                foreach ($conditionArray as $index => $collectionData) {
                     $ruleBuilder = $this->handleCollectionArray($collectionData, $ruleBuilder);
                 }
 
                 //Handle the actions
                 if (array_key_exists('actions', $ruleData)) {
-                    foreach($ruleData['actions'] as $index => $actionData) {
+                    foreach ($ruleData['actions'] as $index => $actionData) {
                         $ruleBuilder = $this->handleActionArray($actionData, $ruleBuilder);
                     }
                 }
 
                 //Handle the followup rules
                 if (array_key_exists('followupRules', $ruleData)) {
-                    foreach($ruleData['followupRules'] as $index => $followupRuleData) {
+                    foreach ($ruleData['followupRules'] as $index => $followupRuleData) {
                         $ruleBuilder = $this->handleFollowupRuleArray($followupRuleData, $ruleBuilder);
                     }
                 }
@@ -236,27 +230,26 @@ class StorageManager
         return $builder->build();
     }
 
-
     /**
-     * Transforms a ruleset object into array data
+     * Transforms a ruleset object into array data.
      *
-     * @param  Ruleset $ruleset The ruleset to transform
+     * @param Ruleset $ruleset The ruleset to transform
      *
-     * @return array            The resulting array
+     * @return array The resulting array
      */
     public function transformToArray(Ruleset $ruleset)
     {
-        $rulesetData = array();
+        $rulesetData = [];
 
         //Set the name
         $rulesetData['rulesetName'] = $ruleset->getName();
 
         //Set the default start values
         $rulesetData['ruleIndex'] = 0;
-        $rulesetData['rules'] = array();
+        $rulesetData['rules']     = [];
 
         //handle each root rule
-        foreach($ruleset->getRootRuleNodes() as $ruleNode) {
+        foreach ($ruleset->getRootRuleNodes() as $ruleNode) {
             $rulesetData = $this->transformRuleNodeToArray($ruleNode, $rulesetData);
         }
 
@@ -264,36 +257,35 @@ class StorageManager
         return $rulesetData;
     }
 
-
     /////////////////////
     // PRIVATE METHODS //
     /////////////////////
 
 
     /**
-     * Converts a ruleset into entities to save in the database
+     * Converts a ruleset into entities to save in the database.
      *
-     * @param  RulesetEntity $rulesetEntity The root ruleset entity
-     * @param  Ruleset       $ruleset       The ruleset object
+     * @param RulesetEntity $rulesetEntity The root ruleset entity
+     * @param Ruleset       $ruleset       The ruleset object
      *
-     * @return RulesetEntity                The root entity with the new entities attached
+     * @return RulesetEntity The root entity with the new entities attached
      */
     private function convertToEntities(RulesetEntity $rulesetEntity, Ruleset $ruleset)
     {
         //Create a list of rules under the ruleset entity as root rules
-        $this->ruleEntityList = array();
-        foreach($rulesetEntity->getRules() as $ruleEntity) {
+        $this->ruleEntityList = [];
+        foreach ($rulesetEntity->getRules() as $ruleEntity) {
             $this->ruleEntityList[$ruleEntity->getName()]['entity'] = $ruleEntity;
-            $this->ruleEntityList[$ruleEntity->getName()]['used'] = false;
+            $this->ruleEntityList[$ruleEntity->getName()]['used']   = false;
         }
 
         //foreach root node in the ruleset, handle the nodes
-        foreach($ruleset->getRootRuleNodes() as $rootNode) {
+        foreach ($ruleset->getRootRuleNodes() as $rootNode) {
             $this->handleRuleNode($rulesetEntity, $rootNode);
         }
 
         //Handle the unused rules
-        foreach($this->ruleEntityList as $ruleEntity) {
+        foreach ($this->ruleEntityList as $ruleEntity) {
             if (!$ruleEntity['used']) {
                 $this->deleteRule($ruleEntity['entity']);
             }
@@ -303,14 +295,13 @@ class StorageManager
         return $rulesetEntity;
     }
 
-
     /**
-     * Handle a rule node in regard to generating its entities
+     * Handle a rule node in regard to generating its entities.
      *
-     * @param  RulesetEntity     $rulesetEntity The root ruleset entity
-     * @param  RuleNodeInterface $node          The node to handle
+     * @param RulesetEntity     $rulesetEntity The root ruleset entity
+     * @param RuleNodeInterface $node          The node to handle
      *
-     * @return RuleEntity                       The rule entity
+     * @return RuleEntity The rule entity
      */
     private function handleRuleNode(RulesetEntity $rulesetEntity, RuleNodeInterface $node)
     {
@@ -332,10 +323,10 @@ class StorageManager
 
                 //mark node as visited
                 $this->ruleEntityList[$node->getName()]['used'] = true;
-                $ruleEntity = $this->ruleEntityList[$node->getName()]['entity'];
+                $ruleEntity                                     = $this->ruleEntityList[$node->getName()]['entity'];
             } else {
                 $ruleEntity = $this->ruleEntityList[$node->getName()]['entity'];
-                $update = false;
+                $update     = false;
             }
         } else {
             //Create new
@@ -348,34 +339,32 @@ class StorageManager
             $this->em->persist($newConditionCollection);
 
             //Add to the entity list
-            $this->ruleEntityList[$node->getName()] = array('entity' => $ruleEntity, 'used' => true);
+            $this->ruleEntityList[$node->getName()] = ['entity' => $ruleEntity, 'used' => true];
         }
 
         if ($update) {
             //Handle the actions
             //Then Actions
             //Generate a list of existing actions
-            $existing = array();
-            foreach($ruleEntity->getThenActions() as $actionCallEntity) {
+            $existing = [];
+            foreach ($ruleEntity->getThenActions() as $actionCallEntity) {
                 if (null !== $actionCallEntity->getAction()->getContext()) {
-                    $name = 
+                    $name =
                         $actionCallEntity->getAction()->getContext()->getName()
                         . $actionCallEntity->getAction()->getName()
-                        . $actionCallEntity->getRawInputValue()
-                    ;
+                        . $actionCallEntity->getRawInputValue();
                 } else {
                     $name =
                         $actionCallEntity->getAction()->getService()->getName()
                         . $actionCallEntity->getAction()->getName()
-                        . $actionCallEntity->getRawInputValue()
-                    ;
+                        . $actionCallEntity->getRawInputValue();
                 }
-                $existing[$name]['used'] = false;
+                $existing[$name]['used']   = false;
                 $existing[$name]['entity'] = $actionCallEntity;
             }
 
             //Find the new actions and mark the actions that remain
-            foreach($node->getRule()->getThenActions() as $action) {
+            foreach ($node->getRule()->getThenActions() as $action) {
                 if (array_key_exists($action->getParentName() . $action->getName() . $action->getInputValue(), $existing)) {
                     //Mark as seen
                     $existing[$action->getParentName() . $action->getName() . $action->getInputValue()]['used'] = true;
@@ -389,7 +378,7 @@ class StorageManager
             }
 
             //Remove the action calls that are no longer prevalent
-            foreach($existing as $ex) {
+            foreach ($existing as $ex) {
                 if (!$ex['used']) {
                     $ruleEntity->removeThenAction($ex['entity']);
                     $this->em->remove($ex['entity']);
@@ -398,27 +387,25 @@ class StorageManager
 
             //Else Actions
             //Generate a list of existing actions
-            $existing = array();
-            foreach($ruleEntity->getElseActions() as $actionCallEntity) {
+            $existing = [];
+            foreach ($ruleEntity->getElseActions() as $actionCallEntity) {
                 if (null !== $actionCallEntity->getAction()->getContext()) {
-                    $name = 
+                    $name =
                         $actionCallEntity->getAction()->getContext()->getName()
                         . $actionCallEntity->getAction()->getName()
-                        . $actionCallEntity->getRawInputValue()
-                    ;
+                        . $actionCallEntity->getRawInputValue();
                 } else {
                     $name =
                         $actionCallEntity->getAction()->getService()->getName()
                         . $actionCallEntity->getAction()->getName()
-                        . $actionCallEntity->getRawInputValue()
-                    ;
+                        . $actionCallEntity->getRawInputValue();
                 }
-                $existing[$name]['used'] = false;
+                $existing[$name]['used']   = false;
                 $existing[$name]['entity'] = $actionCallEntity;
             }
 
             //Find the new actions and mark the actions that remain
-            foreach($node->getRule()->getElseActions() as $action) {
+            foreach ($node->getRule()->getElseActions() as $action) {
                 if (array_key_exists($action->getParentName() . $action->getName() . $action->getInputValue(), $existing)) {
                     //Mark as seen
                     $existing[$action->getParentName() . $action->getName() . $action->getInputValue()]['used'] = true;
@@ -432,7 +419,7 @@ class StorageManager
             }
 
             //Remove the action calls that are no longer prevalent
-            foreach($existing as $ex) {
+            foreach ($existing as $ex) {
                 if (!$ex['used']) {
                     $ruleEntity->removeElseAction($ex['entity']);
                     $this->em->remove($ex['entity']);
@@ -441,18 +428,18 @@ class StorageManager
 
             //Handle the follow up rules
             //Then
-            foreach($ruleEntity->getThenRules() as $thenRule) {
+            foreach ($ruleEntity->getThenRules() as $thenRule) {
                 $ruleEntity->removeThenRule($thenRule);
             }
-            foreach($node->getThenRules() as $thenNode) {
+            foreach ($node->getThenRules() as $thenNode) {
                 $ruleEntity->addThenRule($this->handleRuleNode($rulesetEntity, $thenNode));
             }
 
             //Else
-            foreach($ruleEntity->getElseRules() as $elseRule) {
+            foreach ($ruleEntity->getElseRules() as $elseRule) {
                 $ruleEntity->removeElseRule($elseRule);
             }
-            foreach($node->getElseRules() as $elseNode) {
+            foreach ($node->getElseRules() as $elseNode) {
                 $ruleEntity->addElseRule($this->handleRuleNode($rulesetEntity, $elseNode));
             }
 
@@ -464,11 +451,10 @@ class StorageManager
         return $ruleEntity;
     }
 
-
     /**
-     * Delete the rule
+     * Delete the rule.
      *
-     * @param  RuleEntity $ruleEntity The rule entity to delete
+     * @param RuleEntity $ruleEntity The rule entity to delete
      */
     private function deleteRule(RuleEntity $ruleEntity)
     {
@@ -476,10 +462,10 @@ class StorageManager
         $this->deleteConditionCollection($ruleEntity->getConditionCollection());
 
         //Delete the action calls
-        foreach($ruleEntity->getThenActions() as $actionCallEntity) {
+        foreach ($ruleEntity->getThenActions() as $actionCallEntity) {
             $this->em->remove($actionCallEntity);
         }
-        foreach($ruleEntity->getElseActions() as $actionCallEntity) {
+        foreach ($ruleEntity->getElseActions() as $actionCallEntity) {
             $this->em->remove($actionCallEntity);
         }
 
@@ -487,13 +473,12 @@ class StorageManager
         $this->em->remove($ruleEntity);
     }
 
-
     /**
-     * Create a new action call entity
+     * Create a new action call entity.
      *
-     * @param  ActionInterface $action The action object
+     * @param ActionInterface $action The action object
      *
-     * @return ActionCallEntity        The new entity
+     * @return ActionCallEntity The new entity
      */
     private function createActionCall(ActionInterface $action)
     {
@@ -516,16 +501,16 @@ class StorageManager
 
         //Set the action and return
         $entity->setAction($actionEntity);
+
         return $entity;
     }
 
-
     /**
-     * Creates a new condition collection entity from a condition collection object
+     * Creates a new condition collection entity from a condition collection object.
      *
-     * @param  ConditionCollection       $collection The condition collection object to create entities from
+     * @param ConditionCollection $collection The condition collection object to create entities from
      *
-     * @return ConditionCollectionEntity             The new condition collection entity
+     * @return ConditionCollectionEntity The new condition collection entity
      */
     private function createConditionCollection(ConditionCollection $collection)
     {
@@ -538,13 +523,12 @@ class StorageManager
         }
 
         //Add the children
-        foreach($collection->getConditions() as $child) {
+        foreach ($collection->getConditions() as $child) {
             if ($child->isCollection()) {
                 $newCollection = $this->createConditionCollection($child);
                 $collectionEntity->addSubCollection($newCollection);
                 $newCollection->setParent($collectionEntity);
                 $this->em->persist($newCollection);
-
             } else {
                 $newCondition = $this->createCondition($child);
                 $collectionEntity->addCondition($newCondition);
@@ -557,22 +541,21 @@ class StorageManager
         return $collectionEntity;
     }
 
-
     /**
-     * Delete a condition collection and its children from the database
+     * Delete a condition collection and its children from the database.
      *
-     * @param  ConditionCollectionEntity $collectionEntity The collection to delete
+     * @param ConditionCollectionEntity $collectionEntity The collection to delete
      */
     private function deleteConditionCollection(ConditionCollectionEntity $collectionEntity)
     {
         //Delete subcollections
-        foreach($collectionEntity->getSubCollections() as $child) {
+        foreach ($collectionEntity->getSubCollections() as $child) {
             $collectionEntity->removeSubCollection($child);
             $this->deleteConditionCollection($child);
         }
 
         //Delete conditions
-        foreach($collectionEntity->getConditions() as $child) {
+        foreach ($collectionEntity->getConditions() as $child) {
             $collectionEntity->removeCondition($child);
             $this->deleteCondition($child);
         }
@@ -581,13 +564,12 @@ class StorageManager
         $this->em->remove($collectionEntity);
     }
 
-
     /**
-     * Creates a new condition entity from a standard condition object
+     * Creates a new condition entity from a standard condition object.
      *
-     * @param  StandardCondition $condition The condition object to create the entity from
+     * @param StandardCondition $condition The condition object to create the entity from
      *
-     * @return ConditionEntity              The condition entity
+     * @return ConditionEntity The condition entity
      */
     private function createCondition(StandardCondition $condition)
     {
@@ -610,26 +592,24 @@ class StorageManager
         return $conditionEntity;
     }
 
-
     /**
-     * Delete a condition
+     * Delete a condition.
      *
-     * @param  ConditionEntity $conditionEntity The condition to delete
+     * @param ConditionEntity $conditionEntity The condition to delete
      */
     private function deleteCondition(ConditionEntity $conditionEntity)
     {
         $this->em->remove($conditionEntity);
     }
 
-
     /**
-     * Adds a new action to the rule builder from the action call entity
+     * Adds a new action to the rule builder from the action call entity.
      *
-     * @param  RuleBuilderInterface $ruleBuilder      The builder for the rule to add the action to
-     * @param  ActionCallEntity     $actionCallEntity The call entity
-     * @param  boolean              $then             If true, add as then rule, else add else rule
+     * @param RuleBuilderInterface $ruleBuilder      The builder for the rule to add the action to
+     * @param ActionCallEntity     $actionCallEntity The call entity
+     * @param boolean              $then             If true, add as then rule, else add else rule
      *
-     * @return RuleBuilderInterface                   The rule builder
+     * @return RuleBuilderInterface The rule builder
      */
     private function buildAction(RuleBuilderInterface $ruleBuilder, ActionCallEntity $actionCallEntity, $then)
     {
@@ -652,17 +632,16 @@ class StorageManager
         return $actionBuilder->end();
     }
 
-
     /**
-     * Builds the conditions when loading from the database
+     * Builds the conditions when loading from the database.
      *
-     * @param  ConditionCollectionContainableInterface $parentBuilder    The parent builder
-     * @param  ConditionCollectionEntity               $collectionEntity The condition collection entity
+     * @param ConditionCollectionContainableInterface $parentBuilder    The parent builder
+     * @param ConditionCollectionEntity               $collectionEntity The condition collection entity
      *
-     * @return ConditionCollectionContainableInterface                   The parent builder
+     * @return ConditionCollectionContainableInterface The parent builder
      */
     private function buildConditions(
-        ConditionCollectionContainableInterface $parentBuilder, 
+        ConditionCollectionContainableInterface $parentBuilder,
         ConditionCollectionEntity $collectionEntity
     ) {
         //Check what type of conditions to start
@@ -673,12 +652,12 @@ class StorageManager
         }
 
         //Build the sub conditions
-        foreach($collectionEntity->getSubCollections() as $subCollection) {
+        foreach ($collectionEntity->getSubCollections() as $subCollection) {
             $collectionBuilder = $this->buildConditions($collectionBuilder, $subCollection);
         }
 
         //Build the conditions
-        foreach($collectionEntity->getConditions() as $condition) {
+        foreach ($collectionEntity->getConditions() as $condition) {
             $conditionBuilder = $collectionBuilder->startCondition();
             if (null !== $condition->getAttribute()->getContext()) {
                 $conditionBuilder = $conditionBuilder->setContextAttribute(
@@ -700,41 +679,40 @@ class StorageManager
         return $collectionBuilder->end();
     }
 
-
     /**
-     * Takes the input array of collections and conditions and converts them to a more tree like structure
+     * Takes the input array of collections and conditions and converts them to a more tree like structure.
      *
-     * @param  array $collectionsData The array of collections from the rule data
-     * @param  array $conditionsData  The array of conditions from the rule data
+     * @param array $collectionsData The array of collections from the rule data
+     * @param array $conditionsData  The array of conditions from the rule data
      *
-     * @return array                  The new array
+     * @return array The new array
      */
     private function modifyInputConditionArray($collectionsData, $conditionsData)
     {
         //Add a condition array to each collection array
-        foreach($collectionsData as $index => $collectionData) {
-            $collectionsData[$index]['conditions'] = array();
-            $collectionsData[$index]['collections'] = array();
+        foreach ($collectionsData as $index => $collectionData) {
+            $collectionsData[$index]['conditions']  = [];
+            $collectionsData[$index]['collections'] = [];
         }
 
         //Add each condition to its parent collection
-        foreach($conditionsData as $index => $conditionData) {
+        foreach ($conditionsData as $index => $conditionData) {
             if (array_key_exists($conditionData['parentCollection'], $collectionsData)) {
                 $collectionsData[$conditionData['parentCollection']]['conditions'][] = $conditionData;
             }
         }
 
         //Arrange the collections
-        $children = array();
-        foreach($collectionsData as $index => $collectionData) {
+        $children = [];
+        foreach ($collectionsData as $index => $collectionData) {
             if (array_key_exists($collectionData['parentIndex'], $collectionsData)) {
                 $collectionsData[$collectionData['parentIndex']]['collections'][] = $collectionData;
-                $children[] = $index;
+                $children[]                                                       = $index;
             }
         }
 
         //Remove the non-root collections from the array
-        foreach($children as $child) {
+        foreach ($children as $child) {
             unset($collectionsData[$child]);
         }
 
@@ -742,14 +720,13 @@ class StorageManager
         return $collectionsData;
     }
 
-
     /**
-     * Convert an array of collection data into an object via the ruleset builders
+     * Convert an array of collection data into an object via the ruleset builders.
      *
-     * @param  array                                   $collectionData The array of collection data
-     * @param  ConditionCollectionContainableInterface $parentBuilder  The parent builder to add the collection to
+     * @param array                                   $collectionData The array of collection data
+     * @param ConditionCollectionContainableInterface $parentBuilder  The parent builder to add the collection to
      *
-     * @return ConditionCollectionContainableInterface                 The parent builder
+     * @return ConditionCollectionContainableInterface The parent builder
      */
     private function handleCollectionArray($collectionData, ConditionCollectionContainableInterface $parentBuilder)
     {
@@ -761,12 +738,12 @@ class StorageManager
         }
 
         //Add the conditions
-        foreach($collectionData['conditions'] as $conditionData) {
+        foreach ($collectionData['conditions'] as $conditionData) {
             $collectionBuilder = $this->handleConditionArray($conditionData, $collectionBuilder);
         }
 
         //Add children collections
-        foreach($collectionData['collections'] as $childCollectionData) {
+        foreach ($collectionData['collections'] as $childCollectionData) {
             $collectionBuilder = $this->handleCollectionArray($childCollectionData, $collectionBuilder);
         }
 
@@ -774,14 +751,13 @@ class StorageManager
         return $collectionBuilder->end();
     }
 
-
     /**
-     * Convert an array of condition data into an object via the ruleset builders
+     * Convert an array of condition data into an object via the ruleset builders.
      *
-     * @param  array                               $conditionData The array of condition data
-     * @param  ConditionCollectionBuilderInterface $parentBuilder The parent builder
+     * @param array                               $conditionData The array of condition data
+     * @param ConditionCollectionBuilderInterface $parentBuilder The parent builder
      *
-     * @return ConditionCollectionBuilderInterface                The modified parent builder
+     * @return ConditionCollectionBuilderInterface The modified parent builder
      */
     private function handleConditionArray($conditionData, ConditionCollectionBuilderInterface $parentBuilder)
     {
@@ -798,21 +774,19 @@ class StorageManager
         //Set the operator and input values
         $conditionBuilder
             ->setOperatorValue($conditionData['operatorValue'])
-            ->setInputValue($conditionData['inputValue'])
-        ;
+            ->setInputValue($conditionData['inputValue']);
 
         //Return the modified parent builder
         return $conditionBuilder->end();
     }
 
-
     /**
-     * Convert an array of action data into an object via the ruleset builders
+     * Convert an array of action data into an object via the ruleset builders.
      *
-     * @param  array                $actionData    The array of action data
-     * @param  RuleBuilderInterface $parentBuilder The parent builder
+     * @param array                $actionData    The array of action data
+     * @param RuleBuilderInterface $parentBuilder The parent builder
      *
-     * @return RuleBuilderInterface                The modified builder
+     * @return RuleBuilderInterface The modified builder
      */
     private function handleActionArray($actionData, RuleBuilderInterface $parentBuilder)
     {
@@ -837,14 +811,13 @@ class StorageManager
         return $actionBuilder->end();
     }
 
-
     /**
-     * Covnert an array of followup rule data into an object via the rule builder
+     * Covnert an array of followup rule data into an object via the rule builder.
      *
-     * @param  array                $followupRuleData The followup rule data
-     * @param  RuleBuilderInterface $ruleBuilder      The rule builder
+     * @param array                $followupRuleData The followup rule data
+     * @param RuleBuilderInterface $ruleBuilder      The rule builder
      *
-     * @return RuleBuilderInterface                   The modified rule builder
+     * @return RuleBuilderInterface The modified rule builder
      */
     private function handleFollowupRuleArray($followupRuleData, RuleBuilderInterface $ruleBuilder)
     {
@@ -859,14 +832,13 @@ class StorageManager
         return $ruleBuilder;
     }
 
-
     /**
-     * Transform a rule node object to an array
+     * Transform a rule node object to an array.
      *
-     * @param  RuleNode $ruleNode    The node to transform
-     * @param  array    $rulesetData The ruleset array
+     * @param RuleNode $ruleNode    The node to transform
+     * @param array    $rulesetData The ruleset array
      *
-     * @return array                 The modified ruleset array
+     * @return array The modified ruleset array
      */
     private function transformRuleNodeToArray(RuleNodeInterface $ruleNode, $rulesetData)
     {
@@ -875,38 +847,38 @@ class StorageManager
         $rulesetData['ruleIndex']++;
 
         //Put the rule into the array
-        $rule = $ruleNode->getRule();
-        $ruleData = array(
-            'name' => $rule->getName(),
-            'collectionIndex' => 0, 
-            'conditionIndex' => 0, 
-            'actionIndex' => 0, 
-            'followupRulesIndex' => 0, 
-            'collections' => array(), 
-            'conditions' => array(), 
-            'actions' => array(), 
-            'followupRules' => array()
-        );
+        $rule     = $ruleNode->getRule();
+        $ruleData = [
+            'name'               => $rule->getName(),
+            'collectionIndex'    => 0,
+            'conditionIndex'     => 0,
+            'actionIndex'        => 0,
+            'followupRulesIndex' => 0,
+            'collections'        => [],
+            'conditions'         => [],
+            'actions'            => [],
+            'followupRules'      => [],
+        ];
 
         //Handle the conditions
         $ruleData = $this->transformConditionCollectionToArray($rule->getConditions(), $ruleData);
 
         //Handle the actions
-        foreach($rule->getThenActions() as $action) {
+        foreach ($rule->getThenActions() as $action) {
             $ruleData = $this->transformActionToArray($action, $ruleData, 'then');
         }
-        foreach($rule->getElseActions() as $action) {
+        foreach ($rule->getElseActions() as $action) {
             $ruleData = $this->transformActionToArray($action, $ruleData, 'else');
         }
 
         //Handle followup rules
-        foreach($ruleNode->getThenRules() as $thenRule) {
+        foreach ($ruleNode->getThenRules() as $thenRule) {
             if (!$this->ruleInArray($rulesetData, $thenRule->getName())) {
                 $rulesetData = $this->transformRuleNodeToArray($thenRule, $rulesetData);
             }
             $ruleData = $this->transformFollowupRuleToArray($thenRule, $ruleData, 'then');
         }
-        foreach($ruleNode->getElseRules() as $elseRule) {
+        foreach ($ruleNode->getElseRules() as $elseRule) {
             if (!$this->ruleInArray($rulesetData, $elseRule->getName())) {
                 $rulesetData = $this->transformRuleNodeToArray($elseRule, $rulesetData);
             }
@@ -920,15 +892,14 @@ class StorageManager
         return $rulesetData;
     }
 
-
     /**
-     * Transform a condition collection object to an array
+     * Transform a condition collection object to an array.
      *
-     * @param  ConditionInterface $collection The collection object to transform
-     * @param  array              $ruleData   The rule array
-     * @param  int                $parent     The parent collection (or -1 if at top)
+     * @param ConditionInterface $collection The collection object to transform
+     * @param array              $ruleData   The rule array
+     * @param int                $parent     The parent collection (or -1 if at top)
      *
-     * @return array                          The modified rule array
+     * @return array The modified rule array
      */
     private function transformConditionCollectionToArray(ConditionInterface $collection, $ruleData, $parent = -1)
     {
@@ -944,11 +915,11 @@ class StorageManager
         }
 
         //Handle the children
-        $conditions = array();
-        $childCollections = array();
-        foreach($collection->getConditions() as $child) {
+        $conditions       = [];
+        $childCollections = [];
+        foreach ($collection->getConditions() as $child) {
             //Check if is collection
-            if($child->isCollection()) {
+            if ($child->isCollection()) {
                 $childCollections[] = $child;
             } else {
                 $conditions[] = $child;
@@ -956,12 +927,12 @@ class StorageManager
         }
 
         //handle the conditions
-        foreach($conditions as $condition) {
+        foreach ($conditions as $condition) {
             $ruleData = $this->transformConditionToArray($condition, $ruleData, $index);
         }
 
         //handle the collections
-        foreach($childCollections as $child) {
+        foreach ($childCollections as $child) {
             $ruleData = $this->transformConditionCollectionToArray($child, $ruleData, $index);
         }
 
@@ -969,15 +940,14 @@ class StorageManager
         return $ruleData;
     }
 
-
     /**
-     * Transform a condition object to an array
+     * Transform a condition object to an array.
      *
-     * @param  ConditionInterface $condition       The condition object to transform
-     * @param  array              $ruleData        The rule data array
-     * @param  int                $collectionIndex The index of the parent collection
+     * @param ConditionInterface $condition       The condition object to transform
+     * @param array              $ruleData        The rule data array
+     * @param int                $collectionIndex The index of the parent collection
      *
-     * @return array                               The modified rule data array
+     * @return array The modified rule data array
      */
     private function transformConditionToArray(ConditionInterface $condition, $ruleData, $collectionIndex)
     {
@@ -986,9 +956,9 @@ class StorageManager
         $ruleData['conditionIndex']++;
 
         //Create the attribute array
-        $attribute = array(
-            'name' => $condition->getAttribute()->getName()
-        );
+        $attribute = [
+            'name' => $condition->getAttribute()->getName(),
+        ];
 
         if ($condition->getAttribute() instanceof AbstractContextAttribute) {
             $attribute['context'] = $condition->getAttribute()->getParentName();
@@ -997,26 +967,25 @@ class StorageManager
         }
 
         //Create the condition array in the ruledata array
-        $ruleData['conditions'][$index] = array(
-            'attribute' => $attribute, 
-            'operatorValue' => $condition->getOperatorValue(), 
-            'inputValue' => $condition->getInputValue(), 
-            'parentCollection' => $collectionIndex
-        );
+        $ruleData['conditions'][$index] = [
+            'attribute'        => $attribute,
+            'operatorValue'    => $condition->getOperatorValue(),
+            'inputValue'       => $condition->getInputValue(),
+            'parentCollection' => $collectionIndex,
+        ];
 
         //return the modified rule data array
         return $ruleData;
     }
 
-
     /**
-     * Transfrom a action object to an array
+     * Transfrom a action object to an array.
      *
-     * @param  ActionInterface $action   The action object to transform
-     * @param  array           $ruleData the rule data
-     * @param  string          $type     the type of action it is (then or else)
+     * @param ActionInterface $action   The action object to transform
+     * @param array           $ruleData the rule data
+     * @param string          $type     the type of action it is (then or else)
      *
-     * @return array                     The modified rule data array
+     * @return array The modified rule data array
      */
     private function transformActionToArray(ActionInterface $action, $ruleData, $type)
     {
@@ -1025,9 +994,9 @@ class StorageManager
         $ruleData['actionIndex']++;
 
         //Create the action array
-        $actionArray = array(
-            'name' => $action->getName()
-        );
+        $actionArray = [
+            'name' => $action->getName(),
+        ];
 
         if ($action instanceof AbstractContextAction) {
             $actionArray['context'] = $action->getParentName();
@@ -1036,25 +1005,24 @@ class StorageManager
         }
 
         //create the action array in the ruledata array
-        $ruleData['actions'][$index] = array(
-            'type' => $type, 
-            'action' => $actionArray, 
-            'inputValue' => $action->getInputValue()
-        );
+        $ruleData['actions'][$index] = [
+            'type'       => $type,
+            'action'     => $actionArray,
+            'inputValue' => $action->getInputValue(),
+        ];
 
         //return the modified array
         return $ruleData;
     }
 
-
     /**
-     * Transform a follwup rule to an array
+     * Transform a follwup rule to an array.
      *
-     * @param  RuleNodeInterface $ruleNode The rule node of the followup rule
-     * @param  array             $ruleData The rule data array
-     * @param  string            $type     The type of followup rule (then or else)
+     * @param RuleNodeInterface $ruleNode The rule node of the followup rule
+     * @param array             $ruleData The rule data array
+     * @param string            $type     The type of followup rule (then or else)
      *
-     * @return array                       The modified 
+     * @return array The modified
      */
     private function transformFollowupRuleToArray(RuleNodeInterface $ruleNode, $ruleData, $type)
     {
@@ -1063,29 +1031,28 @@ class StorageManager
         $ruleData['followupRulesIndex']++;
 
         //Add to the ruledata array
-        $ruleData['followupRules'][$index] = array(
+        $ruleData['followupRules'][$index] = [
             'type' => $type,
-            'name' => $ruleNode->getName()
-        );
+            'name' => $ruleNode->getName(),
+        ];
 
         //return the modified ruledata array
         return $ruleData;
     }
 
-
     /**
-     * Whether a rule is already in the array of output
+     * Whether a rule is already in the array of output.
      *
-     * @param  array   $rulesetData The ruleset data array
-     * @param  string  $ruleName    The name of the rule
+     * @param array  $rulesetData The ruleset data array
+     * @param string $ruleName    The name of the rule
      *
-     * @return boolean              Whether it is in the array or not
+     * @return boolean Whether it is in the array or not
      */
     private function ruleInArray($rulesetData, $ruleName)
     {
         $return = false;
         if (isset($rulesetData['rules'])) {
-            foreach($rulesetData['rules'] as $ruleData) {
+            foreach ($rulesetData['rules'] as $ruleData) {
                 if (isset($ruleData['name'])) {
                     if ($ruleData['name'] == $ruleName) {
                         $return = true;
@@ -1094,6 +1061,7 @@ class StorageManager
                 }
             }
         }
+
         return $return;
     }
 }

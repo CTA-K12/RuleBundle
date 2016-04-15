@@ -2,22 +2,20 @@
 
 namespace Mesd\RuleBundle\Model\Builder;
 
-use Mesd\RuleBundle\Model\Builder\ConditionCollectionBuilderInterface;
-use Mesd\RuleBundle\Model\Attribute\AttributeInterface;
 
 interface ConditionBuilderInterface
 {
     /**
-     * Sets the attribute for this condition as a service attribute with the given name
+     * Sets the attribute for this condition as a service attribute with the given name.
      *
-     * @param  string $name The attributes name
+     * @param string $name The attributes name
      *
      * @return self
      */
     public function setServiceAttribute($name);
 
     /**
-     * Sets the attribute to the given cotnext attribute
+     * Sets the attribute to the given cotnext attribute.
      *
      * @param string $contextName   The name of the context
      * @param string $attributeName The name of the attribute
@@ -25,25 +23,25 @@ interface ConditionBuilderInterface
     public function setContextAttribute($contextName, $attributeName);
 
     /**
-     * The operator value to use for the comparator
+     * The operator value to use for the comparator.
      *
-     * @param  string $operatorValue The value of the operator to use
+     * @param string $operatorValue The value of the operator to use
      *
      * @return self
      */
     public function setOperatorValue($operatorValue);
 
     /**
-     * Sets the raw value of the input
+     * Sets the raw value of the input.
      *
-     * @param  mixed $inputValue The raw value to use as the input value
+     * @param mixed $inputValue The raw value to use as the input value
      *
      * @return self
      */
     public function setInputValue($inputValue);
 
     /**
-     * Completes the new condition and returns the parent builder
+     * Completes the new condition and returns the parent builder.
      *
      * @return ConditionCollectionBuilderInterface The parent condition collection builder
      */

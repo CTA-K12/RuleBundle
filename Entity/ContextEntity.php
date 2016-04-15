@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ContextEntity
+ * ContextEntity.
  */
 class ContextEntity
 {
@@ -29,11 +28,10 @@ class ContextEntity
      */
     private $classification;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -41,9 +39,10 @@ class ContextEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return ContextEntity
      */
     public function setName($name)
@@ -54,9 +53,9 @@ class ContextEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -64,9 +63,10 @@ class ContextEntity
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
+     *
      * @return ContextEntity
      */
     public function setType($type)
@@ -77,9 +77,9 @@ class ContextEntity
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -87,9 +87,10 @@ class ContextEntity
     }
 
     /**
-     * Set classification
+     * Set classification.
      *
      * @param string $classification
+     *
      * @return ContextEntity
      */
     public function setClassification($classification)
@@ -100,9 +101,9 @@ class ContextEntity
     }
 
     /**
-     * Get classification
+     * Get classification.
      *
-     * @return string 
+     * @return string
      */
     public function getClassification()
     {
@@ -119,18 +120,19 @@ class ContextEntity
     private $actions;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->actions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->actions    = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add attributes
+     * Add attributes.
      *
      * @param \Mesd\RuleBundle\Entity\AttributeEntity $attributes
+     *
      * @return ContextEntity
      */
     public function addAttribute(\Mesd\RuleBundle\Entity\AttributeEntity $attributes)
@@ -141,7 +143,7 @@ class ContextEntity
     }
 
     /**
-     * Remove attributes
+     * Remove attributes.
      *
      * @param \Mesd\RuleBundle\Entity\AttributeEntity $attributes
      */
@@ -151,9 +153,9 @@ class ContextEntity
     }
 
     /**
-     * Get attributes
+     * Get attributes.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAttributes()
     {
@@ -161,9 +163,10 @@ class ContextEntity
     }
 
     /**
-     * Add actions
+     * Add actions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionEntity $actions
+     *
      * @return ContextEntity
      */
     public function addAction(\Mesd\RuleBundle\Entity\ActionEntity $actions)
@@ -174,7 +177,7 @@ class ContextEntity
     }
 
     /**
-     * Remove actions
+     * Remove actions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionEntity $actions
      */
@@ -184,9 +187,9 @@ class ContextEntity
     }
 
     /**
-     * Get actions
+     * Get actions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getActions()
     {

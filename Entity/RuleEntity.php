@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RuleEntity
+ * RuleEntity.
  */
 class RuleEntity
 {
@@ -45,20 +44,20 @@ class RuleEntity
     private $elseActions;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
-        $this->thenRules = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->elseRules = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->thenRules   = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->elseRules   = new \Doctrine\Common\Collections\ArrayCollection();
         $this->thenActions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->elseActions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,9 +65,10 @@ class RuleEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return RuleEntity
      */
     public function setName($name)
@@ -79,9 +79,9 @@ class RuleEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -89,9 +89,10 @@ class RuleEntity
     }
 
     /**
-     * Set ruleset
+     * Set ruleset.
      *
      * @param \Mesd\RuleBundle\Entity\RulesetEntity $ruleset
+     *
      * @return RuleEntity
      */
     public function setRuleset(\Mesd\RuleBundle\Entity\RulesetEntity $ruleset = null)
@@ -102,9 +103,9 @@ class RuleEntity
     }
 
     /**
-     * Get ruleset
+     * Get ruleset.
      *
-     * @return \Mesd\RuleBundle\Entity\RulesetEntity 
+     * @return \Mesd\RuleBundle\Entity\RulesetEntity
      */
     public function getRuleset()
     {
@@ -112,9 +113,10 @@ class RuleEntity
     }
 
     /**
-     * Add thenRules
+     * Add thenRules.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $thenRules
+     *
      * @return RuleEntity
      */
     public function addThenRule(\Mesd\RuleBundle\Entity\RuleEntity $thenRules)
@@ -125,7 +127,7 @@ class RuleEntity
     }
 
     /**
-     * Remove thenRules
+     * Remove thenRules.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $thenRules
      */
@@ -135,9 +137,9 @@ class RuleEntity
     }
 
     /**
-     * Get thenRules
+     * Get thenRules.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getThenRules()
     {
@@ -145,9 +147,10 @@ class RuleEntity
     }
 
     /**
-     * Add elseRules
+     * Add elseRules.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $elseRules
+     *
      * @return RuleEntity
      */
     public function addElseRule(\Mesd\RuleBundle\Entity\RuleEntity $elseRules)
@@ -158,7 +161,7 @@ class RuleEntity
     }
 
     /**
-     * Remove elseRules
+     * Remove elseRules.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $elseRules
      */
@@ -168,9 +171,9 @@ class RuleEntity
     }
 
     /**
-     * Get elseRules
+     * Get elseRules.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getElseRules()
     {
@@ -181,11 +184,11 @@ class RuleEntity
      */
     private $conditionCollection;
 
-
     /**
-     * Add conditionCollection
+     * Add conditionCollection.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionCollectionEntity $conditionCollection
+     *
      * @return RuleEntity
      */
     public function addConditionCollection(\Mesd\RuleBundle\Entity\ConditionCollectionEntity $conditionCollection)
@@ -196,7 +199,7 @@ class RuleEntity
     }
 
     /**
-     * Remove conditionCollection
+     * Remove conditionCollection.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionCollectionEntity $conditionCollection
      */
@@ -206,23 +209,24 @@ class RuleEntity
     }
 
     /**
-     * Get conditionCollection
+     * Get conditionCollection.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getConditionCollection()
     {
         if (count($this->conditionCollection) > 0) {
             return $this->conditionCollection[0];
         } else {
-            return null;
+            return;
         }
     }
 
     /**
-     * Add thenActions
+     * Add thenActions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionCallEntity $thenActions
+     *
      * @return RuleEntity
      */
     public function addThenAction(\Mesd\RuleBundle\Entity\ActionCallEntity $thenActions)
@@ -233,7 +237,7 @@ class RuleEntity
     }
 
     /**
-     * Remove thenActions
+     * Remove thenActions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionCallEntity $thenActions
      */
@@ -243,9 +247,9 @@ class RuleEntity
     }
 
     /**
-     * Get thenActions
+     * Get thenActions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getThenActions()
     {
@@ -253,9 +257,10 @@ class RuleEntity
     }
 
     /**
-     * Add elseActions
+     * Add elseActions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionCallEntity $elseActions
+     *
      * @return RuleEntity
      */
     public function addElseAction(\Mesd\RuleBundle\Entity\ActionCallEntity $elseActions)
@@ -266,7 +271,7 @@ class RuleEntity
     }
 
     /**
-     * Remove elseActions
+     * Remove elseActions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionCallEntity $elseActions
      */
@@ -276,9 +281,9 @@ class RuleEntity
     }
 
     /**
-     * Get elseActions
+     * Get elseActions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getElseActions()
     {

@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ServiceEntity
+ * ServiceEntity.
  */
 class ServiceEntity
 {
@@ -19,11 +18,10 @@ class ServiceEntity
      */
     private $name;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -31,9 +29,10 @@ class ServiceEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return ServiceEntity
      */
     public function setName($name)
@@ -44,9 +43,9 @@ class ServiceEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -63,18 +62,19 @@ class ServiceEntity
     private $actions;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->actions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->actions    = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add attributes
+     * Add attributes.
      *
      * @param \Mesd\RuleBundle\Entity\AttributeEntity $attributes
+     *
      * @return ServiceEntity
      */
     public function addAttribute(\Mesd\RuleBundle\Entity\AttributeEntity $attributes)
@@ -85,7 +85,7 @@ class ServiceEntity
     }
 
     /**
-     * Remove attributes
+     * Remove attributes.
      *
      * @param \Mesd\RuleBundle\Entity\AttributeEntity $attributes
      */
@@ -95,9 +95,9 @@ class ServiceEntity
     }
 
     /**
-     * Get attributes
+     * Get attributes.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAttributes()
     {
@@ -105,9 +105,10 @@ class ServiceEntity
     }
 
     /**
-     * Add actions
+     * Add actions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionEntity $actions
+     *
      * @return ServiceEntity
      */
     public function addAction(\Mesd\RuleBundle\Entity\ActionEntity $actions)
@@ -118,7 +119,7 @@ class ServiceEntity
     }
 
     /**
-     * Remove actions
+     * Remove actions.
      *
      * @param \Mesd\RuleBundle\Entity\ActionEntity $actions
      */
@@ -128,9 +129,9 @@ class ServiceEntity
     }
 
     /**
-     * Get actions
+     * Get actions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getActions()
     {

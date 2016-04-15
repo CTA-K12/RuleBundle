@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ConditionEntity
+ * ConditionEntity.
  */
 class ConditionEntity
 {
@@ -34,11 +33,10 @@ class ConditionEntity
      */
     private $collection;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -46,9 +44,10 @@ class ConditionEntity
     }
 
     /**
-     * Set operator_value
+     * Set operator_value.
      *
      * @param string $operatorValue
+     *
      * @return ConditionEntity
      */
     public function setOperatorValue($operatorValue)
@@ -59,9 +58,9 @@ class ConditionEntity
     }
 
     /**
-     * Get operator_value
+     * Get operator_value.
      *
-     * @return string 
+     * @return string
      */
     public function getOperatorValue()
     {
@@ -69,9 +68,10 @@ class ConditionEntity
     }
 
     /**
-     * Set raw_input_value
+     * Set raw_input_value.
      *
      * @param string $rawInputValue
+     *
      * @return ConditionEntity
      */
     public function setRawInputValue($rawInputValue)
@@ -82,9 +82,9 @@ class ConditionEntity
     }
 
     /**
-     * Get raw_input_value
+     * Get raw_input_value.
      *
-     * @return string 
+     * @return string
      */
     public function getRawInputValue()
     {
@@ -92,9 +92,10 @@ class ConditionEntity
     }
 
     /**
-     * Set attribute
+     * Set attribute.
      *
      * @param \Mesd\RuleBundle\Entity\AttributeEntity $attribute
+     *
      * @return ConditionEntity
      */
     public function setAttribute(\Mesd\RuleBundle\Entity\AttributeEntity $attribute = null)
@@ -105,9 +106,9 @@ class ConditionEntity
     }
 
     /**
-     * Get attribute
+     * Get attribute.
      *
-     * @return \Mesd\RuleBundle\Entity\AttributeEntity 
+     * @return \Mesd\RuleBundle\Entity\AttributeEntity
      */
     public function getAttribute()
     {
@@ -115,9 +116,10 @@ class ConditionEntity
     }
 
     /**
-     * Set collection
+     * Set collection.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionCollectionEntity $collection
+     *
      * @return ConditionEntity
      */
     public function setCollection(\Mesd\RuleBundle\Entity\ConditionCollectionEntity $collection = null)
@@ -128,9 +130,9 @@ class ConditionEntity
     }
 
     /**
-     * Get collection
+     * Get collection.
      *
-     * @return \Mesd\RuleBundle\Entity\ConditionCollectionEntity 
+     * @return \Mesd\RuleBundle\Entity\ConditionCollectionEntity
      */
     public function getCollection()
     {

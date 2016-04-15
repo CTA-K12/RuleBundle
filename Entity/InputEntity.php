@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * InputEntity
+ * InputEntity.
  */
 class InputEntity
 {
@@ -24,11 +23,10 @@ class InputEntity
      */
     private $class;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -36,9 +34,10 @@ class InputEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return InputEntity
      */
     public function setName($name)
@@ -49,9 +48,9 @@ class InputEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -59,9 +58,10 @@ class InputEntity
     }
 
     /**
-     * Set class
+     * Set class.
      *
      * @param string $class
+     *
      * @return InputEntity
      */
     public function setClass($class)
@@ -72,9 +72,9 @@ class InputEntity
     }
 
     /**
-     * Get class
+     * Get class.
      *
-     * @return string 
+     * @return string
      */
     public function getClass()
     {
@@ -85,11 +85,11 @@ class InputEntity
      */
     private $params;
 
-
     /**
-     * Set params
+     * Set params.
      *
      * @param string $params
+     *
      * @return InputEntity
      */
     public function setParams($params)
@@ -100,9 +100,9 @@ class InputEntity
     }
 
     /**
-     * Get params
+     * Get params.
      *
-     * @return string 
+     * @return string
      */
     public function getParams()
     {

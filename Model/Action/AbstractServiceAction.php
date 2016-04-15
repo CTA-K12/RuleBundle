@@ -2,8 +2,6 @@
 
 namespace Mesd\RuleBundle\Model\Action;
 
-use Mesd\RuleBundle\Model\Action\ActionInterface;
-
 use Mesd\RuleBundle\Model\Input\InputInterface;
 
 abstract class AbstractServiceAction implements ActionInterface
@@ -13,25 +11,29 @@ abstract class AbstractServiceAction implements ActionInterface
     ///////////////
 
     /**
-     * The object being used as a service
+     * The object being used as a service.
+     *
      * @var mixed
      */
     protected $serviceObject;
 
     /**
-     * The name of the service this is being built from
+     * The name of the service this is being built from.
+     *
      * @var string
      */
     protected $serviceName;
 
     /**
-     * The input this attribute and comparator accept
+     * The input this attribute and comparator accept.
+     *
      * @var InputInterface
      */
     protected $input;
 
     /**
-     * The name assigned to the action
+     * The name assigned to the action.
+     *
      * @var string
      */
     protected $name;
@@ -42,17 +44,17 @@ abstract class AbstractServiceAction implements ActionInterface
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $serviceName   THe name of the service
      * @param mixed  $serviceObject The service object of this attribute
      */
-    public function __construct($serviceName, $serviceObject) {
+    public function __construct($serviceName, $serviceObject)
+    {
         //Set variables
-        $this->serviceName = $serviceName;
+        $this->serviceName   = $serviceName;
         $this->serviceObject = $serviceObject;
     }
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
@@ -60,90 +62,89 @@ abstract class AbstractServiceAction implements ActionInterface
 
 
     /**
-     * Gets the name of the action
+     * Gets the name of the action.
      *
      * @return string Action Name
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-
     /**
-     * Sets the name of the action
+     * Sets the name of the action.
      *
      * @param string $name [description]
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-
     /**
-     * Gets the description of the attribute
+     * Gets the description of the attribute.
      *
      * @return string|null Attribute description
      */
-    public function getDescription() {
-        return null;
+    public function getDescription()
+    {
+        return;
     }
 
-
     /**
-     * Sets the input that will be used for the rule form
+     * Sets the input that will be used for the rule form.
      *
      * @param InputInterface $input The input that will be used for this attribute
      */
-    public function setInput(InputInterface $input) {
+    public function setInput(InputInterface $input)
+    {
         $this->input = $input;
     }
 
-
     /**
-     * Gets the input that will be used for the rule form
+     * Gets the input that will be used for the rule form.
      *
      * @return InputInterface The input that will be used for this attribute
      */
-    public function getInput() {
+    public function getInput()
+    {
         return $this->input;
     }
 
-
     /**
-     * Sets the value of the input
+     * Sets the value of the input.
      *
      * @param mixed $value The input value
      */
-    public function setInputValue($value) {
+    public function setInputValue($value)
+    {
         $this->input->setRawInput($value);
     }
 
-
     /**
-     * Get the raw input value
+     * Get the raw input value.
      *
      * @return mixed The raw input value
      */
-    public function getInputValue() {
+    public function getInputValue()
+    {
         return $this->input->getRawInput();
     }
 
-
     /**
-     * Get the name of the parent context/service
+     * Get the name of the parent context/service.
      *
      * @return string The parent name
      */
-    public function getParentName() {
+    public function getParentName()
+    {
         return $this->serviceName;
     }
 
-
     /**
-     * Perform the action
+     * Perform the action.
      */
     abstract public function perform();
-
 
     /////////////
     // METHODS //
@@ -151,12 +152,13 @@ abstract class AbstractServiceAction implements ActionInterface
 
 
     /**
-     * Provides a short hand for getting the underlying object of the parent context 
-     * NOTE: this really isnt a short hand in this class, but its here to provide consistency between this and the context attribute
+     * Provides a short hand for getting the underlying object of the parent context
+     * NOTE: this really isnt a short hand in this class, but its here to provide consistency between this and the context attribute.
      *
      * @return mixed The object from the parent context
      */
-    protected function getObject() {
+    protected function getObject()
+    {
         return $this->serviceObject;
     }
 }

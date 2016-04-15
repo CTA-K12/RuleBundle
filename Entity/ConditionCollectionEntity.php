@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ConditionCollectionEntity
+ * ConditionCollectionEntity.
  */
 class ConditionCollectionEntity
 {
@@ -29,11 +28,10 @@ class ConditionCollectionEntity
      */
     private $parent;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -41,9 +39,10 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Set chain_type
+     * Set chain_type.
      *
      * @param $chainType
+     *
      * @return ConditionCollectionEntity
      */
     public function setChainType($chainType)
@@ -54,9 +53,9 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Get chain_type
+     * Get chain_type.
      *
-     * @return \255 
+     * @return \255
      */
     public function getChainType()
     {
@@ -64,9 +63,10 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Set rule
+     * Set rule.
      *
      * @param \Mesd\RuleBundle\Entity\Rule $rule
+     *
      * @return ConditionCollectionEntity
      */
     public function setRule(\Mesd\RuleBundle\Entity\RuleEntity $rule = null)
@@ -77,9 +77,9 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Get rule
+     * Get rule.
      *
-     * @return \Mesd\RuleBundle\Entity\Rule 
+     * @return \Mesd\RuleBundle\Entity\Rule
      */
     public function getRule()
     {
@@ -87,9 +87,10 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Set parent
+     * Set parent.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionCollectionEntity $parent
+     *
      * @return ConditionCollectionEntity
      */
     public function setParent(\Mesd\RuleBundle\Entity\ConditionCollectionEntity $parent = null)
@@ -100,9 +101,9 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Get parent
+     * Get parent.
      *
-     * @return \Mesd\RuleBundle\Entity\ConditionCollectionEntity 
+     * @return \Mesd\RuleBundle\Entity\ConditionCollectionEntity
      */
     public function getParent()
     {
@@ -119,18 +120,19 @@ class ConditionCollectionEntity
     private $conditions;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->subCollections = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->conditions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->conditions     = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add subCollections
+     * Add subCollections.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionCollectionEntity $subCollections
+     *
      * @return ConditionCollectionEntity
      */
     public function addSubCollection(\Mesd\RuleBundle\Entity\ConditionCollectionEntity $subCollections)
@@ -141,7 +143,7 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Remove subCollections
+     * Remove subCollections.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionCollectionEntity $subCollections
      */
@@ -151,9 +153,9 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Get subCollections
+     * Get subCollections.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSubCollections()
     {
@@ -161,9 +163,10 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Add conditions
+     * Add conditions.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionEntity $conditions
+     *
      * @return ConditionCollectionEntity
      */
     public function addCondition(\Mesd\RuleBundle\Entity\ConditionEntity $conditions)
@@ -174,7 +177,7 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Remove conditions
+     * Remove conditions.
      *
      * @param \Mesd\RuleBundle\Entity\ConditionEntity $conditions
      */
@@ -184,9 +187,9 @@ class ConditionCollectionEntity
     }
 
     /**
-     * Get conditions
+     * Get conditions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getConditions()
     {

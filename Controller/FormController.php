@@ -15,7 +15,7 @@ class FormController extends ContainerAware
     ////////////////////////
 
     /**
-     * List the links to the ruleset forms
+     * List the links to the ruleset forms.
      *
      * @return Response The list of ruleset forms
      */
@@ -25,17 +25,17 @@ class FormController extends ContainerAware
         $rulesets = $this->container->get('mesd_rule.rules')->getRulesetNames();
 
         //Render
-        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:list.html.twig', array(
+        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:list.html.twig', [
             'rulesets' => $rulesets,
-        )));
+        ]));
     }
 
     /**
-     * Displays the form
+     * Displays the form.
      *
-     * @param  string   $rulesetName The url encoded name of the ruleset to display
+     * @param string $rulesetName The url encoded name of the ruleset to display
      *
-     * @return Response              The form
+     * @return Response The form
      */
     public function displayFormAction($encodedRulesetName)
     {
@@ -43,9 +43,9 @@ class FormController extends ContainerAware
         $rulesetName = urldecode($encodedRulesetName);
 
         //Render the form page
-        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:ruleform.html.twig', array(
+        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:ruleform.html.twig', [
             'rulesetName' => $rulesetName,
-        )));
+        ]));
     }
 
     ///////////////
@@ -53,11 +53,11 @@ class FormController extends ContainerAware
     ///////////////
 
     /**
-     * Render the attribute list prototype
+     * Render the attribute list prototype.
      *
-     * @param  string   $encodedRulesetName The url encoded ruleset name
+     * @param string $encodedRulesetName The url encoded ruleset name
      *
-     * @return Response                     The rendered list twig
+     * @return Response The rendered list twig
      */
     public function renderAttributeListAction($encodedRulesetName)
     {
@@ -65,12 +65,12 @@ class FormController extends ContainerAware
         $rulesetName = urldecode($encodedRulesetName);
 
         //Create the attribute array
-        $attributes = array('contexts' => array(), 'services' => array());
+        $attributes = ['contexts' => [], 'services' => []];
 
         //Load all of the possible attributes
         $rsDef = $this->container->get('mesd_rule.rules')->getRulesetDefinition($rulesetName);
         foreach ($rsDef->getContextCollection()->getContexts() as $context) {
-            $attributes['contexts'][$context->getName()] = array();
+            $attributes['contexts'][$context->getName()] = [];
             foreach ($this->container->get('mesd_rule.rules')->getDefinitionManager()
                 ->getAllContextAttributes($context->getName()) as $attr) {
                 $attributes['contexts'][$context->getName()][] = $attr;
@@ -92,17 +92,17 @@ class FormController extends ContainerAware
         }
 
         //render and return the twig
-        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeList.html.twig', array(
+        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeList.html.twig', [
             'attributes' => $attributes,
-        )));
+        ]));
     }
 
     /**
-     * Render the action list prototype
+     * Render the action list prototype.
      *
-     * @param  string   $encodedRulesetName The url encoded ruleset name
+     * @param string $encodedRulesetName The url encoded ruleset name
      *
-     * @return Response                     The rendered list twig
+     * @return Response The rendered list twig
      */
     public function renderActionListAction($encodedRulesetName)
     {
@@ -110,12 +110,12 @@ class FormController extends ContainerAware
         $rulesetName = urldecode($encodedRulesetName);
 
         //Create the actions array
-        $actions = array('contexts' => array(), 'services' => array());
+        $actions = ['contexts' => [], 'services' => []];
 
         //Load all of the possible actions
         $rsDef = $this->container->get('mesd_rule.rules')->getRulesetDefinition($rulesetName);
         foreach ($rsDef->getContextCollection()->getContexts() as $context) {
-            $actions['contexts'][$context->getName()] = array();
+            $actions['contexts'][$context->getName()] = [];
             foreach ($this->container->get('mesd_rule.rules')->getDefinitionManager()
                 ->getAllContextActions($context->getName()) as $action) {
                 $actions['contexts'][$context->getName()][] = $action;
@@ -126,18 +126,18 @@ class FormController extends ContainerAware
         }
 
         //render and return the twig
-        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:actionList.html.twig', array(
+        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:actionList.html.twig', [
             'actions' => $actions,
-        )));
+        ]));
     }
 
     /**
-     * Render the comparator form and the input form
+     * Render the comparator form and the input form.
      *
-     * @param  string   $encodedAttributeName The name of the attribute
-     * @param  string   $encodedContextName   The name of the context or null if is service attribute
+     * @param string $encodedAttributeName The name of the attribute
+     * @param string $encodedContextName   The name of the context or null if is service attribute
      *
-     * @return Response                       The rendered attribute input
+     * @return Response The rendered attribute input
      */
     public function renderComparatorAndInputAction($encodedAttributeName, $encodedContextName = null)
     {
@@ -167,18 +167,18 @@ class FormController extends ContainerAware
         $form = $builder->getForm();
 
         //Render and return the partial twig
-        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeInput.html.twig', array(
+        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:attributeInput.html.twig', [
             'form' => $form->createView(),
-        )));
+        ]));
     }
 
     /**
-     * Render the input for a given action
+     * Render the input for a given action.
      *
-     * @param  string   $encodedActionName  The url encoded name of the action
-     * @param  string   $encodedContextName The url encoded name of the context if exists
+     * @param string $encodedActionName  The url encoded name of the action
+     * @param string $encodedContextName The url encoded name of the context if exists
      *
-     * @return Response                     The rendered input for the action
+     * @return Response The rendered input for the action
      */
     public function renderActionInputAction($encodedActionName, $encodedContextName = null)
     {
@@ -207,9 +207,9 @@ class FormController extends ContainerAware
         $form = $builder->getForm();
 
         //Render and return the partial twig
-        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:actionInput.html.twig', array(
+        return new Response($this->container->get('templating')->render('MesdRuleBundle:Form:actionInput.html.twig', [
             'form' => $form->createView(),
-        )));
+        ]));
     }
 
     ////////////////////
@@ -217,25 +217,19 @@ class FormController extends ContainerAware
     ////////////////////
 
     /**
-     * Saves the json ruleset
+     * Saves the json ruleset.
      *
-     * @param  Request      $request The request
+     * @param Request $request The request
      *
-     * @return JsonResponse          The json response detailing the success of the operation or the errors
+     * @return JsonResponse The json response detailing the success of the operation or the errors
      */
     public function saveFormAction(Request $request)
     {
         //temporarily turn off the time limit
         set_time_limit(0);
-        ob_start();
-        var_dump(new \DateTime());
-        var_dump($_REQUEST);
-        $data = ob_get_clean();
-        $dump = fopen("/var/www/symfony/ormed/.i/dump.html", "w");
-        fwrite($dump, $data);
-        fclose($dump);
+
         //Create the return array
-        $return = array('success' => true);
+        $return = ['success' => true];
 
         //Get the data from the request
         $rulesetData = $request->request->get('ruleset');
@@ -245,6 +239,7 @@ class FormController extends ContainerAware
         if (0 < count($errors)) {
             $return['success'] = false;
             $return['errors']  = $errors;
+
             return new JsonResponse($return);
         }
 
@@ -256,6 +251,7 @@ class FormController extends ContainerAware
             $return['success']          = false;
             $return['errors']['global'] =
                 'There are no rules that serve as start rules, either there are no rules or all rules are a followup to another';
+
             return new JsonResponse($return);
         }
 
@@ -263,6 +259,7 @@ class FormController extends ContainerAware
             $return['success']          = false;
             $return['errors']['global'] =
                 'Cycles exist within the rule structure';
+
             return new JsonResponse($return);
         }
 
@@ -277,11 +274,11 @@ class FormController extends ContainerAware
     }
 
     /**
-     * Loads the json ruleset
+     * Loads the json ruleset.
      *
-     * @param  Request      $request The request
+     * @param Request $request The request
      *
-     * @return JsonResponse          The json response
+     * @return JsonResponse The json response
      */
     public function loadFormAction(Request $request)
     {
@@ -304,6 +301,7 @@ class FormController extends ContainerAware
         $response = new Response(json_encode($rulesetArray, JSON_FORCE_OBJECT));
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Content-Length', strlen($response->getContent()));
+
         return $response;
     }
 }

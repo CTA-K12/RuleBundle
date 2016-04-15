@@ -2,10 +2,8 @@
 
 namespace Mesd\RuleBundle\Model\Action;
 
-use Mesd\RuleBundle\Model\Action\ActionInterface;
-
-use Mesd\RuleBundle\Model\Input\InputInterface;
 use Mesd\RuleBundle\Model\Context\ContextInterface;
+use Mesd\RuleBundle\Model\Input\InputInterface;
 
 abstract class AbstractContextAction implements ActionInterface
 {
@@ -14,23 +12,25 @@ abstract class AbstractContextAction implements ActionInterface
     ///////////////
 
     /**
-     * The parent context
+     * The parent context.
+     *
      * @var ContextInterface
      */
     protected $parentContext;
 
     /**
-     * The input this attribute and comparator accept
+     * The input this attribute and comparator accept.
+     *
      * @var InputInterface
      */
     protected $input;
 
     /**
-     * The name assigned to this action
+     * The name assigned to this action.
+     *
      * @var string
      */
     protected $name;
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
@@ -38,90 +38,89 @@ abstract class AbstractContextAction implements ActionInterface
 
 
     /**
-     * Gets the name of the action
+     * Gets the name of the action.
      *
      * @return string Action Name
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-
     /**
-     * Sets the name of the action
+     * Sets the name of the action.
      *
      * @param string $name [description]
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-
     /**
-     * Gets the description of the attribute
+     * Gets the description of the attribute.
      *
      * @return string|null Attribute description
      */
-    public function getDescription() {
-        return null;
+    public function getDescription()
+    {
+        return;
     }
 
-
     /**
-     * Get the name of the parent context/service
+     * Get the name of the parent context/service.
      *
      * @return string The parent name
      */
-    public function getParentName() {
+    public function getParentName()
+    {
         return $this->getParentContext()->getName();
     }
 
-
     /**
-     * Sets the input that will be used for the rule form
+     * Sets the input that will be used for the rule form.
      *
      * @param InputInterface $input The input that will be used for this attribute
      */
-    public function setInput(InputInterface $input) {
+    public function setInput(InputInterface $input)
+    {
         $this->input = $input;
     }
 
-
     /**
-     * Gets the input that will be used for the rule form
+     * Gets the input that will be used for the rule form.
      *
      * @return InputInterface The input that will be used for this attribute
      */
-    public function getInput() {
+    public function getInput()
+    {
         return $this->input;
     }
 
-
     /**
-     * Sets the value of the input
+     * Sets the value of the input.
      *
      * @param mixed $value The input value
      */
-    public function setInputValue($value) {
+    public function setInputValue($value)
+    {
         $this->input->setRawInput($value);
     }
 
-
     /**
-     * Get the raw input value
+     * Get the raw input value.
      *
      * @return mixed The raw input value
      */
-    public function getInputValue() {
+    public function getInputValue()
+    {
         return $this->input->getRawInput();
     }
 
-
     /**
-     * Performs the action
+     * Performs the action.
      */
     abstract public function perform();
-
 
     /////////////
     // METHODS //
@@ -129,14 +128,14 @@ abstract class AbstractContextAction implements ActionInterface
 
 
     /**
-     * Provides a short hand for getting the underlying object of the parent context
+     * Provides a short hand for getting the underlying object of the parent context.
      *
      * @return mixed The object from the parent context
      */
-    protected function getObject() {
+    protected function getObject()
+    {
         return $this->parentContext->getObject();
     }
-
 
     /////////////////////////
     // GETTERS AND SETTERS //
@@ -151,11 +150,11 @@ abstract class AbstractContextAction implements ActionInterface
     {
         return $this->parentContext;
     }
-    
+
     /**
      * Sets the The parent context.
      *
-     * @param ContextInterface $parentContext the parent context 
+     * @param ContextInterface $parentContext the parent context
      *
      * @return self
      */

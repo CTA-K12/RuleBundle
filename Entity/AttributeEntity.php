@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AttributeEntity
+ * AttributeEntity.
  */
 class AttributeEntity
 {
@@ -39,11 +38,10 @@ class AttributeEntity
      */
     private $input;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -51,9 +49,10 @@ class AttributeEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return AttributeEntity
      */
     public function setName($name)
@@ -64,9 +63,9 @@ class AttributeEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -74,9 +73,10 @@ class AttributeEntity
     }
 
     /**
-     * Set class
+     * Set class.
      *
      * @param string $class
+     *
      * @return AttributeEntity
      */
     public function setClass($class)
@@ -87,9 +87,9 @@ class AttributeEntity
     }
 
     /**
-     * Get class
+     * Get class.
      *
-     * @return string 
+     * @return string
      */
     public function getClass()
     {
@@ -97,9 +97,10 @@ class AttributeEntity
     }
 
     /**
-     * Set context
+     * Set context.
      *
      * @param \Mesd\RuleBundle\Entity\ContextEntity $context
+     *
      * @return AttributeEntity
      */
     public function setContext(\Mesd\RuleBundle\Entity\ContextEntity $context = null)
@@ -110,9 +111,9 @@ class AttributeEntity
     }
 
     /**
-     * Get context
+     * Get context.
      *
-     * @return \Mesd\RuleBundle\Entity\ContextEntity 
+     * @return \Mesd\RuleBundle\Entity\ContextEntity
      */
     public function getContext()
     {
@@ -120,9 +121,10 @@ class AttributeEntity
     }
 
     /**
-     * Set service
+     * Set service.
      *
      * @param \Mesd\RuleBundle\Entity\ServiceEntity $service
+     *
      * @return AttributeEntity
      */
     public function setService(\Mesd\RuleBundle\Entity\ServiceEntity $service = null)
@@ -133,9 +135,9 @@ class AttributeEntity
     }
 
     /**
-     * Get service
+     * Get service.
      *
-     * @return \Mesd\RuleBundle\Entity\ServiceEntity 
+     * @return \Mesd\RuleBundle\Entity\ServiceEntity
      */
     public function getService()
     {
@@ -143,9 +145,10 @@ class AttributeEntity
     }
 
     /**
-     * Set input
+     * Set input.
      *
      * @param \Mesd\RuleBundle\Entity\InputEntity $input
+     *
      * @return AttributeEntity
      */
     public function setInput(\Mesd\RuleBundle\Entity\InputEntity $input = null)
@@ -156,9 +159,9 @@ class AttributeEntity
     }
 
     /**
-     * Get input
+     * Get input.
      *
-     * @return \Mesd\RuleBundle\Entity\InputEntity 
+     * @return \Mesd\RuleBundle\Entity\InputEntity
      */
     public function getInput()
     {

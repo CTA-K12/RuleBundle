@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Services;
 
-use Mesd\RuleBundle\Model\Definition\DefinitionManagerLoaderInterface;
-use Mesd\RuleBundle\Model\Definition\DefinitionManagerFileLoader;
 use Mesd\RuleBundle\Model\Definition\DefinitionManagerDoctrineLoader;
-
+use Mesd\RuleBundle\Model\Definition\DefinitionManagerFileLoader;
+use Mesd\RuleBundle\Model\Definition\DefinitionManagerLoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DefinitionManagerLoaderFactory
@@ -15,25 +14,29 @@ class DefinitionManagerLoaderFactory
     ///////////////
 
     /**
-     * Which definition loader to use
+     * Which definition loader to use.
+     *
      * @var string
      */
     private $source;
 
     /**
-     * The entity manager to load from if the source is database
+     * The entity manager to load from if the source is database.
+     *
      * @var string
      */
     private $emName;
 
     /**
-     * Path to the file containing the definition manager config
+     * Path to the file containing the definition manager config.
+     *
      * @var string
      */
     private $definitionFile;
 
     /**
-     * The symfony service container
+     * The symfony service container.
+     *
      * @var ContainerInterface
      */
     private $container;
@@ -44,15 +47,15 @@ class DefinitionManagerLoaderFactory
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ContainerInterface $container The container to pass along to the definition managers
      */
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         //Set stuff
         $this->container = $container;
     }
-
 
     /////////////
     // METHODS //
@@ -60,11 +63,12 @@ class DefinitionManagerLoaderFactory
 
 
     /**
-     * Returns the definition manager loader
+     * Returns the definition manager loader.
      *
      * @return DefinitionManagerLoaderInterface The loaded for the given source string
      */
-    public function getLoader() {
+    public function getLoader()
+    {
         if ('file' === $this->source) {
             return new DefinitionManagerFileLoader($this->container, $this->definitionFile);
         } else {
@@ -72,16 +76,15 @@ class DefinitionManagerLoaderFactory
         }
     }
 
-
     /**
-     * Get the entity manager
+     * Get the entity manager.
      *
      * @return EntityManager Entity Manager
      */
-    public function getEntityManager() {
+    public function getEntityManager()
+    {
         return $this->container->get('doctrine')->getManager($this->emName);
     }
-
 
     /////////////////////////
     // GETTERS AND SETTERS //

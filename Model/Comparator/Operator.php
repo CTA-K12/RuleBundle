@@ -9,19 +9,22 @@ class Operator
     ///////////////
 
     /**
-     * The value that will be used in the option tag for the operator
+     * The value that will be used in the option tag for the operator.
+     *
      * @var string
      */
     private $value;
 
     /**
-     * The english name that will be used as the option text for the operator
+     * The english name that will be used as the option text for the operator.
+     *
      * @var string
      */
     private $name;
 
     /**
-     * Whether the option allows for multiple inputs
+     * Whether the option allows for multiple inputs.
+     *
      * @var boolean
      */
     private $multiple;
@@ -32,19 +35,19 @@ class Operator
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string  $value    The value that will be used in the option tag for the operator
      * @param string  $name     The english name that will be used as the option text for the operator
      * @param boolean $multiple Whether the option allows for multiple inputs
      */
-    public function __construct($value, $name, $multiple = false) {
+    public function __construct($value, $name, $multiple = false)
+    {
         //Set stuff
-        $this->value = $value;
-        $this->name = $name;
+        $this->value    = $value;
+        $this->name     = $name;
         $this->multiple = $multiple;
     }
-
 
     /////////////////////////
     // GETTERS AND SETTERS //

@@ -12,13 +12,15 @@ class StringComparator implements ComparatorInterface
     ///////////////
 
     /**
-     * The current operator
+     * The current operator.
+     *
      * @var Operator
      */
     private $currentOperator;
 
     /**
-     * The array of operators that can be used in this comparator
+     * The array of operators that can be used in this comparator.
+     *
      * @var array
      */
     private $operators;
@@ -29,24 +31,24 @@ class StringComparator implements ComparatorInterface
 
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         //Generate the operator array
-        $this->operators = [];
-        $this->operators['eq'] = new Operator('eq', 'equals', false);
-        $this->operators['neq'] = new Operator('neq', 'not equals', false);
-        $this->operators['ispre'] = new Operator('ispre', 'is prefix of', false);
+        $this->operators           = [];
+        $this->operators['eq']     = new Operator('eq', 'equals', false);
+        $this->operators['neq']    = new Operator('neq', 'not equals', false);
+        $this->operators['ispre']  = new Operator('ispre', 'is prefix of', false);
         $this->operators['haspre'] = new Operator('haspre', 'has prefix of', false);
-        $this->operators['issuf'] = new Operator('issuf', 'is suffix of', false);
+        $this->operators['issuf']  = new Operator('issuf', 'is suffix of', false);
         $this->operators['hassuf'] = new Operator('hassuf', 'has suffix of', false);
         $this->operators['contns'] = new Operator('contns', 'contains', false);
         $this->operators['contnd'] = new Operator('contnd', 'is contained in', false);
-        $this->operators['ltabc'] = new Operator('ltabc', 'comes alphabetically before', false);
-        $this->operators['gtabc'] = new Operator('gtabc', 'comes alphabetically after', false);
-        $this->operators['in'] = new Operator('in', 'is one of', true);
+        $this->operators['ltabc']  = new Operator('ltabc', 'comes alphabetically before', false);
+        $this->operators['gtabc']  = new Operator('gtabc', 'comes alphabetically after', false);
+        $this->operators['in']     = new Operator('in', 'is one of', true);
     }
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
@@ -54,46 +56,47 @@ class StringComparator implements ComparatorInterface
 
 
     /**
-     * Gets the operators associated with this comparator
-     * 
+     * Gets the operators associated with this comparator.
+     *
      * @return array Array of operator classes
      */
-    public function getOperators() {
+    public function getOperators()
+    {
         return $this->operators;
     }
 
-
     /**
-     * Sets the current operator to the operator with the given value
+     * Sets the current operator to the operator with the given value.
      *
      * @param string $operatorValue The value of the operator to set as current
      */
-    public function setCurrentOperator($operatorValue) {
+    public function setCurrentOperator($operatorValue)
+    {
         if (array_key_exists($operatorValue, $this->operators)) {
             $this->currentOperator = $this->operators[$operatorValue];
         }
     }
 
-
     /**
-     * Gets the current operator
+     * Gets the current operator.
      *
      * @return Operator The current operator
      */
-    public function getCurrentOperator() {
+    public function getCurrentOperator()
+    {
         return $this->currentOperator;
     }
 
-
     /**
-     * Compare the values with the operator currently set
+     * Compare the values with the operator currently set.
      *
-     * @param  mixed   $leftValue     The left value
-     * @param  mixed   $rightValue    The right value
+     * @param mixed $leftValue  The left value
+     * @param mixed $rightValue The right value
      *
-     * @return boolean                The result of the comparison
+     * @return boolean The result of the comparison
      */
-    public function compare($leftValue, $rightValue) {
+    public function compare($leftValue, $rightValue)
+    {
         if (null !== $this->currentOperator) {
             switch ($this->currentOperator->getValue()) {
                 case 'eq':

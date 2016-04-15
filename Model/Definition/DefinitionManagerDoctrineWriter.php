@@ -2,16 +2,13 @@
 
 namespace Mesd\RuleBundle\Model\Definition;
 
-use Mesd\RuleBundle\Model\Definition\DefinitionManager;
-
 use Doctrine\ORM\EntityManagerInterface;
-
-use Mesd\RuleBundle\Entity\ContextEntity;
-use Mesd\RuleBundle\Entity\AttributeEntity;
 use Mesd\RuleBundle\Entity\ActionEntity;
-use Mesd\RuleBundle\Entity\ServiceEntity;
+use Mesd\RuleBundle\Entity\AttributeEntity;
+use Mesd\RuleBundle\Entity\ContextEntity;
 use Mesd\RuleBundle\Entity\InputEntity;
 use Mesd\RuleBundle\Entity\RulesetEntity;
+use Mesd\RuleBundle\Entity\ServiceEntity;
 
 class DefinitionManagerDoctrineWriter
 {
@@ -20,19 +17,22 @@ class DefinitionManagerDoctrineWriter
     ///////////////
 
     /**
-     * The entity manager to use when writing to the db
+     * The entity manager to use when writing to the db.
+     *
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * Big ugly array map of definitions
+     * Big ugly array map of definitions.
+     *
      * @var array
      */
     private $definitions;
 
     /**
-     * Big ugly array map to track which db entries are no longer used
+     * Big ugly array map to track which db entries are no longer used.
+     *
      * @var array
      */
     private $tracking;
@@ -43,36 +43,36 @@ class DefinitionManagerDoctrineWriter
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param EntityManagerInterface $em The entity manager to use to set the definitions
      */
-    public function __construct(EntityManagerInterface $em) {
+    public function __construct(EntityManagerInterface $em)
+    {
         //Set the entity manager
         $this->em = $em;
 
         //Init the map
-        $this->definitions = array();
-        $this->definitions['contexts'] = array();
-        $this->definitions['cntxactn'] = array();
-        $this->definitions['cntxattr'] = array();
-        $this->definitions['rulesets'] = array();
-        $this->definitions['services'] = array();
-        $this->definitions['servactn'] = array();
-        $this->definitions['servattr'] = array();
-        $this->definitions['inputs'] = array();
+        $this->definitions             = [];
+        $this->definitions['contexts'] = [];
+        $this->definitions['cntxactn'] = [];
+        $this->definitions['cntxattr'] = [];
+        $this->definitions['rulesets'] = [];
+        $this->definitions['services'] = [];
+        $this->definitions['servactn'] = [];
+        $this->definitions['servattr'] = [];
+        $this->definitions['inputs']   = [];
 
-        $this->tracking = array();
-        $this->tracking['contexts'] = array();
-        $this->tracking['cntxactn'] = array();
-        $this->tracking['cntxattr'] = array();
-        $this->tracking['rulesets'] = array();
-        $this->tracking['services'] = array();
-        $this->tracking['servactn'] = array();
-        $this->tracking['servattr'] = array();
-        $this->tracking['inputs'] = array();
+        $this->tracking             = [];
+        $this->tracking['contexts'] = [];
+        $this->tracking['cntxactn'] = [];
+        $this->tracking['cntxattr'] = [];
+        $this->tracking['rulesets'] = [];
+        $this->tracking['services'] = [];
+        $this->tracking['servactn'] = [];
+        $this->tracking['servattr'] = [];
+        $this->tracking['inputs']   = [];
     }
-
 
     /////////////
     // METHODS //
@@ -80,14 +80,15 @@ class DefinitionManagerDoctrineWriter
 
 
     /**
-     * Write the definition manager to the database
+     * Write the definition manager to the database.
      *
-     * @param  DefinitionManager $dm     The definition manager to save
-     * @param  boolean           $delete Wether to delete definitions not in the dm but in the database (false)
+     * @param DefinitionManager $dm     The definition manager to save
+     * @param boolean           $delete Wether to delete definitions not in the dm but in the database (false)
      *
-     * @return array                     An array of messages detailing what changes will be made
+     * @return array An array of messages detailing what changes will be made
      */
-    public function write(DefinitionManager $dm, $delete = false) {
+    public function write(DefinitionManager $dm, $delete = false)
+    {
         //Load in the existing things
         $this->loadExisting();
 
@@ -103,83 +104,83 @@ class DefinitionManagerDoctrineWriter
         return $messages;
     }
 
-
     /////////////////////
     // PRIVATE METHODS //
     /////////////////////
 
 
     /**
-     * Load existing definitions into the map
+     * Load existing definitions into the map.
      */
-    private function loadExisting() {
+    private function loadExisting()
+    {
         //Load the contexts
         $contexts = $this->em->getRepository('MesdRuleBundle:ContextEntity')->loadAll();
-        foreach($contexts as $context) {
+        foreach ($contexts as $context) {
             $this->definitions['contexts'][$context->getName()] = $context;
-            $this->tracking['contexts'][$context->getName()] = false;
-            $this->definitions['cntxattr'][$context->getName()] = array();
-            $this->definitions['cntxactn'][$context->getName()] = array();
+            $this->tracking['contexts'][$context->getName()]    = false;
+            $this->definitions['cntxattr'][$context->getName()] = [];
+            $this->definitions['cntxactn'][$context->getName()] = [];
 
             //Add the context attributes and actions to the map also
-            foreach($context->getAttributes() as $attr) {
+            foreach ($context->getAttributes() as $attr) {
                 $this->definitions['cntxattr'][$context->getName()][$attr->getName()] = $attr;
-                $this->tracking['cntxattr'][$context->getName()][$attr->getName()] = false;
+                $this->tracking['cntxattr'][$context->getName()][$attr->getName()]    = false;
             }
-            foreach($context->getActions() as $actn) {
+            foreach ($context->getActions() as $actn) {
                 $this->definitions['cntxactn'][$context->getName()][$actn->getName()] = $actn;
-                $this->tracking['cntxactn'][$context->getName()][$actn->getName()] = false;
+                $this->tracking['cntxactn'][$context->getName()][$actn->getName()]    = false;
             }
         }
 
         //Load the rulesets
         $rulesets = $this->em->getRepository('MesdRuleBundle:RulesetEntity')->loadAll();
-        foreach($rulesets as $ruleset) {
+        foreach ($rulesets as $ruleset) {
             $this->definitions['rulesets'][$ruleset->getName()] = $ruleset;
-            $this->tracking['rulesets'][$ruleset->getName()] = false;
+            $this->tracking['rulesets'][$ruleset->getName()]    = false;
         }
 
         //Load the services
         $services = $this->em->getRepository('MesdRuleBundle:ServiceEntity')->loadAll();
-        foreach($services as $service) {
+        foreach ($services as $service) {
             $this->definitions['services'][$service->getName()] = $service;
-            $this->tracking['services'][$service->getName()] = false;
-            $this->definitions['servattr'][$service->getName()] = array();
-            $this->definitions['servactn'][$service->getName()] = array();
+            $this->tracking['services'][$service->getName()]    = false;
+            $this->definitions['servattr'][$service->getName()] = [];
+            $this->definitions['servactn'][$service->getName()] = [];
 
             //Add the service attributes and actions to the map also
-            foreach($service->getAttributes() as $attr) {
+            foreach ($service->getAttributes() as $attr) {
                 $this->definitions['servattr'][$service->getName()][$attr->getName()] = $attr;
-                $this->tracking['servattr'][$service->getName()][$attr->getName()] = false;
+                $this->tracking['servattr'][$service->getName()][$attr->getName()]    = false;
             }
-            foreach($service->getActions() as $actn) {
+            foreach ($service->getActions() as $actn) {
                 $this->definitions['servactn'][$service->getName()][$actn->getName()] = $actn;
-                $this->tracking['servactn'][$service->getName()][$actn->getName()] = false;
+                $this->tracking['servactn'][$service->getName()][$actn->getName()]    = false;
             }
         }
 
         //Load the inputs
         $inputs = $this->em->getRepository('MesdRuleBundle:InputEntity')->loadAll();
-        foreach($inputs as $input) {
+        foreach ($inputs as $input) {
             $this->definitions['inputs'][$input->getName()] = $input;
-            $this->tracking['inputs'][$input->getName()] = false;
+            $this->tracking['inputs'][$input->getName()]    = false;
         }
     }
 
-
     /**
-     * Update the mapping with the information from the definition manager
+     * Update the mapping with the information from the definition manager.
      *
-     * @param  DefinitionManager $dm The definition manager
+     * @param DefinitionManager $dm The definition manager
      *
-     * @return array                 Array of messages detailing the changes made
+     * @return array Array of messages detailing the changes made
      */
-    private function updateFromDefinitionManager(DefinitionManager $dm) {
+    private function updateFromDefinitionManager(DefinitionManager $dm)
+    {
         //Init the messages array
-        $messages = array();
+        $messages = [];
 
         //Get the inputs
-        foreach($dm->getAllInputDefinitions() as $name => $input) {
+        foreach ($dm->getAllInputDefinitions() as $name => $input) {
             if (array_key_exists($name, $this->definitions['inputs'])) {
                 $this->tracking['inputs'][$name] = true;
                 //Check that the existing matches
@@ -204,7 +205,7 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Get the contexts
-        foreach($dm->getAllContextDefinitions() as $name => $context) {
+        foreach ($dm->getAllContextDefinitions() as $name => $context) {
             if (array_key_exists($name, $this->definitions['contexts'])) {
                 $this->tracking['contexts'][$name] = true;
                 //Check that the entity matches the definition
@@ -223,14 +224,14 @@ class DefinitionManagerDoctrineWriter
                 $this->definitions['contexts'][$name]->setName($name);
                 $this->definitions['contexts'][$name]->setType($context['cType']);
                 $this->definitions['contexts'][$name]->setClassification($context['cName']);
-                $this->definitions['cntxattr'][$name] = array();
-                $this->definitions['cntxactn'][$name] = array();
+                $this->definitions['cntxattr'][$name] = [];
+                $this->definitions['cntxactn'][$name] = [];
                 $this->em->persist($this->definitions['contexts'][$name]);
                 $messages[] = 'New context created: ' . $name;
             }
 
             //Check this contexts attributes
-            foreach($dm->getContextAttributeDefinitions($name) as $attrName => $attr) {
+            foreach ($dm->getContextAttributeDefinitions($name) as $attrName => $attr) {
                 if (array_key_exists($attrName, $this->definitions['cntxattr'][$name])) {
                     $this->tracking['cntxattr'][$name][$attrName] = true;
                     //Check if the existing needs updated
@@ -256,7 +257,7 @@ class DefinitionManagerDoctrineWriter
             }
 
             //Check this contexts actions
-            foreach($dm->getContextActionDefinitions($name) as $actnName => $actn) {
+            foreach ($dm->getContextActionDefinitions($name) as $actnName => $actn) {
                 if (array_key_exists($actnName, $this->definitions['cntxactn'][$name])) {
                     $this->tracking['cntxactn'][$name][$actnName] = true;
                     //Check if the existing needs updated
@@ -283,14 +284,14 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Get the services via the service actions and attributes
-        foreach($dm->getAllServiceAttributeDefinitions() as $attrName => $attr) {
+        foreach ($dm->getAllServiceAttributeDefinitions() as $attrName => $attr) {
             //Check that the service was setup
             if (!array_key_exists($attr['service'], $this->definitions['services'])) {
                 //Create it
                 $this->definitions['services'][$attr['service']] = new ServiceEntity();
                 $this->definitions['services'][$attr['service']]->setName($attr['service']);
-                $this->definitions['servattr'][$attr['service']] = array();
-                $this->definitions['servactn'][$attr['service']] = array();
+                $this->definitions['servattr'][$attr['service']] = [];
+                $this->definitions['servactn'][$attr['service']] = [];
                 $this->em->persist($this->definitions['services'][$attr['service']]);
                 $messages[] = 'Created new service: ' . $attr['service'];
             } else {
@@ -323,14 +324,14 @@ class DefinitionManagerDoctrineWriter
         }
 
         //This whole method is REALLLLLLLLY UGLY, hopefully Ill fix it eventually
-        foreach($dm->getAllServiceActionDefinitions() as $actnName => $actn) {
+        foreach ($dm->getAllServiceActionDefinitions() as $actnName => $actn) {
             //Check that the service was setup
             if (!array_key_exists($actn['service'], $this->definitions['services'])) {
                 //Create it
                 $this->definitions['services'][$actn['service']] = new ServiceEntity();
                 $this->definitions['services'][$actn['service']]->setName($actn['service']);
-                $this->definitions['servattr'][$actn['service']] = array();
-                $this->definitions['servactn'][$actn['service']] = array();
+                $this->definitions['servattr'][$actn['service']] = [];
+                $this->definitions['servactn'][$actn['service']] = [];
                 $this->em->persist($this->definitions['services'][$actn['service']]);
                 $messages[] = 'Created new service: ' . $actn['service'];
             } else {
@@ -363,16 +364,16 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Get rulesets
-        foreach($dm->getAllRulesetDefinitions() as $name => $ruleset) {
+        foreach ($dm->getAllRulesetDefinitions() as $name => $ruleset) {
             if (array_key_exists($name, $this->definitions['rulesets'])) {
                 $this->tracking['rulesets'][$name] = true;
                 //Check if needs updated
-                $checkoff = array();
-                foreach($ruleset['contexts'] as $contextName) {
+                $checkoff = [];
+                foreach ($ruleset['contexts'] as $contextName) {
                     $checkoff[$contextName] = $this->definitions['contexts'][$contextName];
                 }
                 $existingContexts = $this->definitions['rulesets'][$name]->getContext();
-                foreach($existingContexts as $existingContext) {
+                foreach ($existingContexts as $existingContext) {
                     if (in_array($existingContext->getName(), $ruleset['contexts'])) {
                         unset($checkoff[$existingContext->getName()]);
                     } else {
@@ -381,7 +382,7 @@ class DefinitionManagerDoctrineWriter
                     }
                 }
                 //Add the contexts remaining in the checkoff
-                foreach($checkoff as $newContext) {
+                foreach ($checkoff as $newContext) {
                     $this->definitions['rulesets'][$name]->addContext($newContext);
                     $messages[] = 'Adding context ' . $newContext->getName() . ' to ruleset ' . $name;
                 }
@@ -390,7 +391,7 @@ class DefinitionManagerDoctrineWriter
                 //Create new
                 $this->definitions['rulesets'][$name] = new RulesetEntity();
                 $this->definitions['rulesets'][$name]->setName($name);
-                foreach($ruleset['contexts'] as $contextName) {
+                foreach ($ruleset['contexts'] as $contextName) {
                     $this->definitions['rulesets'][$name]->addContext($this->definitions['contexts'][$contextName]);
                 }
                 $this->em->persist($this->definitions['rulesets'][$name]);
@@ -402,23 +403,23 @@ class DefinitionManagerDoctrineWriter
         return $messages;
     }
 
-
     /**
-     * Delete the definitions not contained in the definition manager from the file
+     * Delete the definitions not contained in the definition manager from the file.
      *
      * @return array The array of messages detailing which definitions are to be deleted
      */
-    private function deleteUnused() {
-        $messages = array();
+    private function deleteUnused()
+    {
+        $messages = [];
         //Delete unused contexts
-        foreach($this->tracking['contexts'] as $contextName => $used) {
+        foreach ($this->tracking['contexts'] as $contextName => $used) {
             if (!$used) {
                 $context = $this->defintions['contexts'][$contextName];
                 //Delete the attributes and actions
-                foreach($context->getAttributes() as $attr) {
+                foreach ($context->getAttributes() as $attr) {
                     $this->em->remove($attr);
                 }
-                foreach($context->getActions() as $actn) {
+                foreach ($context->getActions() as $actn) {
                     $this->em->remove($actn);
                 }
                 $this->em->remove($context);
@@ -427,8 +428,8 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused context attributes
-        foreach($this->tracking['cntxattr'] as $contextName => $attrs) {
-            foreach($attrs as $attrName => $used) {
+        foreach ($this->tracking['cntxattr'] as $contextName => $attrs) {
+            foreach ($attrs as $attrName => $used) {
                 if (!$used) {
                     $this->em->remove($this->definitions['cntxattr'][$contextName][$attrName]);
                     $messages[] = 'Deleting attribute ' . $attrName . ' for context ' . $contextName;
@@ -437,8 +438,8 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused context actions
-        foreach($this->tracking['cntxactn'] as $contextName => $actns) {
-            foreach($actns as $actnName => $used) {
+        foreach ($this->tracking['cntxactn'] as $contextName => $actns) {
+            foreach ($actns as $actnName => $used) {
                 if (!$used) {
                     $this->em->remove($this->definitions['cntxactn'][$contextName][$actnName]);
                     $messages[] = 'Deleting action ' . $actnName . ' for context ' . $contextName;
@@ -447,14 +448,14 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused services
-        foreach($this->tracking['services'] as $serviceName => $used) {
+        foreach ($this->tracking['services'] as $serviceName => $used) {
             if (!$used) {
                 $service = $this->definitions['services'][$serviceName];
                 //Delete the attributes and actions
-                foreach($service->getAttributes() as $attr) {
+                foreach ($service->getAttributes() as $attr) {
                     $this->em->remove($attr);
                 }
-                foreach($service->getActions() as $actn) {
+                foreach ($service->getActions() as $actn) {
                     $this->em->remove($actn);
                 }
                 $this->em->remove($service);
@@ -463,8 +464,8 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused service attributes
-        foreach($this->tracking['servattr'] as $serviceName => $attrs) {
-            foreach($attrs as $attrName => $used) {
+        foreach ($this->tracking['servattr'] as $serviceName => $attrs) {
+            foreach ($attrs as $attrName => $used) {
                 if (!$used) {
                     $this->em->remove($this->definitions['servattr'][$serviceName][$attrName]);
                     $messages[] = 'Deleting attribute ' . $attrName . ' for service ' . $serviceName;
@@ -473,8 +474,8 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused service actions
-        foreach($this->tracking['servactn'] as $serviceName => $actns) {
-            foreach($actns as $actnName => $used) {
+        foreach ($this->tracking['servactn'] as $serviceName => $actns) {
+            foreach ($actns as $actnName => $used) {
                 if (!$used) {
                     $this->em->remove($this->definitions['servactn'][$serviceName][$actnName]);
                     $messages[] = 'Deleting action ' . $actnName . ' for service ' . $serviceName;
@@ -483,7 +484,7 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused inputs
-        foreach($this->tracking['inputs'] as $inputName => $used) {
+        foreach ($this->tracking['inputs'] as $inputName => $used) {
             if (!$used) {
                 $this->em->remove($this->definitions['inputs'][$inputName]);
                 $messages[] = 'Deleting input: ' . $inputName;
@@ -491,7 +492,7 @@ class DefinitionManagerDoctrineWriter
         }
 
         //Delete unused rulesets
-        foreach($this->tracking['rulesets'] as $rulesetName => $used) {
+        foreach ($this->tracking['rulesets'] as $rulesetName => $used) {
             if (!$used) {
                 $this->em->remove($this->definitions['rulesets'][$rulesetName]);
                 $messages[] = 'Deleting ruleset: ' . $rulesetName;

@@ -2,13 +2,10 @@
 
 namespace Mesd\RuleBundle\Model\Builder;
 
-use Mesd\RuleBundle\Model\Builder\RuleBuilder;
-use Mesd\RuleBundle\Model\Builder\RuleBuilderInterface;
-use Mesd\RuleBundle\Model\Builder\RulesetBuilderInterface;
 use Mesd\RuleBundle\Model\Context\ContextCollectionInterface;
 use Mesd\RuleBundle\Model\Definition\DefinitionManagerInterface;
-use Mesd\RuleBundle\Model\Ruleset\Ruleset;
 use Mesd\RuleBundle\Model\Rule\RuleNodeInterface;
+use Mesd\RuleBundle\Model\Ruleset\Ruleset;
 
 class RulesetBuilder implements RulesetBuilderInterface
 {
@@ -25,19 +22,22 @@ class RulesetBuilder implements RulesetBuilderInterface
     ///////////////
 
     /**
-     * The ruleset being built
+     * The ruleset being built.
+     *
      * @var Ruleset
      */
     private $ruleset;
 
     /**
-     * Array detailing what rules follow which rules
+     * Array detailing what rules follow which rules.
+     *
      * @var array
      */
     private $ruleMapping;
 
     /**
-     * Definition Manager
+     * Definition Manager.
+     *
      * @var DefinitionManagerInterface
      */
     private $definitionManager;
@@ -47,7 +47,7 @@ class RulesetBuilder implements RulesetBuilderInterface
     //////////////////
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param DefintionManagerInterface $definitonManager The definition manager
      * @param string                    $name             The name of the ruleset
@@ -66,25 +66,25 @@ class RulesetBuilder implements RulesetBuilderInterface
     /////////////////////////
 
     /**
-     * Starts a new rule to add to the ruleset and returns the rule builder
+     * Starts a new rule to add to the ruleset and returns the rule builder.
      *
-     * @param  string               $name The name of the new rule
+     * @param string $name The name of the new rule
      *
-     * @return RuleBuilderInterface       The new builder for the new rule
+     * @return RuleBuilderInterface The new builder for the new rule
      */
     public function startRule($name)
     {
         //Add the rule name to the mapping
-        $this->ruleMapping[$name] = array('node' => null, 'then' => array(), 'else' => array(), 'root' => true);
+        $this->ruleMapping[$name] = ['node' => null, 'then' => [], 'else' => [], 'root' => true];
 
         //Create the new rule builder and return it
         return new RuleBuilder($this, $name);
     }
 
     /**
-     * Add a rule node to the rule builder
+     * Add a rule node to the rule builder.
      *
-     * @param  RuleNodeInterface $ruleNode The rule node to add to the ruleset
+     * @param RuleNodeInterface $ruleNode The rule node to add to the ruleset
      *
      * @return self
      */
@@ -97,10 +97,10 @@ class RulesetBuilder implements RulesetBuilderInterface
     }
 
     /**
-     * Registers that a given rule will follow another rule if that rule evals to true
+     * Registers that a given rule will follow another rule if that rule evals to true.
      *
-     * @param  string $parentName The name of the initial rule
-     * @param  string $thenName   The name of the rule to goto if the parent rule evals to true
+     * @param string $parentName The name of the initial rule
+     * @param string $thenName   The name of the rule to goto if the parent rule evals to true
      *
      * @return self
      */
@@ -118,10 +118,10 @@ class RulesetBuilder implements RulesetBuilderInterface
     }
 
     /**
-     * Registers that a given rule will follow another rule if that rule evals to false
+     * Registers that a given rule will follow another rule if that rule evals to false.
      *
-     * @param  string $parentName The name of the initial rule
-     * @param  string $elseName   The name of the rule to goto if the parent rule evals to false
+     * @param string $parentName The name of the initial rule
+     * @param string $elseName   The name of the rule to goto if the parent rule evals to false
      *
      * @return self
      */
@@ -139,7 +139,7 @@ class RulesetBuilder implements RulesetBuilderInterface
     }
 
     /**
-     * Builds and returns the updated ruleset
+     * Builds and returns the updated ruleset.
      *
      * @return RulesetInterface The updated ruleset
      */
@@ -190,7 +190,7 @@ class RulesetBuilder implements RulesetBuilderInterface
     }
 
     /**
-     * Returns a reference to the defintion manager
+     * Returns a reference to the defintion manager.
      *
      * @return DefinitionManagerInterface The defintion manager
      */
@@ -200,7 +200,7 @@ class RulesetBuilder implements RulesetBuilderInterface
     }
 
     /**
-     * Get the context collection currently associated with the ruleset
+     * Get the context collection currently associated with the ruleset.
      *
      * @return ContextCollectionInterface The context collection
      */

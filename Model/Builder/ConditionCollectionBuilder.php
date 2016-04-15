@@ -2,15 +2,10 @@
 
 namespace Mesd\RuleBundle\Model\Builder;
 
-use Mesd\RuleBundle\Model\Builder\ConditionCollectionBuilderInterface;
-
-use Mesd\RuleBundle\Model\Builder\RuleBuilderInterface;
 use Mesd\RuleBundle\Model\Condition\ConditionCollection;
-use Mesd\RuleBundle\Model\Attribute\AttributeInterface;
-use Mesd\RuleBundle\Model\Builder\ConditionBuilder;
-use Mesd\RuleBundle\Model\Definition\DefinitionManagerInterface;
 use Mesd\RuleBundle\Model\Condition\ConditionInterface;
 use Mesd\RuleBundle\Model\Context\ContextCollectionInterface;
+use Mesd\RuleBundle\Model\Definition\DefinitionManagerInterface;
 
 class ConditionCollectionBuilder implements ConditionCollectionBuilderInterface
 {
@@ -19,13 +14,15 @@ class ConditionCollectionBuilder implements ConditionCollectionBuilderInterface
     ///////////////
 
     /**
-     * The parent builder object
+     * The parent builder object.
+     *
      * @var ConditionCollectionContainableInterface
      */
     private $parentBuilder;
 
     /**
-     * The underlying condition collection
+     * The underlying condition collection.
+     *
      * @var ConditionCollection
      */
     private $conditionCollection;
@@ -36,12 +33,13 @@ class ConditionCollectionBuilder implements ConditionCollectionBuilderInterface
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ConditionCollectionContainableInterface $parentBuilder The parent builder object
      * @param int                                     $chain         The chain type
      */
-    public function __construct(ConditionCollectionContainableInterface $parentBuilder, $chain) {
+    public function __construct(ConditionCollectionContainableInterface $parentBuilder, $chain)
+    {
         //Set stuff
         $this->parentBuilder = $parentBuilder;
 
@@ -49,74 +47,75 @@ class ConditionCollectionBuilder implements ConditionCollectionBuilderInterface
         $this->conditionCollection = new ConditionCollection($chain);
     }
 
-
     /////////////////////////
     // IMPLEMENTED METHODS //
     /////////////////////////
 
 
     /**
-     * starts a new condition to add to the collection
+     * starts a new condition to add to the collection.
      *
      * @return ConditionBuilderInterface A builder for the new condition
      */
-    public function startCondition() {
+    public function startCondition()
+    {
         //Create a new condition builder
         return new ConditionBuilder($this);
     }
 
-
     /**
-     * Add a condition object to the collection
+     * Add a condition object to the collection.
      *
-     * @param  ConditionInterface $condition The condition  object to add to the collection
+     * @param ConditionInterface $condition The condition  object to add to the collection
      *
      * @return self
      */
-    public function addCondition(ConditionInterface $condition) {
+    public function addCondition(ConditionInterface $condition)
+    {
         $this->conditionCollection->addCondition($condition);
+
         return $this;
     }
 
-
     /**
-     * Start a new condition collection to embed in this collection
+     * Start a new condition collection to embed in this collection.
      *
-     * @param  int                                 $chain A flag pertaining to whether this is any or all collection
+     * @param int $chain A flag pertaining to whether this is any or all collection
      *
-     * @return ConditionCollectionBuilderInterface        Builder for the new collection
+     * @return ConditionCollectionBuilderInterface Builder for the new collection
      */
-    public function startConditionCollection($chain) {
+    public function startConditionCollection($chain)
+    {
         return new ConditionCollectionBuilder($this, $chain);
     }
 
-
     /**
-     * Short hand for the startConditionCollection(ANY)
+     * Short hand for the startConditionCollection(ANY).
      *
      * @return ConditionCollectionBuilderInterface Builder for the new collection
      */
-    public function startConditionCollectionAll() {
+    public function startConditionCollectionAll()
+    {
         return $this->startConditionCollection(ConditionCollection::ALL_CONDITION);
     }
 
-
     /**
-     * Short hand for the startConditionCollection(ALL)
+     * Short hand for the startConditionCollection(ALL).
      *
      * @return ConditionCollectionBuilderInterface Builder for the new collection
      */
-    public function startConditionCollectionAny() {
+    public function startConditionCollectionAny()
+    {
         return $this->startConditionCollection(ConditionCollection::ANY_CONDITION);
     }
 
-
     /**
-     * Ends the construction of the current collection
+     * Ends the construction of the current collection.
      *
      * @return ConditionCollectionContainableInterface The parent builder
      */
-    public function end() {
+    public function end()
+    {
         //Add the condition to the parent builder
         $this->parentBuilder->addConditionCollection($this->conditionCollection);
 
@@ -124,35 +123,35 @@ class ConditionCollectionBuilder implements ConditionCollectionBuilderInterface
         return $this->parentBuilder;
     }
 
-
     /**
-     * Add or set the condtions collection of the object
+     * Add or set the condtions collection of the object.
      *
-     * @param  ConditionCollection $conditionCollection The condition collection to add or set
+     * @param ConditionCollection $conditionCollection The condition collection to add or set
      *
      * @return self
      */
-    public function addConditionCollection(ConditionCollection $conditionCollection) {
+    public function addConditionCollection(ConditionCollection $conditionCollection)
+    {
         return $this->addCondition($conditionCollection);
     }
 
-
     /**
-     * Returns a reference to the defintion manager
-     * 
+     * Returns a reference to the defintion manager.
+     *
      * @return DefinitionManagerInterface The defintion manager
      */
-    public function getDefinitionManager() {
+    public function getDefinitionManager()
+    {
         return $this->parentBuilder->getDefinitionManager();
     }
 
-
     /**
-     * Get the context collection currently associated with the ruleset
+     * Get the context collection currently associated with the ruleset.
      *
      * @return ContextCollectionInterface The context collection
      */
-    public function getContextCollection() {
+    public function getContextCollection()
+    {
         return $this->parentBuilder->getContextCollection();
     }
 }

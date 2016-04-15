@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RulesetEntity
+ * RulesetEntity.
  */
 class RulesetEntity
 {
@@ -25,7 +24,7 @@ class RulesetEntity
     private $context;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -33,9 +32,9 @@ class RulesetEntity
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -43,9 +42,10 @@ class RulesetEntity
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return RulesetEntity
      */
     public function setName($name)
@@ -56,9 +56,9 @@ class RulesetEntity
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -66,9 +66,10 @@ class RulesetEntity
     }
 
     /**
-     * Add context
+     * Add context.
      *
      * @param \Mesd\RuleBundle\Entity\ContextEntity $context
+     *
      * @return RulesetEntity
      */
     public function addContext(\Mesd\RuleBundle\Entity\ContextEntity $context)
@@ -79,7 +80,7 @@ class RulesetEntity
     }
 
     /**
-     * Remove context
+     * Remove context.
      *
      * @param \Mesd\RuleBundle\Entity\ContextEntity $context
      */
@@ -89,9 +90,9 @@ class RulesetEntity
     }
 
     /**
-     * Get context
+     * Get context.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getContext()
     {
@@ -102,11 +103,11 @@ class RulesetEntity
      */
     private $rules;
 
-
     /**
-     * Add rules
+     * Add rules.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $rules
+     *
      * @return RulesetEntity
      */
     public function addRule(\Mesd\RuleBundle\Entity\RuleEntity $rules)
@@ -117,7 +118,7 @@ class RulesetEntity
     }
 
     /**
-     * Remove rules
+     * Remove rules.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $rules
      */
@@ -127,9 +128,9 @@ class RulesetEntity
     }
 
     /**
-     * Get rules
+     * Get rules.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRules()
     {

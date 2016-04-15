@@ -3,35 +3,34 @@
 namespace Mesd\RuleBundle\Model\Builder;
 
 use Mesd\RuleBundle\Model\Condition\ConditionCollection;
-use Mesd\RuleBundle\Model\Builder\DefinitionManagerAwareInterface;
 
 interface ConditionCollectionContainableInterface extends DefinitionManagerAwareInterface
 {
     /**
-     * Add or set the condtions collection of the object
+     * Add or set the condtions collection of the object.
      *
      * @param ConditionCollection $conditionCollection The condition collection to add or set
      */
     public function addConditionCollection(ConditionCollection $conditionCollection);
 
     /**
-     * Starts a new condition collection to embed in this collection
+     * Starts a new condition collection to embed in this collection.
      *
-     * @param  int                                 $chain A flag pertaining to whether this is any or all collection
+     * @param int $chain A flag pertaining to whether this is any or all collection
      *
-     * @return ConditionCollectionBuilderInterface        Builder for the new collection
+     * @return ConditionCollectionBuilderInterface Builder for the new collection
      */
     public function startConditionCollection($chain);
 
     /**
-     * Short hand for the startConditionCollection(ANY)
+     * Short hand for the startConditionCollection(ANY).
      *
      * @return ConditionCollectionBuilderInterface Builder for the new collection
      */
     public function startConditionCollectionAll();
 
     /**
-     * Short hand for the startConditionCollection(ALL)
+     * Short hand for the startConditionCollection(ALL).
      *
      * @return ConditionCollectionBuilderInterface Builder for the new collection
      */

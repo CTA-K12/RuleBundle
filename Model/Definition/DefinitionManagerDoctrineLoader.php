@@ -2,14 +2,7 @@
 
 namespace Mesd\RuleBundle\Model\Definition;
 
-use Mesd\RuleBundle\Model\Definition\DefinitionManagerLoaderInterface;
-
-use Mesd\RuleBundle\Model\Definition\DefinitionManagerInterface;
-use Mesd\RuleBundle\Model\Definition\DefinitionManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Symfony\Component\Yaml\Parser;
 
 class DefinitionManagerDoctrineLoader implements DefinitionManagerLoaderInterface
 {
@@ -25,13 +18,15 @@ class DefinitionManagerDoctrineLoader implements DefinitionManagerLoaderInterfac
     ///////////////
 
     /**
-     * The definition manager that this class is working on building
+     * The definition manager that this class is working on building.
+     *
      * @var DefinitionManagerInterface
      */
     private $dm;
 
     /**
-     * The entity manager to load from
+     * The entity manager to load from.
+     *
      * @var EntityManager
      */
     private $em;
@@ -42,12 +37,13 @@ class DefinitionManagerDoctrineLoader implements DefinitionManagerLoaderInterfac
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param DefinitionManagerInterface $dm     Reference to the definition manager service
      * @param string                     $emName The name of the entity manager to use
      */
-    public function __construct(ContainerInterface $container, $emName) {
+    public function __construct(ContainerInterface $container, $emName)
+    {
         //Init the definition manager
         $this->dm = new DefinitionManager($container);
 
@@ -55,58 +51,58 @@ class DefinitionManagerDoctrineLoader implements DefinitionManagerLoaderInterfac
         $this->em = $container->get('doctrine')->getManager($emName);
     }
 
-
     /////////////
     // METHODS //
     /////////////
 
 
     /**
-     * Loads the information from the config file into the definition manager
+     * Loads the information from the config file into the definition manager.
      *
      * @return DefinitionManagerInterface The reference to the loaded definition manager
      */
-    public function load() {
+    public function load()
+    {
         //Load all of the inputs
         $inputs = $this->em->getRepository('MesdRuleBundle:InputEntity')->loadAll();
-        foreach($inputs as $input) {
+        foreach ($inputs as $input) {
             if (null !== $input->getParams()) {
                 $params = unserialize($input->getParams());
             } else {
-                $params = array();
+                $params = [];
             }
             $this->dm->registerInput($input->getName(), $input->getClass(), $params);
         }
 
         //Load all of the contexts
         $contexts = $this->em->getRepository('MesdRuleBundle:ContextEntity')->loadAll();
-        foreach($contexts as $context) {
+        foreach ($contexts as $context) {
             $this->dm->registerContext($context->getName(), $context->getClassification(), $context->getType());
-            foreach($context->getAttributes() as $attribute) {
+            foreach ($context->getAttributes() as $attribute) {
                 $this->dm->registerContextAttribute($attribute->getName(), $context->getName(), $attribute->getClass(), $attribute->getInput()->getName());
             }
-            foreach($context->getActions() as $action) {
+            foreach ($context->getActions() as $action) {
                 $this->dm->registerContextAction($action->getName(), $context->getName(), $action->getClass(), $action->getInput()->getName());
             }
         }
 
         //Load all of the services
         $services = $this->em->getRepository('MesdRuleBundle:ServiceEntity')->loadAll();
-        foreach($services as $service) {
-            foreach($service->getAttributes() as $attribute) {
+        foreach ($services as $service) {
+            foreach ($service->getAttributes() as $attribute) {
                 $this->dm->registerServiceAttribute($attribute->getName(), $service->getName(), $attribute->getClass(), $attribute->getInput()->getName());
             }
-            foreach($service->getActions() as $action) {
+            foreach ($service->getActions() as $action) {
                 $this->dm->registerServiceAction($action->getName(), $service->getName(), $action->getClass(), $action->getInput()->getName());
             }
         }
 
         //Load all of the rulesets
         $rulesets = $this->em->getRepository('MesdRuleBundle:RulesetEntity')->loadAll();
-        foreach($rulesets as $ruleset) {
+        foreach ($rulesets as $ruleset) {
             //Build the children array
-            $children = array('contexts' => array());
-            foreach($ruleset->getContext() as $context) {
+            $children = ['contexts' => []];
+            foreach ($ruleset->getContext() as $context) {
                 $children['contexts'][] = $context->getName();
             }
             $this->dm->registerRuleset($ruleset->getName(), $children);
@@ -116,14 +112,13 @@ class DefinitionManagerDoctrineLoader implements DefinitionManagerLoaderInterfac
         return $this->dm;
     }
 
-
     /////////////////////////
     // GETTERS AND SETTERS //
     /////////////////////////
 
 
     /**
-     * Gets the Reference to the definition manager
+     * Gets the Reference to the definition manager.
      *
      * @return DefinitionManagerInterface
      */
@@ -131,7 +126,6 @@ class DefinitionManagerDoctrineLoader implements DefinitionManagerLoaderInterfac
     {
         return $this->dm;
     }
-
 
     /**
      * Gets the The path to the definition manager configuration file.

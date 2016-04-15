@@ -2,10 +2,8 @@
 
 namespace Mesd\RuleBundle\Model\Context;
 
-use Mesd\RuleBundle\Model\Context\ContextInterface;
-use Mesd\RuleBundle\Model\Context\ContextDefinition;
-use Mesd\RuleBundle\Model\Attribute\AbstractContextAttribute;
 use Mesd\RuleBundle\Model\Action\AbstractContextAction;
+use Mesd\RuleBundle\Model\Attribute\AbstractContextAttribute;
 
 class GenericContext implements ContextInterface
 {
@@ -14,31 +12,36 @@ class GenericContext implements ContextInterface
     ///////////////
 
     /**
-     * The name of the context
+     * The name of the context.
+     *
      * @var string
      */
     private $name;
 
     /**
-     * The context definition
+     * The context definition.
+     *
      * @var ContextDefinition
      */
     private $contextDefinition;
 
     /**
-     * The object that is the current value of the context
+     * The object that is the current value of the context.
+     *
      * @var mixed
      */
     private $object;
 
     /**
-     * The array of attributes associated with this context
+     * The array of attributes associated with this context.
+     *
      * @var array
      */
     private $attributes;
 
     /**
-     * THe array of actions associated with this context
+     * THe array of actions associated with this context.
+     *
      * @var array
      */
     private $actions;
@@ -49,12 +52,13 @@ class GenericContext implements ContextInterface
 
 
     /**
-     * Constructor
-     * 
+     * Constructor.
+     *
      * @param ContextDefinition $contextDefinition The definition of the context
      * @param string            $name              The name of the context (will default to the classification name of the context definition)
      */
-    public function __construct(ContextDefinition $contextDefinition, $name = null) {
+    public function __construct(ContextDefinition $contextDefinition, $name = null)
+    {
         //Set stuff
         $this->contextDefinition = $contextDefinition;
 
@@ -66,10 +70,9 @@ class GenericContext implements ContextInterface
         }
 
         //Init stuff
-        $this->attributes = array();
-        $this->actions = array();
+        $this->attributes = [];
+        $this->actions    = [];
     }
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
@@ -77,83 +80,86 @@ class GenericContext implements ContextInterface
 
 
     /**
-     * Returns the name of the context
-     * 
+     * Returns the name of the context.
+     *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
-     * Sets the name of the context
+     * Sets the name of the context.
      *
      * @param string $name The name to assign to the context
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-
     /**
-     * Gets the underlying object that the context is representing
+     * Gets the underlying object that the context is representing.
      *
      * @return mixed The underlying object
      */
-    public function getObject() {
+    public function getObject()
+    {
         return $this->object;
     }
 
-
     /**
-     * Sets the underlying object
+     * Sets the underlying object.
      *
      * @param mixed $object The underlying object
      */
-    public function setObject($object) {
+    public function setObject($object)
+    {
         $this->object = $object;
     }
 
     /**
-     * Returns the list of attributes associated with this context
+     * Returns the list of attributes associated with this context.
      *
      * @return array Array of AbstractContextAttribute objects
      */
-    public function getAttributes() {
+    public function getAttributes()
+    {
         return $this->attributes;
     }
 
-
     /**
-     * Adds an attribute to the context
-     * 
+     * Adds an attribute to the context.
+     *
      * @param AbstractContextAttribute $attribute The attribute to register with the context
      */
-    public function addAttribute(AbstractContextAttribute $attribute) {
+    public function addAttribute(AbstractContextAttribute $attribute)
+    {
         //Set the parent context of the attribute
         $attribute->setParentContext($this);
-        
+
         //Add the attribute in
         $this->attributes[] = $attribute;
     }
 
-
     /**
-     * Gets the array of actions associated with this context
-     * 
+     * Gets the array of actions associated with this context.
+     *
      * @return array An array of AbstractContextAction objects
      */
-    public function getActions() {
+    public function getActions()
+    {
         return $this->actions;
     }
 
-
     /**
-     * Adds an action to the context
-     * 
+     * Adds an action to the context.
+     *
      * @param AbstractContextAction $action
      */
-    public function addAction(AbstractContextAction $action) {
+    public function addAction(AbstractContextAction $action)
+    {
         //Set the parent context of the action
         $action->setParentContext($this);
 

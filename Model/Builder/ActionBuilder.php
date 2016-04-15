@@ -2,12 +2,7 @@
 
 namespace Mesd\RuleBundle\Model\Builder;
 
-use Mesd\RuleBundle\Model\Builder\ActionBuilderInterface;
-
-use Mesd\RuleBundle\Model\Builder\RuleBuilderInterface;
 use Mesd\RuleBundle\Model\Action\ActionInterface;
-use Mesd\RuleBundle\Model\Action\AbstractServiceAction;
-use Mesd\RuleBundle\Model\Action\AbstractContextAction;
 
 class ActionBuilder implements ActionBuilderInterface
 {
@@ -27,25 +22,29 @@ class ActionBuilder implements ActionBuilderInterface
     ///////////////
 
     /**
-     * The underlying action
+     * The underlying action.
+     *
      * @var ActionInterface
      */
     private $action;
 
     /**
-     * The input value
+     * The input value.
+     *
      * @var mixed
      */
     private $inputValue;
 
     /**
-     * The parent rule builder
+     * The parent rule builder.
+     *
      * @var RuleBuilderInterface
      */
     private $parentBuilder;
 
     /**
-     * The type of action this (e.g. Whether a THEN or ELSE)
+     * The type of action this (e.g. Whether a THEN or ELSE).
+     *
      * @var int
      */
     private $type;
@@ -56,26 +55,26 @@ class ActionBuilder implements ActionBuilderInterface
 
 
     /**
-     * Returns the array of valid types
+     * Returns the array of valid types.
      *
      * @return array Valid types (Name => enum)
      */
-    public static function getValidTypes() {
-        return array('then' => self::TYPE_THEN, 'else' => self::TYPE_ELSE);
+    public static function getValidTypes()
+    {
+        return ['then' => self::TYPE_THEN, 'else' => self::TYPE_ELSE];
     }
-
 
     /**
-     * Checks whether a give int value matches a valid type
+     * Checks whether a give int value matches a valid type.
      *
-     * @param  int     $type The int value of the type to check
+     * @param int $type The int value of the type to check
      *
-     * @return boolean       Whether the given type value is valid or not
+     * @return boolean Whether the given type value is valid or not
      */
-    public static function isValidType($type) {
+    public static function isValidType($type)
+    {
         return in_array($type, self::getValidTypes());
     }
-
 
     //////////////////
     // BASE METHODS //
@@ -83,23 +82,23 @@ class ActionBuilder implements ActionBuilderInterface
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param RuleBuilderInterface $parentBuilder The parent builder
      */
-    public function __construct(RuleBuilderInterface $parentBuilder, $type) {
+    public function __construct(RuleBuilderInterface $parentBuilder, $type)
+    {
         //Check the validatity of type
         if (!self::isValidType($type)) {
             throw new \Exception(self::ERROR_NOT_VALID_TYPE);
         }
 
         //Set stuff
-        $this->type = $type;
+        $this->type          = $type;
         $this->parentBuilder = $parentBuilder;
-        $this->action = null;
-        $this->inputValue = null;
+        $this->action        = null;
+        $this->inputValue    = null;
     }
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
@@ -107,57 +106,58 @@ class ActionBuilder implements ActionBuilderInterface
 
 
     /**
-     * Sets the action to the be the service action with the given name in the definition manager
+     * Sets the action to the be the service action with the given name in the definition manager.
      *
-     * @param  string $name The name of the service action in the definition manager
+     * @param string $name The name of the service action in the definition manager
      *
      * @return self
      */
-    public function serviceAction($name) {
+    public function serviceAction($name)
+    {
         //Get the action from the parent builders definition manager reference
         $this->action = $this->parentBuilder->getDefinitionManager()->getServiceAction($name);
 
         return $this;
     }
 
-
     /**
-     * Sets the action to the be the context action with the given context name and action name in the definition manager
+     * Sets the action to the be the context action with the given context name and action name in the definition manager.
      *
-     * @param  string $contextName The name of the context owning the action in the definition manager
-     * @param  string $actionName  The name of the action in the definition manager
+     * @param string $contextName The name of the context owning the action in the definition manager
+     * @param string $actionName  The name of the action in the definition manager
      *
      * @return self
      */
-    public function contextAction($contextName, $actionName) {
+    public function contextAction($contextName, $actionName)
+    {
         //Get the action from the ruleset builders context collection
         $this->action = $this->parentBuilder->getContextCollection()->createContextAction($contextName, $actionName);
 
         return $this;
     }
 
-
     /**
-     * The value of the input to give to the actions input object
+     * The value of the input to give to the actions input object.
      *
-     * @param  mixed $inputValue The input value
+     * @param mixed $inputValue The input value
      *
      * @return self
      */
-    public function setInputValue($inputValue) {
+    public function setInputValue($inputValue)
+    {
         //Save input value until the end method is called
         $this->inputValue = $inputValue;
 
         return $this;
     }
 
-
     /**
-     * Complete the construction of the action and return the parent builder
+     * Complete the construction of the action and return the parent builder.
      *
      * @return RuleBuilderInterface The parent builder
      */
-    public function end() {
+    public function end()
+    {
         //Bundle up everything
         $this->action->setInputValue($this->inputValue);
 

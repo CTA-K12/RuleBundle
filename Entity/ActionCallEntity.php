@@ -2,10 +2,9 @@
 
 namespace Mesd\RuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActionCallEntity
+ * ActionCallEntity.
  */
 class ActionCallEntity
 {
@@ -34,11 +33,10 @@ class ActionCallEntity
      */
     private $elseRule;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -46,9 +44,10 @@ class ActionCallEntity
     }
 
     /**
-     * Set raw_input_value
+     * Set raw_input_value.
      *
      * @param string $rawInputValue
+     *
      * @return ActionCallEntity
      */
     public function setRawInputValue($rawInputValue)
@@ -59,9 +58,9 @@ class ActionCallEntity
     }
 
     /**
-     * Get raw_input_value
+     * Get raw_input_value.
      *
-     * @return string 
+     * @return string
      */
     public function getRawInputValue()
     {
@@ -69,9 +68,10 @@ class ActionCallEntity
     }
 
     /**
-     * Set action
+     * Set action.
      *
      * @param \Mesd\RuleBundle\Entity\ActionEntity $action
+     *
      * @return ActionCallEntity
      */
     public function setAction(\Mesd\RuleBundle\Entity\ActionEntity $action = null)
@@ -82,9 +82,9 @@ class ActionCallEntity
     }
 
     /**
-     * Get action
+     * Get action.
      *
-     * @return \Mesd\RuleBundle\Entity\ActionEntity 
+     * @return \Mesd\RuleBundle\Entity\ActionEntity
      */
     public function getAction()
     {
@@ -92,9 +92,10 @@ class ActionCallEntity
     }
 
     /**
-     * Set thenRule
+     * Set thenRule.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $thenRule
+     *
      * @return ActionCallEntity
      */
     public function setThenRule(\Mesd\RuleBundle\Entity\RuleEntity $thenRule = null)
@@ -105,9 +106,9 @@ class ActionCallEntity
     }
 
     /**
-     * Get thenRule
+     * Get thenRule.
      *
-     * @return \Mesd\RuleBundle\Entity\RuleEntity 
+     * @return \Mesd\RuleBundle\Entity\RuleEntity
      */
     public function getThenRule()
     {
@@ -115,9 +116,10 @@ class ActionCallEntity
     }
 
     /**
-     * Set elseRule
+     * Set elseRule.
      *
      * @param \Mesd\RuleBundle\Entity\RuleEntity $elseRule
+     *
      * @return ActionCallEntity
      */
     public function setElseRule(\Mesd\RuleBundle\Entity\RuleEntity $elseRule = null)
@@ -128,9 +130,9 @@ class ActionCallEntity
     }
 
     /**
-     * Get elseRule
+     * Get elseRule.
      *
-     * @return \Mesd\RuleBundle\Entity\RuleEntity 
+     * @return \Mesd\RuleBundle\Entity\RuleEntity
      */
     public function getElseRule()
     {

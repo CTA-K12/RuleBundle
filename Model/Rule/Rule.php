@@ -2,10 +2,8 @@
 
 namespace Mesd\RuleBundle\Model\Rule;
 
-use Mesd\RuleBundle\Model\Rule\RuleInterface;
-
-use Mesd\RuleBundle\Model\Condition\ConditionCollection;
 use Mesd\RuleBundle\Model\Action\ActionInterface;
+use Mesd\RuleBundle\Model\Condition\ConditionCollection;
 
 class Rule implements RuleInterface
 {
@@ -14,31 +12,36 @@ class Rule implements RuleInterface
     ///////////////
 
     /**
-     * The collection of conditions that make up the if section of a given rule
+     * The collection of conditions that make up the if section of a given rule.
+     *
      * @var ConditionCollection
      */
     private $conditions;
 
     /**
-     * The name of the rule
+     * The name of the rule.
+     *
      * @var string
      */
     private $name;
 
     /**
-     * The description of the rule
+     * The description of the rule.
+     *
      * @var string
      */
     private $description;
 
     /**
-     * The then actions
+     * The then actions.
+     *
      * @var \SplQueue
      */
     private $thenActions;
 
     /**
-     * The else actions
+     * The else actions.
+     *
      * @var \SplQueue
      */
     private $elseActions;
@@ -49,9 +52,10 @@ class Rule implements RuleInterface
 
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         //Set the name of the rule
         $this->name = $name;
 
@@ -63,28 +67,28 @@ class Rule implements RuleInterface
         $this->elseActions = new \SplQueue();
     }
 
-
     /////////////////////////
     // IMPLEMENTED METHODS //
     /////////////////////////
 
 
     /**
-     * Evaluate the rule
+     * Evaluate the rule.
      *
-     * @return boolean           The resulting evaluation of the rule
+     * @return boolean The resulting evaluation of the rule
      */
-    public function evaluate() {
+    public function evaluate()
+    {
         //Eval the conditions
         $eval = $this->conditions->evaluate();
 
         //Run the then/else actions
         if ($eval) {
-            foreach($this->thenActions as $action) {
+            foreach ($this->thenActions as $action) {
                 $action->perform();
             }
         } else {
-            foreach($this->elseActions as $action) {
+            foreach ($this->elseActions as $action) {
                 $action->perform();
             }
         }
@@ -93,66 +97,65 @@ class Rule implements RuleInterface
         return $eval;
     }
 
-
     /**
-     * Returns the name of the rule
+     * Returns the name of the rule.
      *
      * @return string The name of the rule
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-
     /**
-     * Returns the description of the rule (or null if there is none)
+     * Returns the description of the rule (or null if there is none).
      *
      * @return string|null The description of the rule
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
-
     /**
-     * Add an action to be called when the rule evals to true
+     * Add an action to be called when the rule evals to true.
      *
      * @param ActionInterface $action The action to call
      */
-    public function addThenAction(ActionInterface $action) {
+    public function addThenAction(ActionInterface $action)
+    {
         $this->thenActions->enqueue($action);
     }
 
-
     /**
-     * Get the actions to be called if the rule evals to true
+     * Get the actions to be called if the rule evals to true.
      *
      * @return \SplQueue The then actions
      */
-    public function getThenActions() {
+    public function getThenActions()
+    {
         return $this->thenActions;
     }
 
-
     /**
-     * Add an action to be called when the rule evals to false
+     * Add an action to be called when the rule evals to false.
      *
      * @param ActionInterface $action The action to call
      */
-    public function addElseAction(ActionInterface $action) {
+    public function addElseAction(ActionInterface $action)
+    {
         $this->elseActions->enqueue($action);
     }
 
-
     /**
-     * Get the actions to be called if the rule evals to false
+     * Get the actions to be called if the rule evals to false.
      *
      * @return \SplQueue The else actions
      */
-    public function getElseActions() {
+    public function getElseActions()
+    {
         return $this->elseActions;
     }
-
 
     /////////////////////////
     // GETTERS AND SETTERS //
@@ -169,11 +172,12 @@ class Rule implements RuleInterface
     }
 
     /**
-     * Sets the collection of conditions that make up the if section of the rule
+     * Sets the collection of conditions that make up the if section of the rule.
      *
      * @param ConditionCollection $conditions The condition collection to have this rule evaluate
      */
-    public function setConditions(ConditionCollection $conditions) {
+    public function setConditions(ConditionCollection $conditions)
+    {
         $this->conditions = $conditions;
     }
 

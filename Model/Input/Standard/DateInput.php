@@ -11,19 +11,22 @@ class DateInput implements InputInterface
     ///////////////
 
     /**
-     * The inputted value
+     * The inputted value.
+     *
      * @var \DateTime
      */
     private $value;
 
     /**
-     * The raw input value
+     * The raw input value.
+     *
      * @var mixed
      */
     private $rawInput;
 
     /**
-     * The name assigned to the input
+     * The name assigned to the input.
+     *
      * @var string
      */
     private $name;
@@ -33,7 +36,7 @@ class DateInput implements InputInterface
     //////////////////
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -45,7 +48,7 @@ class DateInput implements InputInterface
     /////////////////////////
 
     /**
-     * Get the value that the input represents
+     * Get the value that the input represents.
      *
      * @return int The input value
      */
@@ -55,7 +58,7 @@ class DateInput implements InputInterface
     }
 
     /**
-     * Set the raw input of the value from the form
+     * Set the raw input of the value from the form.
      *
      * @param mixed $rawInput The raw input (e.g. An entity id or string from form input)
      */
@@ -67,7 +70,7 @@ class DateInput implements InputInterface
     }
 
     /**
-     * Get the raw input value
+     * Get the raw input value.
      *
      * @return mixed The raw input value
      */
@@ -77,7 +80,7 @@ class DateInput implements InputInterface
     }
 
     /**
-     * Returns the string name of the form type
+     * Returns the string name of the form type.
      *
      * @return string Form type
      */
@@ -87,17 +90,17 @@ class DateInput implements InputInterface
     }
 
     /**
-     * Returns the options array for the form
+     * Returns the options array for the form.
      *
      * @return array The form options
      */
     public function getFormOptions()
     {
-        return array('widget' => 'single_text', 'format' => 'yyyy-MM-dd');
+        return ['widget' => 'single_text', 'format' => 'yyyy-MM-dd'];
     }
 
     /**
-     * Gets the name assigned to the input
+     * Gets the name assigned to the input.
      *
      * @return string The name of the input
      */
@@ -107,7 +110,7 @@ class DateInput implements InputInterface
     }
 
     /**
-     * Assigns a name to the input
+     * Assigns a name to the input.
      *
      * @param string $name The name to assign to the input
      */

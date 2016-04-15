@@ -2,9 +2,6 @@
 
 namespace Mesd\RuleBundle\Model\Context;
 
-use Mesd\RuleBundle\Model\Context\ContextCollectionInterface;
-
-use Mesd\RuleBundle\Model\Context\GenericContext;
 use Mesd\RuleBundle\Model\Definition\DefinitionManagerInterface;
 
 class ContextCollection implements ContextCollectionInterface
@@ -21,13 +18,15 @@ class ContextCollection implements ContextCollectionInterface
     ///////////////
 
     /**
-     * Generic Context Array keyed by name
+     * Generic Context Array keyed by name.
+     *
      * @var array
      */
     private $contexts;
 
     /**
-     * The definition manager reference
+     * The definition manager reference.
+     *
      * @var DefinitionManagerInterface
      */
     private $definitionManager;
@@ -38,18 +37,18 @@ class ContextCollection implements ContextCollectionInterface
 
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param DefinitionManagerInterface $definitionManager The definition manager
      */
-    public function __construct(DefinitionManagerInterface $definitionManager) {
+    public function __construct(DefinitionManagerInterface $definitionManager)
+    {
         //Set stuff
         $this->definitionManager = $definitionManager;
 
         //Init stuff
-        $this->contexts = array();
+        $this->contexts = [];
     }
-
 
     /////////////////////////
     // IMPLEMENTED METHODS //
@@ -57,24 +56,25 @@ class ContextCollection implements ContextCollectionInterface
 
 
     /**
-     * Add a context to the collection
+     * Add a context to the collection.
      *
      * @param GenericContext $context Context to add
      */
-    public function addContext(GenericContext $context) {
+    public function addContext(GenericContext $context)
+    {
         $this->contexts[$context->getName()] = $context;
     }
 
-
     /**
-     * Creates a new instance of the requested attribute for the given context
+     * Creates a new instance of the requested attribute for the given context.
      *
-     * @param  string                   $contextName   The name of the context to get the attribute for
-     * @param  string                   $attributeName The name of the attribute in the definition manager to create an instance of
+     * @param string $contextName   The name of the context to get the attribute for
+     * @param string $attributeName The name of the attribute in the definition manager to create an instance of
      *
-     * @return AbstractContextAttribute                The new attribute object
+     * @return AbstractContextAttribute The new attribute object
      */
-    public function createContextAttribute($contextName, $attributeName) {
+    public function createContextAttribute($contextName, $attributeName)
+    {
         //Get the attribute from the defintion manager
         $attribute = $this->definitionManager->getContextAttribute($contextName, $attributeName);
 
@@ -88,16 +88,16 @@ class ContextCollection implements ContextCollectionInterface
         return $attribute;
     }
 
-
     /**
-     * Creates a new instance of the requested action for the given context
+     * Creates a new instance of the requested action for the given context.
      *
-     * @param  string                $contextName The name of the context to get the action for
-     * @param  string                $actionName  The name of the action in the definition manager to create an instace of
+     * @param string $contextName The name of the context to get the action for
+     * @param string $actionName  The name of the action in the definition manager to create an instace of
      *
-     * @return AbstractContextAction              The new action object
+     * @return AbstractContextAction The new action object
      */
-    public function createContextAction($contextName, $actionName) {
+    public function createContextAction($contextName, $actionName)
+    {
         //Get the action from the defintion manager
         $action = $this->definitionManager->getContextAction($contextName, $actionName);
 
@@ -111,24 +111,24 @@ class ContextCollection implements ContextCollectionInterface
         return $action;
     }
 
-
     /**
-     * Return an array of contexts keyed by name
+     * Return an array of contexts keyed by name.
      *
      * @return array Context array
      */
-    public function getContexts() {
+    public function getContexts()
+    {
         return $this->contexts;
     }
 
-
     /**
-     * Sets the value of the contexts
+     * Sets the value of the contexts.
      *
      * @param array $values An array of values to set the contexts with keyed by the context name
      */
-    public function setValues($values = []) {
-        foreach($values as $context => $value) {
+    public function setValues($values = [])
+    {
+        foreach ($values as $context => $value) {
             if (array_key_exists($context, $this->contexts)) {
                 $this->contexts[$context]->setObject($value);
             }
