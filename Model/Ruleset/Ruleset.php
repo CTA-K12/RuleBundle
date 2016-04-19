@@ -49,12 +49,20 @@ class Ruleset implements RulesetInterface
     private $serviceActions;
 
     /**
-     * Array of snodename mapping for cycle checking
+     * Array of nodename mapping for cycle checking
      *
      * @var array
      */
 
     private $adjacencyList;
+
+    /**
+     * Array of nodename mapping with relation specified
+     *
+     * @var array
+     */
+
+    private $relationalList;
 
     //////////////////
     // BASE METHODS //
@@ -238,6 +246,41 @@ class Ruleset implements RulesetInterface
         return $this->adjacencyList;
     }
 
+    /**
+     * Gets the list of adjacent nodes associated with the ruleset.
+     *
+     * @return array Array of Adjacency Nodes List
+     */
+    public function getReducedAdjacencyList()
+    {
+        $list = $this->adjacencyList;
+        foreach ($this->adjacencyList as $node => $targets) {
+            $list[$node]['then'] = array_unique($list[$node]['then']);
+            $list[$node]['else'] = array_unique($list[$node]['else']);
+        }
+        return $list;
+    }
+
+    /**
+     * Adds a an related list to the ruleset.
+     *
+     * @param AbstractRelatedList $action The service action to add
+     */
+    public function setRelatedList($list)
+    {
+        $this->relatedList = $list;
+    }
+
+    /**
+     * Gets the list of adjacent nodes associated with the ruleset.
+     *
+     * @return array Array of Related Nodes List
+     */
+    public function getRelatedList()
+    {
+        return $this->relatedList;
+    }
+
     /////////////
     // METHODS //
     /////////////
@@ -275,7 +318,7 @@ class Ruleset implements RulesetInterface
     {
         $this->path = '';
         $return     = false;
-        $list       = $this->getAdjacencyList();
+        $list       = $this->getReducedAdjacencyList();
         foreach ($this->rootRules as $root) {
             $this->root = $root->getName();
             foreach ($list[$this->root] as $node) {

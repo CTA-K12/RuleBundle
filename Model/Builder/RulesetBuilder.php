@@ -192,38 +192,77 @@ class RulesetBuilder implements RulesetBuilderInterface
         }
 
         foreach ($this->ruleMapping as $name => $mapping) {
-            $list[$mapping['node']->getName()] = [];
+            $list[$mapping['node']->getName()]['then'] = [];
             foreach ($mapping['node']->getThenRules() as $then) {
                 $list[$mapping['node']->getName()][] = $then->getName();
             }
             foreach ($mapping['node']->getElseRules() as $else) {
                 $list[$mapping['node']->getName()][] = $else->getName();
             }
-
-            $list[$mapping['node']->getName()] = array_unique($list[$mapping['node']->getName()]);
         }
 
         $this->ruleset->setAdjacencyList($list);
+
+        foreach ($this->ruleMapping as $name => $mapping) {
+            $then = $this->getThenLabel($mapping['node']);
+            $else = $this->getElseLabel($mapping['node']);
+
+            $relList[$mapping['node']->getName()][$then] = [];
+            foreach ($mapping['node']->getThenRules() as $thenRule) {
+                $relList[$mapping['node']->getName()][$then][] = $thenRule->getName();
+            }
+
+            $relList[$mapping['node']->getName()][$else] = [];
+            foreach ($mapping['node']->getElseRules() as $elseRule) {
+                $relList[$mapping['node']->getName()][$else][] = $elseRule->getName();
+            }
+        }
+
+        $this->ruleset->setRelatedList($relList);
 
         //Return the underlying ruleset
         return $this->ruleset;
     }
 
-    /**
-     * Returns a reference to the defintion manager.
-     *
-     * @return DefinitionManagerInterface The defintion manager
-     */
+    public function getThenLabel($node)
+    {
+        return $this->getNodeLabel($node, 'then');
+    }
+
+    public function getElseLabel($node)
+    {
+        return $this->getNodeLabel($node, 'else');
+    }
+
+    public function getNodeLabel(
+        $node,
+        $type
+    ) {
+        $label = "";
+
+        $getActions = 'get' . ucfirst($type) . 'Actions';
+        while (!$node->getRule()->$getActions()->isEmpty()) {
+            $action = $node->getRule()->$getActions()->deQueue();
+            $label .= ($action->getDescription() ?: get_class($action)) . ';';
+        }
+
+        return ($label ?: $type);
+    }
+/**
+ * Returns a reference to the defintion manager.
+ *
+ * @return DefinitionManagerInterface The defintion manager
+ */
     public function getDefinitionManager()
     {
         return $this->definitionManager;
     }
 
-    /**
-     * Get the context collection currently associated with the ruleset.
-     *
-     * @return ContextCollectionInterface The context collection
-     */
+/**
+ * Get the context collection currently associated with the ruleset.
+ *
+ * @return ContextCollectionInterface The context collection
+ */
     public function getContextCollection()
     {
         return $this->ruleset->getContextCollection();

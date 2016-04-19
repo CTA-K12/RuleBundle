@@ -31,3 +31,7 @@ MesdRuleBundle_Form_loadForm:
     pattern: /form/load
     defaults: { _controller: 'MesdRuleBundle:Form:loadForm' }
     methods: [POST]
+
+MesdRuleBundle_Rules_Graph:
+    pattern: /graph/{encodedRulesetName}
+    defaults: {_controller: 'MesdRuleBundle:Graph:graph'}

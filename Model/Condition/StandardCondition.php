@@ -21,7 +21,6 @@ class StandardCondition implements ConditionInterface
     // BASE METHODS //
     //////////////////
 
-
     /**
      * Constructor.
      *
@@ -36,7 +35,6 @@ class StandardCondition implements ConditionInterface
     /////////////////////////
     // IMPLEMENTED METHODS //
     /////////////////////////
-
 
     /**
      * Evaluates the condition.
@@ -63,6 +61,13 @@ class StandardCondition implements ConditionInterface
     // METHODS //
     /////////////
 
+    public function __toString()
+    {
+        return $this->attribute->getName() . " " .
+        $this->attribute->getOperatorValue() . " " .
+        $this->attribute->getInputValue()
+        ;
+    }
 
     /**
      * Set the value of the conditions operator.
