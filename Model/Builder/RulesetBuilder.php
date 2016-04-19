@@ -4,8 +4,8 @@ namespace Mesd\RuleBundle\Model\Builder;
 
 use Mesd\RuleBundle\Model\Context\ContextCollectionInterface;
 use Mesd\RuleBundle\Model\Definition\DefinitionManagerInterface;
-use Mesd\RuleBundle\Model\Rule\RuleNodeInterface;
 use Mesd\RuleBundle\Model\Ruleset\Ruleset;
+use Mesd\RuleBundle\Model\Rule\RuleNodeInterface;
 
 class RulesetBuilder implements RulesetBuilderInterface
 {
@@ -52,8 +52,10 @@ class RulesetBuilder implements RulesetBuilderInterface
      * @param DefintionManagerInterface $definitonManager The definition manager
      * @param string                    $name             The name of the ruleset
      */
-    public function __construct(DefinitionManagerInterface $definitionManager, $name)
-    {
+    public function __construct(
+        DefinitionManagerInterface $definitionManager,
+                                   $name
+    ) {
         //Set stuff
         $this->definitionManager = $definitionManager;
 
@@ -104,8 +106,10 @@ class RulesetBuilder implements RulesetBuilderInterface
      *
      * @return self
      */
-    public function addThenRule($parentName, $thenName)
-    {
+    public function addThenRule(
+        $parentName,
+        $thenName
+    ) {
         //Check that the parent rule exists
         if (!array_key_exists($parentName, $this->ruleMapping)) {
             throw new \Exception(self::ERROR_THEN_RULE_NOT_FOUND . " : " . $thenName);
@@ -125,8 +129,10 @@ class RulesetBuilder implements RulesetBuilderInterface
      *
      * @return self
      */
-    public function addElseRule($parentName, $elseName)
-    {
+    public function addElseRule(
+        $parentName,
+        $elseName
+    ) {
         //Check that the parent rule exists
         if (!array_key_exists($parentName, $this->ruleMapping)) {
             throw new \Exception(self::ERROR_ELSE_RULE_NOT_FOUND . " : " . $elseName);
@@ -184,6 +190,20 @@ class RulesetBuilder implements RulesetBuilderInterface
                 }
             }
         }
+
+        foreach ($this->ruleMapping as $name => $mapping) {
+            $list[$mapping['node']->getName()] = [];
+            foreach ($mapping['node']->getThenRules() as $then) {
+                $list[$mapping['node']->getName()][] = $then->getName();
+            }
+            foreach ($mapping['node']->getElseRules() as $else) {
+                $list[$mapping['node']->getName()][] = $else->getName();
+            }
+
+            $list[$mapping['node']->getName()] = array_unique($list[$mapping['node']->getName()]);
+        }
+
+        $this->ruleset->setAdjacencyList($list);
 
         //Return the underlying ruleset
         return $this->ruleset;

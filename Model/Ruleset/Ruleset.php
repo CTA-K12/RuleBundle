@@ -48,6 +48,14 @@ class Ruleset implements RulesetInterface
      */
     private $serviceActions;
 
+    /**
+     * Array of snodename mapping for cycle checking
+     *
+     * @var array
+     */
+
+    private $adjacencyList;
+
     //////////////////
     // BASE METHODS //
     //////////////////
@@ -57,8 +65,10 @@ class Ruleset implements RulesetInterface
      *
      * @param string $name The name of the ruleset
      */
-    public function __construct($name, ContextCollectionInterface $contextCollection)
-    {
+    public function __construct(
+                                   $name,
+        ContextCollectionInterface $contextCollection
+    ) {
         //Set stuff
         $this->name              = $name;
         $this->contextCollection = $contextCollection;
@@ -208,6 +218,26 @@ class Ruleset implements RulesetInterface
         return $this->name;
     }
 
+    /**
+     * Adds a an adjacency list to the ruleset.
+     *
+     * @param AbstractAdjacencyList $action The service action to add
+     */
+    public function setAdjacencyList($list)
+    {
+        $this->adjacencyList = $list;
+    }
+
+    /**
+     * Gets the list of adjacent nodes associated with the ruleset.
+     *
+     * @return array Array of Adjacency Nodes List
+     */
+    public function getAdjacencyList()
+    {
+        return $this->adjacencyList;
+    }
+
     /////////////
     // METHODS //
     /////////////
@@ -243,18 +273,19 @@ class Ruleset implements RulesetInterface
      */
     public function checkIfCyclesExist()
     {
-
-        // these are tracked to the cycle checking is not
-        // growing factorially
-        // DL April 15 2016
-
-        $this->thened = [];
-        $this->elsed  = [];
-
-        $return = false;
-        foreach ($this->rootRules as $node) {
-            $return = $return || $this->visitNode($node, []);
+        $this->path = '';
+        $return     = false;
+        $list       = $this->getAdjacencyList();
+        foreach ($this->rootRules as $root) {
+            $this->root = $root->getName();
+            foreach ($list[$this->root] as $node) {
+                $return = $return || $this->walkNode($node, []);
+            }
         }
+
+        // foreach ($this->rootRules as $node) {
+        //     $return = $return || $this->visitNode($node, []);
+        // }
 
         return $return;
     }
@@ -263,49 +294,66 @@ class Ruleset implements RulesetInterface
     // PRIVATE METHODS //
     /////////////////////
 
-    /**
-     * Check if a node has already been visited in a given chain.
-     *
-     * @param RuleNodeInterface $node    The node to check
-     * @param array             $visited The list of visited nodes
-     *
-     * @return boolean True if the node has been visited, false else wise
-     */
-    private function visitNode(RuleNodeInterface $node, $visited)
-    {
+    // The's older code.  Second approach reduces redundant if/else maps to
+    // single route for less nodes to process. Also stores just node name
+    // leaving visit 'just in case'
+
+    private function visitNode(
+        $node,
+        $visited
+    ) {
         //Check if the current node is in the visited array
         if (in_array($node->getName(), $visited)) {
             return true;
         } else {
             //Add to the visited array
-            $visited[] = $node->getName();
+            $visited[] = $node;
 
             //Call recursively foreach child
             $return = false;
+
             foreach ($node->getThenRules() as $then) {
-
-                // This codition is really important to prevent
-                // factorial save time
-                // DL April 15 2016
-
-                if (!in_array($then, $this->thened)) {
-                    $this->thened[] = $then;
-                    $eval           = $this->visitNode($then, $visited);
-                    $return         = $return || $eval;
-                }
+                $eval   = $this->visitNode($then, $visited);
+                $return = $return || $eval;
             }
+
             foreach ($node->getElseRules() as $else) {
-                // This codition is really important to prevent
-                // factorial save time
-                // DL April 15 2016
-
-                if (!in_array($else, $this->elsed)) {
-                    $this->else[] = $else;
-                    $eval         = $this->visitNode($else, $visited);
-                    $return       = $return || $eval;
-                }
+                $eval   = $this->visitNode($else, $visited);
+                $return = $return || $eval;
             }
 
+            return $return;
+        }
+    }
+
+    /**
+     * Next Five for Tarjan algorithim
+     *
+     * @var array
+     */
+
+    private $visited = [];
+
+    private function walkNode(
+        $node,
+        $visited
+    ) {
+        $list = $this->getAdjacencyList();
+        //Check if the current node is in the visited array
+        if (in_array($node, $visited)) {
+            return true;
+        } else {
+            //Add to the visited array
+            $visited[] = $node;
+            $this->path .= '->' . $node;
+
+            //Call recursively foreach child
+            $return = false;
+
+            foreach ($list[$node] as $next) {
+                $eval   = $this->walkNode($next, $visited);
+                $return = $return || $eval;
+            }
             return $return;
         }
     }
