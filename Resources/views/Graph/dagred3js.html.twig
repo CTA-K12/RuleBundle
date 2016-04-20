@@ -28,7 +28,8 @@ Object.keys(adjacencyList).forEach(function(c) {
         if (adjacencyList[c][property].length) {
             adjacencyList[c][property].forEach(function(t) {
                 g.setEdge(c, t, {
-                    label: property.split(';').join("\n")
+                    label: property.split(';').join("\n"),
+                    lineInterpolate: 'basis' 
                 });
             });
         }

@@ -1,10 +1,4 @@
-<html>
-<head>
 {% include 'MesdRuleBundle:Graph:graphcss.html.twig' %}
-</head>
-<body>
 <svg width="1400" height="1200"><g/></svg>
-{{adjacencyList|json_encode|json_pretty|raw}}
+{# {{adjacencyList|json_encode|json_pretty|raw}} #}
 {% include 'MesdRuleBundle:Graph:dagred3js.html.twig' %}
-</body>
-</html>
