@@ -5,9 +5,21 @@
 {% endblock pageHeader %}
 
 {% block listContents %}
+
+        </li> <li class="list-group-item">
+            <a href="{{ url('MesdRuleBundle_Form_listRulesets')}}">List</a>
+        </li>
+    <br/>
+    <br/>
     {% for ruleset in rulesets %}
-        <li class="list-group-item"><a href="{{ url('MesdRuleBundle_Form_displayForm', { 'encodedRulesetName': ruleset|url_encode }) }}">{{ ruleset }}</a></li>
+        <li class="list-group-item">
+            <a href="{{ url('MesdRuleBundle_Form_displayForm', { 'encodedRulesetName': ruleset|url_encode }) }}">Form for {{ ruleset }}</a>
+        <li class="list-group-item">
+            <a href="{{ url('MesdRuleBundle_Rules_Graph', { 'encodedRulesetName': ruleset|url_encode }) }}">Graph for {{ ruleset }}</a>
+        </li>
     {% endfor %}
+    <br/>
+    <br/>
 {% endblock listContents %}
 
 {% block ruleForm %}

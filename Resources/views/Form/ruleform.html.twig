@@ -1,7 +1,16 @@
 {% extends 'MesdRuleBundle:Form:layout.html.twig' %}
 
 {% block pageHeader %}
-    <h1>{{ rulesetName }}<small> Rule Controls</small></h1>
+    <h1>{{ rulesetName }}<small> Rule Controls</small></h1>    <div>
+    <li>
+        <a href="{{ url('MesdRuleBundle_Form_listRulesets')}}">List of all Rulesets</a>
+    </li>
+    <li>
+        <a href="{{ url('MesdRuleBundle_Rules_Graph', {'encodedRulesetName' : rulesetName|url_encode})}}">
+            Graph for this Set
+        </a>
+    </li>
+</div>
 {% endblock pageHeader %}
 
 {% block list %}
@@ -175,6 +184,6 @@
     </script>
 
     {% javascripts '@MesdRuleBundle/Resources/public/js/*' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+    <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock javascripts %}

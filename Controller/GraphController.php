@@ -22,7 +22,8 @@ class GraphController extends ContainerAware
 
         //Render the form page
         return new Response($this->container->get('templating')->render('MesdRuleBundle:Graph:graph.html.twig', [
-            'adjacencyList' => $ruleset->getRelatedList(),
+            'adjacencyList'      => $ruleset->getRelatedList(),
+            'encodedRulesetName' => $encodedRulesetName,
         ]));
     }
 }
