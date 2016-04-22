@@ -255,9 +255,9 @@ class Ruleset implements RulesetInterface
     {
         $list = $this->adjacencyList;
         foreach ($this->adjacencyList as $node => $targets) {
-            $list[$node]['then'] = array_unique($list[$node]['then']);
-            $list[$node]['else'] = array_unique($list[$node]['else']);
+            $list[$node] = array_unique($list[$node]);
         }
+
         return $list;
     }
 
@@ -381,7 +381,7 @@ class Ruleset implements RulesetInterface
         $node,
         $visited
     ) {
-        $list = $this->getAdjacencyList();
+        $list = $this->getReducedAdjacencyList();
         //Check if the current node is in the visited array
         if (in_array($node, $visited)) {
             return true;

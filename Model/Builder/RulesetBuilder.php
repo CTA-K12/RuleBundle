@@ -192,7 +192,7 @@ class RulesetBuilder implements RulesetBuilderInterface
         }
 
         foreach ($this->ruleMapping as $name => $mapping) {
-            $list[$mapping['node']->getName()]['then'] = [];
+            $list[$mapping['node']->getName()] = [];
             foreach ($mapping['node']->getThenRules() as $then) {
                 $list[$mapping['node']->getName()][] = $then->getName();
             }
@@ -241,8 +241,9 @@ class RulesetBuilder implements RulesetBuilderInterface
         $label = "";
 
         $getActions = 'get' . ucfirst($type) . 'Actions';
-        while (!$node->getRule()->$getActions()->isEmpty()) {
-            $action = $node->getRule()->$getActions()->deQueue();
+        $actions    = clone ($node->getRule()->$getActions());
+        while (!$actions->isEmpty()) {
+            $action = $actions->deQueue();
             $label .= ($action->getDescription() ?: get_class($action)) . ';';
         }
 
