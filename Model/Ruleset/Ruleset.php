@@ -338,8 +338,7 @@ class Ruleset implements RulesetInterface
     /////////////////////
 
     // The's older code.  Second approach reduces redundant if/else maps to
-    // single route for less nodes to process. Also stores just node name
-    // leaving visit 'just in case'
+    // single single node for less edges to process.
 
     private function visitNode(
         $node,
@@ -368,14 +367,6 @@ class Ruleset implements RulesetInterface
             return $return;
         }
     }
-
-    /**
-     * Next Five for Tarjan algorithim
-     *
-     * @var array
-     */
-
-    private $visited = [];
 
     private function walkNode(
         $node,
