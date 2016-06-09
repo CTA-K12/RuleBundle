@@ -82,15 +82,15 @@ class Rule implements RuleInterface
         $eval = $this->conditions->evaluate();
 
         //Run the then/else actions
-        var_dump($this->name . " " . ($eval ? 'true' : 'false'));
+        // var_dump($this->name . " " . ($eval ? 'true' : 'false'));
         if ($eval) {
             foreach ($this->thenActions as $action) {
-                var_dump('===> ' . $action->getName() . " invoked");
+                // var_dump('===> ' . $action->getName() . " invoked");
                 $action->perform();
             }
         } else {
             foreach ($this->elseActions as $action) {
-                var_dump('===> ' . $action->getName() . " invoked");
+                // var_dump('===> ' . $action->getName() . " invoked");
                 $action->perform();
             }
         }
