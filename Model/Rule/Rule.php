@@ -50,7 +50,6 @@ class Rule implements RuleInterface
     // BASE METHODS //
     //////////////////
 
-
     /**
      * Constructor.
      */
@@ -58,6 +57,7 @@ class Rule implements RuleInterface
     {
         //Set the name of the rule
         $this->name = $name;
+        // var_dump($name . " constructed");
 
         //Construct a default condition chain as a placeholder
         $this->conditions = new ConditionCollection();
@@ -71,7 +71,6 @@ class Rule implements RuleInterface
     // IMPLEMENTED METHODS //
     /////////////////////////
 
-
     /**
      * Evaluate the rule.
      *
@@ -83,16 +82,18 @@ class Rule implements RuleInterface
         $eval = $this->conditions->evaluate();
 
         //Run the then/else actions
+        var_dump($this->name . " " . ($eval ? 'true' : 'false'));
         if ($eval) {
             foreach ($this->thenActions as $action) {
+                var_dump('===> ' . $action->getName() . " invoked");
                 $action->perform();
             }
         } else {
             foreach ($this->elseActions as $action) {
+                var_dump('===> ' . $action->getName() . " invoked");
                 $action->perform();
             }
         }
-
         //return eval
         return $eval;
     }
