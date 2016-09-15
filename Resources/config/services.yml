@@ -5,8 +5,8 @@ parameters:
 services:
     mesd_rule.definition_manager_loader_factory:
         class: %mesd_rule.definition_manager_loader_factory.class%
-        arguments: [ @service_container ]
+        arguments: [ "@service_container" ]
 
     mesd_rule.rules:
         class: %mesd_rule.rules.class%
-        arguments: [ @mesd_rule.definition_manager_loader_factory ]
+        arguments: [ "@mesd_rule.definition_manager_loader_factory" ]
