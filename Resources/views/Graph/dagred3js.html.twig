@@ -3,7 +3,6 @@
 <script type="text/javascript">
 var adjacencyList = {{adjacencyList | json_encode | raw }};
 var urlRoot = "{{ app.request.getSchemeAndHttpHost() }}" + "{{ app.request.getBaseUrl() }}" + "/graph/";
-
 function className(className) {
     className = className.split('_');
     className = className[className.length - 1];
@@ -20,10 +19,7 @@ Object.keys(adjacencyList).forEach(function(c) {
 });
 
 
-console.log(g);
 Object.keys(adjacencyList).forEach(function(c) {
-    console.log(c);
-    console.log(adjacencyList[c]);
     for (var property in adjacencyList[c]) {
         if (adjacencyList[c][property].length) {
             adjacencyList[c][property].forEach(function(t) {
@@ -67,7 +63,6 @@ zoom
 svg.attr('height', g.graph().height * initialScale + 40);
 
 var selections = inner.selectAll("g.node");
-console.log(selections);
 selections.on('click', function(d, i) {
     window.open(urlRoot + d);
 });
