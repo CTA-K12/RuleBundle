@@ -3,12 +3,12 @@
 namespace Mesd\RuleBundle\Controller;
 
 use Mesd\RuleBundle\Model\Form\Helper\ComparatorFormHelper;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class FormController extends ContainerAware
+class FormController extends Controller
 {
     ////////////////////////
     // RENDERED RESPONSES //
@@ -82,11 +82,17 @@ class FormController extends ContainerAware
 
         //sort the arrays
         ksort($attributes['contexts']);
-        usort($attributes['services'], function ($a, $b) {
+        usort($attributes['services'], function (
+            $a,
+            $b
+        ) {
             return strcasecmp($a->getName(), $b->getName());
         });
         foreach ($attributes['contexts'] as $context => $attrs) {
-            usort($attributes['contexts'][$context], function ($a, $b) {
+            usort($attributes['contexts'][$context], function (
+                $a,
+                $b
+            ) {
                 return strcasecmp($a->getName(), $b->getName());
             });
         }
@@ -139,8 +145,10 @@ class FormController extends ContainerAware
      *
      * @return Response The rendered attribute input
      */
-    public function renderComparatorAndInputAction($encodedAttributeName, $encodedContextName = null)
-    {
+    public function renderComparatorAndInputAction(
+        $encodedAttributeName,
+        $encodedContextName = null
+    ) {
         //Decode
         $attributeName = urldecode($encodedAttributeName);
         if (null !== $encodedContextName) {
@@ -180,8 +188,10 @@ class FormController extends ContainerAware
      *
      * @return Response The rendered input for the action
      */
-    public function renderActionInputAction($encodedActionName, $encodedContextName = null)
-    {
+    public function renderActionInputAction(
+        $encodedActionName,
+        $encodedContextName = null
+    ) {
         //Decode
         $actionName = urldecode($encodedActionName);
         if (null !== $encodedContextName) {

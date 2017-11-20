@@ -2,10 +2,10 @@
 
 namespace Mesd\RuleBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class GraphController extends ContainerAware
+class GraphController extends Controller
 {
     /**
      * Displays the form.
